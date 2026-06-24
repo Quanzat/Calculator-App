@@ -212,6 +212,15 @@ body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(1
   .historyFooter{display:grid;grid-template-columns:1fr;align-items:stretch}.historyFooter #clearHistory{width:100%}
 }
 
+
+/* V65 view-only / edit unlock mode */
+.editStatus{border:1px solid var(--line);border-radius:999px;background:#091425;color:#ffd99a;padding:10px 14px;font-weight:900;white-space:nowrap}
+.editStatus.unlocked{color:#bfffd1;border-color:#22c55e;background:#0b2415}
+body.viewOnly input:not(#fileInput),body.viewOnly textarea,body.viewOnly select:not(#monthPicker){opacity:.86}
+body.viewOnly .editLockedHint{display:block}
+.editLockedHint{display:none;border:1px solid #6c4b17;background:#21170a;border-radius:10px;padding:10px 12px;color:#ffd99a;font-weight:800;margin:0 0 12px}
+body.viewOnly .btn[disabled],body.viewOnly input:disabled,body.viewOnly select:disabled{cursor:not-allowed;opacity:.55}
+@media(max-width:768px){.editStatus{width:100%;border-radius:10px}.toolbar{display:grid;grid-template-columns:1fr;gap:8px}.toolbar .monthSelect,.toolbar .iconBtn,.toolbar .editStatus{width:100%}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#061120">
@@ -220,9 +229,9 @@ body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(1
 <meta name="apple-mobile-web-app-title" content="Bill Split">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 </head><body><div class="app">
-  <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><div class="toolbar"><select id="monthPicker" class="monthSelect"></select><button class="iconBtn" id="settingsBtn">⚙</button></div></div>
+  <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><div class="toolbar"><select id="monthPicker" class="monthSelect"></select><button class="editStatus" id="editLockBtn" type="button">🔒 View Only</button><button class="iconBtn" id="settingsBtn">⚙</button></div></div>
   <div class="modeTabs"><button class="modeTab household active" data-mode="household">⌂ &nbsp; Household Bills</button><button class="modeTab eatout" data-mode="eatout">♨ &nbsp; Eat Out</button><button class="modeTab custom" data-mode="custom">▦ &nbsp; Custom</button></div>
-  <div class="grid"><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
+  <div class="grid"><div id="editLockedHint" class="editLockedHint">🔒 View Only Mode — editing is locked. Use Unlock Edit to add, remove, import, save, finalize, or change data.</div><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
   <section class="card"><h2 id="chartTitle">This Month vs Last Month</h2><div id="compareControls" class="compareControls hidden"><label>Compare</label><select id="compareA"></select><label>vs</label><select id="compareB"></select></div><div class="chartTop"><div><div id="curBig" class="bigGreen">$0.00</div><div id="curLabel">This Month</div></div><div class="delta"><div id="deltaText">No saved comparison</div><div id="deltaPct" class="num">—</div><div id="arrow" style="font-size:28px;color:var(--red)">↓</div></div><div><div id="prevBig" class="bigBlue">$0.00</div><div id="prevLabel">Last Month</div></div></div><div class="canvasBox"><canvas id="chart"></canvas></div><div class="details"><div id="currentDetail" class="detail"></div><div id="lastDetail" class="detail blueBorder"></div></div><div class="history"><h3>▣ Saved History</h3><table class="histTable"><tbody id="historyRows"></tbody></table><div class="historyFooter"><div class="note historyLimit">Saved history is kept on this device. You can save up to 24 entries per tab.</div><button id="clearHistory" class="btn red small">🗑 Clear History</button></div></div></section></div></div>
 
 <script>
@@ -681,7 +690,7 @@ function normalizeReceiptDisplayName(name,qty){
   raw=raw.replace(/^#\s+(\d+)/,'#$1').replace(/\s{2,}/g,' ').trim();
   return {qty:q||'',name:raw};
 }
-function addReceiptItem(name='',amount=0,ps=[],rerender=true,locked=false,type='standalone',qty=''){
+function addReceiptItem(name='',amount=0,ps=[],rerender=true,locked=false,type='standalone',qty=''){if(!requireEditMode('add receipt items'))return;
   // Eat Out rows are quantity-based. Default to 1 so the Qty badge never disappears after render.
   if(qty==='' || qty==null) qty='1';
   if(typeof name==='object'){let o=name;name=o.name||'';amount=o.amount||0;ps=o.people||[];type=o.type||'standalone';qty=o.qty||o.quantity||'1'}
@@ -755,7 +764,7 @@ function loadScriptOnce(src,globalName){
     let s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>resolve(globalName?window[globalName]:true);s.onerror=()=>reject(new Error('Could not load '+src));document.head.appendChild(s);
   });
 }
-async function importReceiptFile(file){
+async function importReceiptFile(file){if(!requireEditMode('import receipts'))return;
   let name=(file.name||'').toLowerCase(), type=file.type||'';
   receiptStatus('Reading '+file.name+'...',true);
   try{
@@ -1297,7 +1306,7 @@ function eatOutPreviousSplitHTML(){
   return `<div class="eatoutSideCard previousSplitCard"><div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><h3>Previous Splits</h3><div class="note">Showing ${from}-${to} of ${all.length}. Latest saves are kept in memory.</div></div></div><div class="previousSplitList">${cards}</div>${all.length>per?`<div class="previousSplitPager"><button class="btn" onclick="changeEatOutPreviousPage(-1)" ${page===0?'disabled':''}>‹ Newer</button><span>Page ${page+1} of ${maxPage+1}</span><button class="btn" onclick="changeEatOutPreviousPage(1)" ${page===maxPage?'disabled':''}>Older ›</button></div>`:''}</div>`;
 }
 
-function deleteEatOutPreviousSplit(id){
+function deleteEatOutPreviousSplit(id){if(!requireEditMode('delete saved receipt splits'))return;
   let rec=getEatOutPreviousSplit(id);
   if(!rec)return;
   let title=rec.bills?.eventName||'this saved split';
@@ -1318,7 +1327,7 @@ function changeEatOutPreviousPage(delta){
   persist();renderAll(false);
 }
 
-function loadEatOutPreviousSplit(id){
+function loadEatOutPreviousSplit(id){if(!requireEditMode('load saved receipt splits'))return;
   let rec=getEatOutPreviousSplit(id);
   if(!rec){alert('No previous split to load.');return}
   if(data.mode!=='eatout')data.mode='eatout';
@@ -1456,7 +1465,7 @@ function renderCompareControls(){
   if(!a.dataset.bound){a.dataset.bound='1';a.onchange=()=>renderAll(true)}
   if(!b.dataset.bound){b.dataset.bound='1';b.onchange=()=>renderAll(true)}
 }
-function addPerson(){
+function addPerson(){if(!requireEditMode('add people'))return;
   let n=$('nameInput').value.trim();if(!n)return;
   if(data.view==='analytics'){
     let list=analyticsPeopleForMode();
@@ -1487,7 +1496,7 @@ function renderPeople(){
   }
   $('chips').innerHTML=people().map((p,i)=>`<span class="chip">${esc(p)}<button onclick="removePerson(${i})" ${isFinalized()?'disabled':''}>×</button></span>`).join('')||'<span class="note">No people added for this tab.</span>';
 }
-function saveMonth(){
+function saveMonth(){if(!requireEditMode('save changes'))return;
   if(data.view==='analytics')return;
   let rec=record();
   if(data.mode==='household'){
@@ -1516,7 +1525,7 @@ function saveMonth(){
   if(data.mode!=='eatout')data.history[data.mode]=data.history[data.mode].slice(-24);
   persist();renderAll();if(data.mode==='eatout'){let box=$('eatoutReviewText');if(box)box.value=rec.reviewText||eatOutReviewText(rec);alert('Saved split and generated message review.');}else alert('Saved '+rec.label+' in '+tabName()+'.');
 }
-function finalizeMonth(){
+function finalizeMonth(){if(!requireEditMode('finalize or unlock months'))return;
   if(data.mode!=='household'){alert('Finalize Month is only for Household Bills.');return}
   if(isFinalized()){
     if(!confirm('Unlock '+labelMonth(data.selectedMonth)+' so changes can be made? If you change any finalized amounts, the copied message will mark it as an EDIT.'))return;
@@ -1584,7 +1593,7 @@ function viewMonth(k,rid=''){
   data.monthDrafts[data.mode][k]=JSON.parse(JSON.stringify(rec.bills||{}));
   persist();renderMode();renderAll();
 }
-function resetBills(){
+function resetBills(){if(!requireEditMode('reset bills'))return;
   if(data.mode==='analytics')return;
   if(isFinalized()){alert('This month is finalized and locked.');return}
   let msg=data.mode==='eatout'
@@ -1995,37 +2004,104 @@ function renderAll(skipCalc=false){
   renderHistory();
   if(!skipCalc)calculate(false);
 }
+
+const EDIT_UNLOCK_CODE='5433';
+let editUnlocked=false;
+function isEditUnlocked(){return editUnlocked===true;}
+function canUseWhileLocked(el){
+  if(!el)return false;
+  if(el.id==='editLockBtn'||el.id==='settingsBtn'||el.id==='monthPicker'||el.id==='exportBtn')return true;
+  if(el.classList&& (el.classList.contains('modeTab')||el.classList.contains('subTab')))return true;
+  return false;
+}
+function updateEditLockUI(){
+  document.body.classList.toggle('viewOnly',!isEditUnlocked());
+  const btn=$('editLockBtn');
+  if(btn){
+    btn.textContent=isEditUnlocked()?'🔓 Edit Mode':'🔒 View Only';
+    btn.classList.toggle('unlocked',isEditUnlocked());
+    btn.title=isEditUnlocked()?'Tap to lock editing':'Tap to unlock editing with code';
+  }
+  const hint=$('editLockedHint');
+  if(hint)hint.style.display=isEditUnlocked()?'none':'block';
+}
+function setFormEditLock(){
+  const locked=!isEditUnlocked();
+  document.querySelectorAll('input, textarea, select').forEach(el=>{
+    if(el.id==='monthPicker'||el.id==='fileInput')return;
+    if(el.tagName==='TEXTAREA'){ el.readOnly=true; return; }
+    if(locked){ el.disabled=true; }
+    else { if(!el.dataset.finalizedLocked) el.disabled=false; }
+  });
+  document.querySelectorAll('button').forEach(btn=>{
+    if(canUseWhileLocked(btn)){btn.disabled=false;return;}
+    if(locked){btn.disabled=true;}
+  });
+  updateEditLockUI();
+}
+function promptUnlockEdit(){
+  if(isEditUnlocked()){
+    editUnlocked=false;
+    saveDraft();persist();renderMode();renderAll(true);setFormEditLock();
+    return;
+  }
+  const code=prompt('Enter edit code:');
+  if(code===EDIT_UNLOCK_CODE){
+    editUnlocked=true;
+    renderMode();renderAll(true);setFormEditLock();
+  }else if(code!==null){
+    alert('Incorrect code. View Only Mode remains active.');
+  }
+}
+function requireEditMode(actionName='edit this data'){
+  if(isEditUnlocked())return true;
+  alert('View Only Mode is active. Unlock Edit Mode to '+actionName+'.');
+  return false;
+}
+
 function exportData(){
   data.version=26;
   let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bill-split-v26-history.json';a.click();URL.revokeObjectURL(a.href);
 }
-function importText(txt){
+function importText(txt){if(!requireEditMode('import data'))return;
   try{let obj=JSON.parse(txt);data=Object.assign(data,obj);migrateData();persist();renderMode();renderAll();alert('Imported.')}catch(e){alert('Could not import JSON.')}
 }
 function setMode(m){saveDraft();data.mode=m;data.view='calculator';persist();renderMode();renderAll()}
+
+document.addEventListener('click',function(e){
+  if(isEditUnlocked())return;
+  const btn=e.target.closest&&e.target.closest('button');
+  if(btn&&!canUseWhileLocked(btn)){
+    e.preventDefault();e.stopPropagation();
+    alert('View Only Mode is active. Unlock Edit Mode to make changes.');
+  }
+},true);
+
 function init(){
   load();
   renderMode();
   document.querySelectorAll('.modeTab').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
   $('addPerson').onclick=addPerson;
   $('nameInput').onkeydown=e=>{if(e.key==='Enter'){addPerson();e.preventDefault()}};
-  $('clearPeople').onclick=()=>{if(data.view==='analytics'){let list=analyticsPeopleForMode();list.splice(0,list.length);persist();renderPeople();renderAll(true);return;}if(isFinalized())return alert('This month is finalized and locked.');setPeople([]);persist();renderMode();renderAll()};
+  $('clearPeople').onclick=()=>{if(!requireEditMode('clear people'))return;if(data.view==='analytics'){let list=analyticsPeopleForMode();list.splice(0,list.length);persist();renderPeople();renderAll(true);return;}if(isFinalized())return alert('This month is finalized and locked.');setPeople([]);persist();renderMode();renderAll()};
   $('calc').onclick=()=>calculate(true);
   $('saveMonth').onclick=saveMonth;
   $('finalizeMonth').onclick=finalizeMonth;
   $('resetBills').onclick=resetBills;
-  $('monthPicker').onchange=e=>{if(data.mode!=='analytics')saveDraft();data.selectedMonth=e.target.value;persist();renderMode();renderAll()};
+  $('monthPicker').onchange=e=>{if(data.mode!=='analytics'&&isEditUnlocked())saveDraft();data.selectedMonth=e.target.value;persist();renderMode();renderAll(true)};
+  $('editLockBtn').onclick=promptUnlockEdit;
   $('exportBtn').onclick=exportData;
-  $('importBtn').onclick=()=>$('fileInput').click();
+  $('importBtn').onclick=()=>{if(requireEditMode('import data'))$('fileInput').click()};
   $('fileInput').onchange=e=>{let f=e.target.files[0];if(f)f.text().then(importText)};
-  $('clearHistory').onclick=()=>{if(confirm('Clear saved history for this tab?')){data.history[data.mode]=[];persist();renderAll()}};
+  $('clearHistory').onclick=()=>{if(!requireEditMode('clear history'))return;if(confirm('Clear saved history for this tab?')){data.history[data.mode]=[];persist();renderAll()}};
   const settingsButton=$('settingsBtn');
   if(settingsButton)settingsButton.onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
   const themeButton=$('themeBtn');
   if(themeButton)themeButton.onclick=()=>alert('Dark theme is enabled.');
   window.onresize=()=>safeRenderCurrentScreen('resize');
   safeRenderCurrentScreen('init');
+  updateEditLockUI();setFormEditLock();
 }
 
 function initialRenderAfterStorageLoad(){
@@ -2049,13 +2125,13 @@ function safeRenderCurrentScreen(reason='manual'){
     migrateData();
     renderMonthPicker();
     renderPeople();
-    renderAll(true);
+    renderAll(true);setFormEditLock();
   }catch(e){
     console.warn('Safe render failed before mode refresh',reason,e);
   }
   try{
     renderMode();
-    renderAll(true);
+    renderAll(true);setFormEditLock();
   }catch(e){
     console.warn('Safe render mode refresh failed',reason,e);
   }
