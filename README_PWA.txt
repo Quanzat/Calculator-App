@@ -1,12 +1,5 @@
-Bill Split - PWA
+Bill Split
 
-This folder contains the production files for the Bill Split web app.
-
-Upload these files to the root of the GitHub Pages repository:
-- index.html
-- Bill Split.html
-- manifest.webmanifest
-- sw.js
-- icons/
-
-The app stores data locally on each device using browser storage. Use the built-in export/import tools to back up or move data between devices.
+Progressive Web App package for GitHub Pages.
+Upload the contents of this folder to the repository root.
+Open the GitHub Pages URL in Safari, then use Share -> Add to Home Screen.

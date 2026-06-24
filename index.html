@@ -79,7 +79,7 @@ body.eatoutMode .extraRow{grid-template-columns:1fr 160px 240px auto;border:1px 
 @media(max-width:1050px){body.eatoutMode .grid,.eatoutImportGrid,.eatoutAmounts,body.eatoutMode .receiptItem{grid-template-columns:1fr!important}body.eatoutMode .app{width:calc(100vw - 20px)}}
 
 
-/* Eat Out dark palette alignment: keep redesigned workflow aligned with Household visuals */
+/* Eat Out visual alignment */
 body.eatoutMode{background:radial-gradient(circle at 92% 64%,#083640 0,#071827 36%,#050b16 100%)!important;color:var(--text)!important}
 body.eatoutMode .app{width:min(1500px,calc(100vw - 44px))}
 body.eatoutMode .header,body.eatoutMode .modeTabs,body.eatoutMode .title{color:var(--text)!important}
@@ -128,7 +128,7 @@ body.eatoutMode .btn.purple{background:#0e5cf2!important}
 body.eatoutMode .eatoutHero{display:none!important}
 body.eatoutMode .eatoutReceiptCard .receiptMeta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px}
 @media(max-width:820px){body.eatoutMode .eatoutReceiptCard .receiptMeta{grid-template-columns:1fr}}
-/* Eat Out usability fixes: responsive item rows, updated receipt details, non-duplicated sidebar */
+/* Eat Out usability fixes */
 body.eatoutMode .receiptItem{grid-template-columns:minmax(220px,1.15fr) minmax(120px,.5fr) minmax(140px,.65fr) minmax(220px,1fr) 44px!important;max-width:100%;overflow:hidden}
 body.eatoutMode .receiptItem>*{min-width:0}
 body.eatoutMode .receiptItem .btn{width:42px;height:42px;padding:0;display:grid;place-items:center;justify-self:end}
@@ -188,10 +188,10 @@ body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(1
 .itemKindBadge{display:none!important}
 @media(max-width:820px){body.eatoutMode .receiptItem{grid-template-columns:1fr!important}.itemNameWrap{grid-template-columns:auto 1fr}.qtyBadge:empty{display:none!important}}
 
-/* Mobile saved-history and footer layout */
+/* Mobile saved-history footer fix */
 .historyFooter{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;clear:both}.historyFooter .note{margin:0;flex:1;min-width:0}.historyFooter #clearHistory{flex:0 0 auto;white-space:nowrap}@media(max-width:640px){.historyFooter{display:grid;grid-template-columns:1fr;align-items:stretch}.historyFooter #clearHistory{width:100%;margin-top:2px}.historyLimit{line-height:1.35}.histTable td{padding:10px 10px}.histTable td:nth-child(3){width:auto}.pill{white-space:nowrap}}
 
-/* iPhone first-load and analytics width fixes */
+/* iPhone first-load and analytics width fix */
 @media(max-width:700px){
   html,body{width:100%;max-width:100%;overflow-x:hidden}
   .app{width:100%;max-width:100%;margin:12px 0 24px;padding:0 12px;overflow-x:hidden}
@@ -391,12 +391,11 @@ const today=new Date();
 const monthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 const labelMonth=k=>{let [y,m]=String(k).split('-').map(Number);return new Date(y,m-1,1).toLocaleString(undefined,{month:'long',year:'numeric'})};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const STORE_KEY='billSplitData';
-const LEGACY_STORE_PREFIX='billSplitUniversalV';
-const OLD_KEYS=[26,25,24,23,19,18,16,15,14].map(v=>LEGACY_STORE_PREFIX+v);
+const STORE_KEY='billSplit';
+const OLD_KEYS=[26,25,24,23,19,18,16,15,14].map(v=>'billSplitUniversalV'+v);
 
 let data={
-  version:71,
+  version:72,
   mode:'household',
   selectedMonth:monthKey(today),
   people:{household:['Quan','Selena','Bayron','Deanna','William','Kim'],eatout:[],custom:[]},
@@ -462,7 +461,7 @@ function householdSnapshot(rec){
   return JSON.parse(JSON.stringify({
     month:rec.month,label:rec.label,total:rec.total,
     people:rec.people,personTotals:rec.personTotals,bills:rec.bills,
-    savedAt:new Date().toISOString(),version:26
+    savedAt:new Date().toISOString(),version:72
   }));
 }
 function billMapFromRec(rec){
@@ -516,7 +515,7 @@ function householdTemplate(){
 }
 
 function migrateData(){
-  data.version=71;
+  data.version=72;
   migratePeople();
   data.settings=data.settings||{};
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -577,7 +576,7 @@ function migrateData(){
   }
 }
 function lightMigrate(){
-  data.version=71;migratePeople();
+  data.version=72;migratePeople();
   data.settings=data.settings||{};
   data.settings.permanentBills=cleanTrash(data.settings.permanentBills||[]).map(normalizeBill);
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -745,7 +744,7 @@ function renderMode(){
   (d.extras||[]).forEach(e=>addExtra(e.name,e.amount,e,false,locked));
 
   if(data.mode==='eatout'){
-    (d.items||[]).forEach(i=>addReceiptItem(i.name,i.amount,i.people,false,locked,i.type||'standalone',i.qty||i.quantity||'1')); // Preserve Qty badge when UI re-renders
+    (d.items||[]).forEach(i=>addReceiptItem(i.name,i.amount,i.people,false,locked,i.type||'standalone',i.qty||i.quantity||'1')); // Preserve quantity badge when UI re-renders
     if($('addReceiptItem'))$('addReceiptItem').onclick=()=>addReceiptItem();
     if($('importReceipt'))$('importReceipt').onclick=()=>$('receiptFile').click();
     if($('receiptFile'))$('receiptFile').onchange=e=>{
@@ -1255,7 +1254,7 @@ function record(){
     bills.extras=(d.extras||[]).map(x=>({...x,amount:parseMoney(x.amount)}));
     bills.extras.forEach(b=>{total+=parseMoney(b.amount);applyBill(totals,b)});
   }
-  return{mode:data.mode,month:data.selectedMonth,label:labelMonth(data.selectedMonth),people:[...people()],bills,total:Math.max(total,0),personTotals:totals,savedAt:new Date().toISOString(),finalized:isFinalized(),version:26};
+  return{mode:data.mode,month:data.selectedMonth,label:labelMonth(data.selectedMonth),people:[...people()],bills,total:Math.max(total,0),personTotals:totals,savedAt:new Date().toISOString(),finalized:isFinalized(),version:72};
 }
 function billRows(rec){
   let b=rec.bills||{}, rows=[];
@@ -2261,7 +2260,7 @@ function requireEditMode(actionName='edit this data'){
 }
 
 function exportData(){
-  data.version=71;
+  data.version=72;
   let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bill_Split_History.json';a.click();URL.revokeObjectURL(a.href);
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-cache-v71';
+const CACHE_NAME = 'bill-split-v72-pwa';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,4 +33,4 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Bill Split production cache.
+// Bill Split app shell cache.
