@@ -221,6 +221,13 @@ body.viewOnly .editLockedHint{display:block}
 .editLockedHint{display:none;border:1px solid #6c4b17;background:#21170a;border-radius:10px;padding:10px 12px;color:#ffd99a;font-weight:800;margin:0 0 12px}
 body.viewOnly .btn[disabled],body.viewOnly input:disabled,body.viewOnly select:disabled{cursor:not-allowed;opacity:.55}
 @media(max-width:768px){.editStatus{width:100%;border-radius:10px}.toolbar{display:grid;grid-template-columns:1fr;gap:8px}.toolbar .monthSelect,.toolbar .iconBtn,.toolbar .editStatus{width:100%}}
+
+/* V66 mobile polish: lock/pencil header, month arrows, sticky summary, mobile analytics cards */
+.header{gap:12px}.editStatus.iconOnly{width:54px;height:54px;border-radius:999px;display:grid;place-items:center;font-size:25px;padding:0;border:1px solid #9a6a12;background:linear-gradient(180deg,#f59e0b,#a66400);color:#111827;box-shadow:0 10px 24px #0006;flex:0 0 auto}.editStatus.iconOnly.unlocked{border-color:#6df58e;background:linear-gradient(180deg,#21d760,#16aa48);color:#03130a}.topStatus{display:block;margin:0 0 10px!important;width:max-content;max-width:100%;padding:8px 12px!important;border-radius:999px!important;font-size:13px}.monthNav{display:grid;grid-template-columns:48px minmax(0,420px) 48px;gap:10px;align-items:center;margin:0 0 12px}.monthArrow{height:46px;border:1px solid var(--line);border-radius:12px;background:#0c1524;color:var(--text);font-size:30px;font-weight:900;cursor:pointer;line-height:1}.monthNav .monthSelect{width:100%;height:46px}.stickySummary{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 12px;padding:8px;border:1px solid #28405d;border-radius:14px;background:rgba(7,17,31,.94);backdrop-filter:blur(10px);box-shadow:0 12px 28px rgba(0,0,0,.28)}.stickySummary div{border:1px solid var(--line);border-radius:10px;background:#0b1423;padding:9px 10px;min-width:0}.stickySummary span{display:block;color:var(--muted);font-size:12px;font-weight:800}.stickySummary b{display:block;color:var(--green);font-size:18px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.analyticsTile,.summaryTile,.whyBox,.previousSplitMini{overflow:hidden}.analyticsTable{border-spacing:0}.mobileSectionHint{display:none}
+@media(max-width:700px){
+  .header{grid-template-columns:1fr auto!important;display:grid!important;align-items:center!important;margin-bottom:8px}.brand{gap:10px}.logo{width:48px;height:48px}.logo svg{width:38px;height:38px}.title{font-size:29px!important}.sub{font-size:14px!important}.editStatus.iconOnly{width:50px;height:50px;font-size:24px}.topStatus{margin:0 0 10px!important;font-size:12px;padding:7px 11px!important}.monthNav{grid-template-columns:44px minmax(0,1fr) 44px;margin-bottom:10px}.monthArrow{height:44px;border-radius:10px}.monthNav .monthSelect{height:44px;font-size:15px;padding-left:10px;padding-right:10px}.stickySummary{top:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:6px;margin-bottom:10px;border-radius:12px}.stickySummary div{padding:7px 6px;text-align:center}.stickySummary span{font-size:11px}.stickySummary b{font-size:15px}.modeTabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}.modeTab{font-size:13px!important;padding:12px 6px!important;min-height:48px;display:grid;place-items:center}.modeTab{white-space:normal}.card h2{font-size:20px;margin-bottom:10px}.analyticsGrid,.analyticsMiniGrid{grid-template-columns:1fr 1fr!important;gap:8px!important}.analyticsTile{padding:10px!important;min-height:76px}.analyticsTile b{font-size:19px!important}.analyticsTile .note{font-size:12px}.analyticsTable{display:block!important;overflow-x:auto!important;max-width:100%!important;border:1px solid var(--line);border-radius:10px;background:#07111f}.analyticsTable th,.analyticsTable td{font-size:12px!important;padding:8px!important;white-space:nowrap}.details{grid-template-columns:1fr!important}.histTable tr{display:grid;grid-template-columns:1fr auto;gap:6px;border-bottom:1px solid var(--line);padding:10px 0}.histTable td{border:0!important;padding:2px 0!important}.histTable td:nth-child(1){grid-column:1/-1;font-weight:900}.histTable td:nth-child(2){color:var(--green)!important;font-weight:900}.histTable td:nth-child(3){text-align:right}.historyFooter{border-top:1px solid var(--line);padding-top:10px}.output{height:220px;font-size:13px}.canvasBox{height:230px}.chartTop{display:none!important}.receiptSummary{grid-template-columns:1fr 1fr!important}.reviewActions.three,.body.eatoutMode .reviewActions.three{grid-template-columns:1fr!important}
+}
+
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#061120">
@@ -229,9 +236,12 @@ body.viewOnly .btn[disabled],body.viewOnly input:disabled,body.viewOnly select:d
 <meta name="apple-mobile-web-app-title" content="Bill Split">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 </head><body><div class="app">
-  <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><div class="toolbar"><select id="monthPicker" class="monthSelect"></select><button class="editStatus" id="editLockBtn" type="button">🔒 View Only</button><button class="iconBtn" id="settingsBtn">⚙</button></div></div>
+  <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><button class="editStatus iconOnly" id="editLockBtn" type="button" aria-label="Unlock edit mode">🔒</button></div>
+  <div id="editLockedHint" class="editLockedHint topStatus">🔒 View Only</div>
+  <div class="monthNav"><button id="monthPrev" class="monthArrow" type="button" aria-label="Previous month">‹</button><select id="monthPicker" class="monthSelect"></select><button id="monthNext" class="monthArrow" type="button" aria-label="Next month">›</button></div>
+  <div id="stickySummary" class="stickySummary"><div><span>Total</span><b id="summaryTotal">$0.00</b></div><div><span>People</span><b id="summaryPeople">0</b></div><div><span>Per Person</span><b id="summaryEach">$0.00</b></div></div>
   <div class="modeTabs"><button class="modeTab household active" data-mode="household">⌂ &nbsp; Household Bills</button><button class="modeTab eatout" data-mode="eatout">♨ &nbsp; Eat Out</button><button class="modeTab custom" data-mode="custom">▦ &nbsp; Custom</button></div>
-  <div class="grid"><div id="editLockedHint" class="editLockedHint">🔒 View Only Mode — editing is locked. Use Unlock Edit to add, remove, import, save, finalize, or change data.</div><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
+  <div class="grid"><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
   <section class="card"><h2 id="chartTitle">This Month vs Last Month</h2><div id="compareControls" class="compareControls hidden"><label>Compare</label><select id="compareA"></select><label>vs</label><select id="compareB"></select></div><div class="chartTop"><div><div id="curBig" class="bigGreen">$0.00</div><div id="curLabel">This Month</div></div><div class="delta"><div id="deltaText">No saved comparison</div><div id="deltaPct" class="num">—</div><div id="arrow" style="font-size:28px;color:var(--red)">↓</div></div><div><div id="prevBig" class="bigBlue">$0.00</div><div id="prevLabel">Last Month</div></div></div><div class="canvasBox"><canvas id="chart"></canvas></div><div class="details"><div id="currentDetail" class="detail"></div><div id="lastDetail" class="detail blueBorder"></div></div><div class="history"><h3>▣ Saved History</h3><table class="histTable"><tbody id="historyRows"></tbody></table><div class="historyFooter"><div class="note historyLimit">Saved history is kept on this device. You can save up to 24 entries per tab.</div><button id="clearHistory" class="btn red small">🗑 Clear History</button></div></div></section></div></div>
 
 <script>
@@ -2010,7 +2020,7 @@ let editUnlocked=false;
 function isEditUnlocked(){return editUnlocked===true;}
 function canUseWhileLocked(el){
   if(!el)return false;
-  if(el.id==='editLockBtn'||el.id==='settingsBtn'||el.id==='monthPicker'||el.id==='exportBtn')return true;
+  if(el.id==='editLockBtn'||el.id==='monthPicker'||el.id==='monthPrev'||el.id==='monthNext'||el.id==='exportBtn')return true;
   if(el.classList&& (el.classList.contains('modeTab')||el.classList.contains('subTab')))return true;
   return false;
 }
@@ -2018,12 +2028,13 @@ function updateEditLockUI(){
   document.body.classList.toggle('viewOnly',!isEditUnlocked());
   const btn=$('editLockBtn');
   if(btn){
-    btn.textContent=isEditUnlocked()?'🔓 Edit Mode':'🔒 View Only';
+    btn.textContent=isEditUnlocked()?'✏️':'🔒';
     btn.classList.toggle('unlocked',isEditUnlocked());
-    btn.title=isEditUnlocked()?'Tap to lock editing':'Tap to unlock editing with code';
+    btn.title=isEditUnlocked()?'Edit Mode: tap to lock':'View Only: tap to unlock';
+    btn.setAttribute('aria-label', isEditUnlocked()?'Lock editing':'Unlock editing');
   }
   const hint=$('editLockedHint');
-  if(hint)hint.style.display=isEditUnlocked()?'none':'block';
+  if(hint){hint.style.display='block';hint.textContent=isEditUnlocked()?'✏️ Edit Mode':'🔒 View Only';hint.classList.toggle('unlocked',isEditUnlocked());}
 }
 function setFormEditLock(){
   const locked=!isEditUnlocked();
@@ -2078,6 +2089,51 @@ document.addEventListener('click',function(e){
   }
 },true);
 
+function stepMonth(delta){
+  if(data.mode==='eatout')return;
+  if(data.mode!=='analytics'&&isEditUnlocked())saveDraft();
+  const parts=String(data.selectedMonth||monthKey(today)).split('-').map(Number);
+  const d=new Date(parts[0]||today.getFullYear(), (parts[1]||today.getMonth()+1)-1 + delta, 1);
+  data.selectedMonth=monthKey(d);
+  persist();renderMonthPicker();renderMode();renderAll(true);setFormEditLock();
+}
+function updateStickySummary(){
+  const box=$('stickySummary'); if(!box)return;
+  let people=(getPeople&&getPeople())||[];
+  let total=0, each=0;
+  try{
+    if(data.view==='analytics'){
+      const records=analyticsRecords();
+      const latest=records && records.length ? records[records.length-1] : null;
+      total=latest?parseMoney(latest.total):0; each=people.length?total/people.length:0;
+    }else if(data.mode==='eatout'){
+      const rec=eatOutCompute?eatOutCompute():null;
+      total=rec?parseMoney(rec.total):0;
+      each=people.length?total/people.length:0;
+    }else{
+      const cur=compareRecords?compareRecords().left:null;
+      total=cur?parseMoney(cur.total):0;
+      each=people.length?total/people.length:0;
+    }
+  }catch(e){ total=parseMoney(($('curBig')||{}).textContent||0); each=people.length?total/people.length:0; }
+  $('summaryTotal').textContent=money(total);
+  $('summaryPeople').textContent=String(people.length||0);
+  $('summaryEach').textContent=people.length?money(each):'$0.00';
+  box.style.display='grid';
+}
+const __v66RenderAll=renderAll;
+renderAll=function(skipCalc=false){
+  const result=__v66RenderAll(skipCalc);
+  try{updateStickySummary();}catch(e){}
+  return result;
+};
+const __v66RenderMode=renderMode;
+renderMode=function(){
+  const result=__v66RenderMode();
+  try{updateStickySummary();}catch(e){}
+  return result;
+};
+
 function init(){
   load();
   renderMode();
@@ -2091,12 +2147,12 @@ function init(){
   $('resetBills').onclick=resetBills;
   $('monthPicker').onchange=e=>{if(data.mode!=='analytics'&&isEditUnlocked())saveDraft();data.selectedMonth=e.target.value;persist();renderMode();renderAll(true)};
   $('editLockBtn').onclick=promptUnlockEdit;
+  if($('monthPrev'))$('monthPrev').onclick=()=>stepMonth(-1);
+  if($('monthNext'))$('monthNext').onclick=()=>stepMonth(1);
   $('exportBtn').onclick=exportData;
   $('importBtn').onclick=()=>{if(requireEditMode('import data'))$('fileInput').click()};
   $('fileInput').onchange=e=>{let f=e.target.files[0];if(f)f.text().then(importText)};
   $('clearHistory').onclick=()=>{if(!requireEditMode('clear history'))return;if(confirm('Clear saved history for this tab?')){data.history[data.mode]=[];persist();renderAll()}};
-  const settingsButton=$('settingsBtn');
-  if(settingsButton)settingsButton.onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
   const themeButton=$('themeBtn');
   if(themeButton)themeButton.onclick=()=>alert('Dark theme is enabled.');
   window.onresize=()=>safeRenderCurrentScreen('resize');
