@@ -24,3 +24,5 @@ Local Mac testing:
 Notes:
 - Offline mode works after the first successful hosted load.
 - OCR/PDF libraries may still need internet the first time if loaded from CDN.
+
+V62: Fix startup crash caused by removed dark mode button so first-load data renders immediately.

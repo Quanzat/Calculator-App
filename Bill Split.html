@@ -1992,8 +1992,10 @@ function init(){
   $('importBtn').onclick=()=>$('fileInput').click();
   $('fileInput').onchange=e=>{let f=e.target.files[0];if(f)f.text().then(importText)};
   $('clearHistory').onclick=()=>{if(confirm('Clear saved history for this tab?')){data.history[data.mode]=[];persist();renderAll()}};
-  $('settingsBtn').onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
-  $('themeBtn').onclick=()=>alert('Dark theme is enabled.');
+  const settingsButton=$('settingsBtn');
+  if(settingsButton)settingsButton.onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
+  const themeButton=$('themeBtn');
+  if(themeButton)themeButton.onclick=()=>alert('Dark theme is enabled.');
   window.onresize=()=>renderAll(true);
   initialRenderAfterStorageLoad();
 }
