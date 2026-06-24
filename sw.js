@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-v70-pwa';
+const CACHE_NAME = 'bill-split-cache-v71';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,4 +33,4 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// V70: view history works in locked mode; analytics history colors; equal tabs.
+// Bill Split production cache.
