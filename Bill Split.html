@@ -395,10 +395,11 @@ const STORE_KEY='billSplit';
 const OLD_KEYS=[26,25,24,23,19,18,16,15,14].map(v=>'billSplitUniversalV'+v);
 
 let data={
-  version:72,
+  version:73,
   mode:'household',
   selectedMonth:monthKey(today),
   people:{household:['Quan','Selena','Bayron','Deanna','William','Kim'],eatout:[],custom:[]},
+  monthPeople:{household:{},eatout:{},custom:{}},
   settings:{permanentBills:[
     {name:'Electric + Gas',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
     {name:'Water',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
@@ -425,7 +426,48 @@ const configs={
 function parseMoney(v){let n=Number(String(v||'0').replace(/[$,]/g,''));return isFinite(n)?n:0}
 function fmtInput(v){v=parseMoney(v);return v===0?'0':v.toFixed(2)}
 function moneySignedDiscount(v){v=parseMoney(v);return v===0?money(0):('-'+money(v))}
-function migratePeople(){if(Array.isArray(data.people)){let old=[...data.people];data.people={household:old,eatout:[],custom:[]}};data.people=data.people||{};['household','eatout','custom'].forEach(m=>{if(!Array.isArray(data.people[m]))data.people[m]=[]})}
+function migratePeople(){
+  if(Array.isArray(data.people)){let old=[...data.people];data.people={household:old,eatout:[],custom:[]}}
+  data.people=data.people||{};
+  ['household','eatout','custom'].forEach(m=>{if(!Array.isArray(data.people[m]))data.people[m]=[]});
+  migrateMonthlyPeople();
+}
+function previousMonthKey(k){
+  let [y,m]=String(k||monthKey(today)).split('-').map(Number);
+  let d=new Date(y||today.getFullYear(),(m||today.getMonth()+1)-2,1);
+  return monthKey(d);
+}
+function findCarryForwardPeople(mode,k){
+  let store=data.monthPeople?.[mode]||{};
+  let cur=String(k||data.selectedMonth||monthKey(today));
+  let keys=Object.keys(store).filter(x=>Array.isArray(store[x])&&store[x].length&&x<cur).sort();
+  if(keys.length)return [...store[keys[keys.length-1]]];
+  return [...(data.people?.[mode]||[])];
+}
+function ensureMonthPeople(mode=data.mode,k=data.selectedMonth){
+  mode=(mode==='analytics'?'household':mode);
+  if(!['household','eatout','custom'].includes(mode))mode='household';
+  k=String(k||monthKey(today));
+  data.monthPeople=data.monthPeople||{};
+  ['household','eatout','custom'].forEach(m=>{if(!data.monthPeople[m]||Array.isArray(data.monthPeople[m]))data.monthPeople[m]={}});
+  if(!Array.isArray(data.monthPeople[mode][k]))data.monthPeople[mode][k]=findCarryForwardPeople(mode,k);
+  return data.monthPeople[mode][k];
+}
+function migrateMonthlyPeople(){
+  data.monthPeople=data.monthPeople||{};
+  ['household','eatout','custom'].forEach(m=>{
+    if(!data.monthPeople[m]||Array.isArray(data.monthPeople[m]))data.monthPeople[m]={};
+  });
+  let k=data.selectedMonth||monthKey(today);
+  ['household','eatout','custom'].forEach(m=>{
+    if(!Array.isArray(data.monthPeople[m][k]))data.monthPeople[m][k]=[...(data.people?.[m]||[])];
+  });
+}
+function syncLegacyPeople(mode=data.mode){
+  if(mode==='analytics')return;
+  data.people=data.people||{};
+  data.people[mode]=[...ensureMonthPeople(mode,data.selectedMonth)];
+}
 function migrateAnalyticsPeople(){
   if(Array.isArray(data.analyticsPeople)){data.analyticsPeople={household:[...data.analyticsPeople],eatout:[],custom:[]}}
   data.analyticsPeople=data.analyticsPeople||{};
@@ -436,8 +478,8 @@ function analyticsPeopleForMode(mode=data.mode){
   let m=(mode==='analytics'?'household':mode);
   return data.analyticsPeople[m]||[];
 }
-function people(mode=data.mode){migratePeople();return data.people[mode]||[]}
-function setPeople(arr){migratePeople();if(data.mode!=='analytics')data.people[data.mode]=arr}
+function people(mode=data.mode){migratePeople();return ensureMonthPeople(mode,data.selectedMonth)}
+function setPeople(arr){migratePeople();if(data.mode!=='analytics'){data.monthPeople[data.mode][data.selectedMonth]=[...(arr||[])];syncLegacyPeople(data.mode)}}
 function cleanTrash(list){return (list||[]).filter(x=>String(x?.name||'').trim().toLowerCase()!=='trash')}
 function normalizeBill(b){
   return {
@@ -515,7 +557,7 @@ function householdTemplate(){
 }
 
 function migrateData(){
-  data.version=72;
+  data.version=73;
   migratePeople();
   data.settings=data.settings||{};
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -576,7 +618,7 @@ function migrateData(){
   }
 }
 function lightMigrate(){
-  data.version=72;migratePeople();
+  data.version=73;migratePeople();
   data.settings=data.settings||{};
   data.settings.permanentBills=cleanTrash(data.settings.permanentBills||[]).map(normalizeBill);
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -1619,7 +1661,9 @@ function addPerson(){if(!requireEditMode('add people'))return;
     $('nameInput').value='';persist();renderPeople();renderAll(true);
     return;
   }
-  people().push(n);$('nameInput').value='';persist();renderMode();renderAll();
+  let list=people();
+  if(!list.some(p=>p.toLowerCase()===n.toLowerCase()))list.push(n);
+  setPeople(list);$('nameInput').value='';persist();renderMode();renderAll(true);
 }
 function addAllCurrentPeopleToAnalytics(){
   let list=analyticsPeopleForMode();
@@ -1630,8 +1674,9 @@ function removeAnalyticsPerson(i){
   analyticsPeopleForMode().splice(i,1);persist();renderPeople();renderAll(true);
 }
 function removePerson(i){
-  if(isFinalized())return;
-  people().splice(i,1);persist();renderMode();renderAll();
+  if(!requireEditMode('remove people'))return;
+  if(isFinalized())return alert('This month is finalized and locked.');
+  let list=people();list.splice(i,1);setPeople(list);persist();renderMode();renderAll(true);
 }
 function renderPeople(){
   if(data.view==='analytics'){
@@ -2260,14 +2305,14 @@ function requireEditMode(actionName='edit this data'){
 }
 
 function exportData(){
-  data.version=72;
+  data.version=73;
   let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bill_Split_History.json';a.click();URL.revokeObjectURL(a.href);
 }
 function importText(txt){if(!requireEditMode('import data'))return;
   try{let obj=JSON.parse(txt);data=Object.assign(data,obj);migrateData();persist();renderMode();renderAll();alert('Imported.')}catch(e){alert('Could not import JSON.')}
 }
-function setMode(m){saveDraft();data.mode=m;data.view='calculator';persist();renderMode();renderAll()}
+function setMode(m){saveDraft();data.mode=m;data.view='calculator';ensureMonthPeople(data.mode,data.selectedMonth);syncLegacyPeople(data.mode);persist();renderMode();renderAll(true)}
 
 document.addEventListener('click',function(e){
   if(isEditUnlocked())return;
@@ -2283,6 +2328,7 @@ function stepMonth(delta){
   const parts=String(data.selectedMonth||monthKey(today)).split('-').map(Number);
   const d=new Date(parts[0]||today.getFullYear(), (parts[1]||today.getMonth()+1)-1 + delta, 1);
   data.selectedMonth=monthKey(d);
+  ensureMonthPeople(data.mode,data.selectedMonth);syncLegacyPeople(data.mode);
   persist();renderMonthPicker();renderMode();renderAll(true);setFormEditLock();
 }
 function updateStickySummary(){
@@ -2329,12 +2375,12 @@ function init(){
   document.querySelectorAll('.modeTab').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
   $('addPerson').onclick=addPerson;
   $('nameInput').onkeydown=e=>{if(e.key==='Enter'){addPerson();e.preventDefault()}};
-  $('clearPeople').onclick=()=>{if(!requireEditMode('clear people'))return;if(data.view==='analytics'){let list=analyticsPeopleForMode();list.splice(0,list.length);persist();renderPeople();renderAll(true);return;}if(isFinalized())return alert('This month is finalized and locked.');setPeople([]);persist();renderMode();renderAll()};
+  $('clearPeople').onclick=()=>{if(!requireEditMode('clear people'))return;if(data.view==='analytics'){let list=analyticsPeopleForMode();list.splice(0,list.length);persist();renderPeople();renderAll(true);return;}if(isFinalized())return alert('This month is finalized and locked.');setPeople([]);persist();renderMode();renderAll(true)};
   $('calc').onclick=()=>calculate(true);
   $('saveMonth').onclick=saveMonth;
   $('finalizeMonth').onclick=finalizeMonth;
   $('resetBills').onclick=resetBills;
-  $('monthPicker').onchange=e=>{if(data.mode!=='analytics'&&isEditUnlocked())saveDraft();data.selectedMonth=e.target.value;persist();renderMonthPicker();renderMode();renderAll(true);setFormEditLock();};
+  $('monthPicker').onchange=e=>{if(data.mode!=='analytics'&&isEditUnlocked())saveDraft();data.selectedMonth=e.target.value;ensureMonthPeople(data.mode,data.selectedMonth);syncLegacyPeople(data.mode);persist();renderMonthPicker();renderMode();renderAll(true);setFormEditLock();};
   $('editLockBtn').onclick=promptUnlockEdit;
   if($('monthPrev'))$('monthPrev').onclick=()=>stepMonth(-1);
   if($('monthNext'))$('monthNext').onclick=()=>stepMonth(1);
