@@ -308,6 +308,17 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom));}
   .histAmount{font-size:19px!important;}
 }
 
+
+/* V69: view allowed while locked, analytics history colors, equal tab width */
+.modeTabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;gap:10px!important;}
+.modeTab{width:100%!important;height:72px!important;min-height:72px!important;max-width:none!important;box-sizing:border-box!important;flex:1 1 0!important;}
+.modeTab.household,.modeTab.eatout,.modeTab.custom{min-width:0!important;}
+.histTable tr.hist-current,.histTable tr.hist-selected,.histTable tr.hist-finalized{border-color:var(--line)!important;}
+@media(max-width:700px){
+  .modeTabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;}
+  .modeTab{height:72px!important;min-height:72px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+}
+
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#061120">
@@ -1694,7 +1705,7 @@ function renderHistory(){
     let trend=data.mode!=='eatout'?historyTrendHTML(records,idx):'';
     let meta=[...badges,trend].filter(Boolean).join('');
     let cls=[isCurrent?'hist-current':'',isSelected?'hist-selected':'',finalized?'hist-finalized':''].filter(Boolean).join(' ');
-    let action=(data.mode!=='eatout'&&isSelected)?'<span class="pill">Selected</span>':`<button class="btn small" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`;
+    let action=(data.mode!=='eatout'&&isSelected)?'<span class="pill">Selected</span>':`<button class="btn small historyViewBtn" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`;
     return `<tr class="${cls}"><td><div class="histTitle">${esc(title)}${finalized?' ✓':''}</div>${meta?`<div class="histMeta">${meta}</div>`:''}</td><td class="histAmount ${isCurrent?'current':''} ${isSelected?'selected':''}">${money(m.total)}</td><td>${action}</td></tr>`;
   }).join('');
   $('historyRows').innerHTML=rows||'<tr><td colspan="3" class="note">No saved history for this tab yet.</td></tr>';
@@ -2066,6 +2077,31 @@ function renderEatOutDashboard(skipCalc=false){
   if(!skipCalc)calculate(false);
 }
 
+
+function historyRowsHTML(records, options={}){
+  const mode=options.mode||data.mode;
+  const showActions=options.showActions!==false;
+  const sorted=[...(records||[])].sort((a,b)=>String(b.receiptId||b.savedAt||b.month).localeCompare(String(a.receiptId||a.savedAt||a.month)));
+  return sorted.map((m,idx)=>{
+    let title=mode==='eatout'?(m.bills?.eventName||'Receipt')+(m.savedAt?' — '+new Date(m.savedAt).toLocaleString():''):labelMonth(m.month);
+    let isCurrent=mode!=='eatout'&&m.month===monthKey(today);
+    let isSelected=mode!=='eatout'&&m.month===data.selectedMonth;
+    let finalized=!!m.finalized;
+    let badges=[];
+    if(isCurrent)badges.push('<span class="histBadge current">Current</span>');
+    if(isSelected&&!isCurrent)badges.push('<span class="histBadge viewing">Viewing</span>');
+    if(finalized)badges.push('<span class="histBadge finalized">🔒 Finalized</span>');
+    let trend=mode!=='eatout'?historyTrendHTML(sorted,idx):'';
+    let meta=[...badges,trend].filter(Boolean).join('');
+    let cls=[isCurrent?'hist-current':'',isSelected?'hist-selected':'',finalized?'hist-finalized':''].filter(Boolean).join(' ');
+    let action='';
+    if(showActions){
+      action=(mode!=='eatout'&&isSelected)?'<span class="pill">Selected</span>':`<button class="btn small historyViewBtn" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`;
+    }
+    return `<tr class="${cls}"><td><div class="histTitle">${esc(title)}${finalized?' ✓':''}</div>${meta?`<div class="histMeta">${meta}</div>`:''}</td><td class="histAmount ${isCurrent?'current':''} ${isSelected?'selected':''}">${money(m.total)}</td><td>${action}</td></tr>`;
+  }).join('');
+}
+
 function renderAll(skipCalc=false){
   renderMonthPicker();renderPeople();
   if(data.view==='analytics'){
@@ -2080,7 +2116,7 @@ function renderAll(skipCalc=false){
       $('currentDetail').innerHTML=ranked.length?`<div class="detailHead"><span style="color:var(--green)">Person Totals</span><span>${ranked.length} people</span></div><table>${ranked.map(p=>`<tr><td>${esc(p.name)} (${p.items} item${p.items===1?'':'s'})</td><td>${money(p.total)}</td></tr>`).join('')}</table>`:'<div class="hint">Add people and assign items to show person totals.</div>';
       let items=(rec.bills?.items||[]).filter(i=>i.type!=='included').sort((a,b)=>parseMoney(b.amount)-parseMoney(a.amount)).slice(0,5);
       $('lastDetail').innerHTML=items.length?`<div class="detailHead"><span style="color:var(--blue)">Largest Item Drivers</span><span>Top ${items.length}</span></div><table>${items.map(i=>`<tr><td>${esc(receiptItemLabel(i))}</td><td>${money(i.amount)}</td></tr>`).join('')}</table>`:'<div class="hint">Priced receipt items will appear here.</div>';
-      $('historyRows').innerHTML=history().slice().reverse().slice(0,8).map(r=>`<tr><td>${esc(r.bills?.eventName||'Receipt')}<div class="note">${r.savedAt?new Date(r.savedAt).toLocaleString():''}</div></td><td>${money(r.total)}</td><td></td></tr>`).join('')||'<tr><td colspan="3" class="note">Save Eat Out splits to build receipt history.</td></tr>';
+      $('historyRows').innerHTML=historyRowsHTML(history().slice(0,8),{mode:'eatout',showActions:true})||'<tr><td colspan="3" class="note">Save Eat Out splits to build receipt history.</td></tr>';
       return;
     }
     let records=analyticsRecords(), s=analyticsSummary(records), names=selectedAnalyticsPeople(), pstats=analyticsPersonStats(records,names);
@@ -2098,7 +2134,7 @@ function renderAll(skipCalc=false){
     $('currentDetail').innerHTML=records.length?(names.length?`<div class="detailHead"><span style="color:var(--green)">Individual Payment Trend</span><span>${names.length} selected</span></div><table>${pstats.map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.latest)} latest / ${money(p.avg)} avg</td></tr>`).join('')}</table>`:`<div class="detailHead"><span style="color:var(--green)">Trend Summary</span><span>${records.length} months</span></div><table><tr><td>Average</td><td>${money(s.avg)}</td></tr><tr><td>Highest</td><td>${money(s.hi.total)} — ${labelMonth(s.hi.month)}</td></tr><tr><td>Lowest</td><td>${money(s.lo.total)} — ${labelMonth(s.lo.month)}</td></tr><tr><td>Typical swing</td><td>${money(s.std)}</td></tr></table>`):'<div class="hint">Save entries in this tab to build analytics.</div>';
     let stats=billStats(records).slice(0,5);
     $('lastDetail').innerHTML=stats.length?`<div class="detailHead"><span style="color:var(--blue)">Top Bill Movers</span><span>First → Latest</span></div><table>${stats.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.change>=0?'+':''}${money(x.change)}</td></tr>`).join('')}</table>`:'<div class="hint">Bill movement appears after saved months include bill detail.</div>';
-    $('historyRows').innerHTML=records.slice().reverse().map(r=>`<tr><td>${labelMonth(r.month)}${r.finalized?' ✓':''}</td><td>${money(r.total)}</td><td></td></tr>`).join('')||'<tr><td colspan="3" class="note">Analytics uses saved history from this tab.</td></tr>';
+    $('historyRows').innerHTML=historyRowsHTML(records,{mode:data.mode,showActions:true})||'<tr><td colspan="3" class="note">Analytics uses saved history from this tab.</td></tr>';
     return;
   }
   if(data.mode==='eatout'){renderEatOutDashboard(skipCalc);return;}
@@ -2126,6 +2162,10 @@ function canUseWhileLocked(el){
   if(!el)return false;
   if(el.id==='editLockBtn'||el.id==='monthPicker'||el.id==='monthPrev'||el.id==='monthNext'||el.id==='exportBtn')return true;
   if(el.classList&& (el.classList.contains('modeTab')||el.classList.contains('subTab')))return true;
+  const on=(el.getAttribute&&String(el.getAttribute('onclick')||''))||'';
+  if(on.includes('viewMonth('))return true;
+  if(el.classList&&el.classList.contains('historyViewBtn'))return true;
+  if(el.closest&&el.closest('.histTable')&&on.includes('viewMonth('))return true;
   return false;
 }
 function updateEditLockUI(){
