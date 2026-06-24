@@ -412,7 +412,13 @@ function migrateData(){
   if(!data.monthDrafts.eatout[cur]) data.monthDrafts.eatout[cur]={extras:[],items:[],subtotal:0,tax:0,tip:0,discount:0,eventName:'',orderNote:'',splitMode:'itemized'};
   if(!data.monthDrafts.custom[cur]) data.monthDrafts.custom[cur]={extras:[]};
 
-  data.selectedMonth=cur;
+  // Preserve the month chosen by the user. Earlier mobile startup recovery forced
+  // the app back to the current month every time migrateData() ran, which made
+  // the month dropdown jump back to June after selecting another month. Only
+  // default to the current month when the saved/selected value is missing or invalid.
+  if(!/^\d{4}-\d{2}$/.test(String(data.selectedMonth||''))){
+    data.selectedMonth=cur;
+  }
 }
 function lightMigrate(){
   data.version=26;migratePeople();
