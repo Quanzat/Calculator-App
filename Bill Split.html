@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bill Split</title>
+<style>
+:root{--bg:#061120;--panel:#111b2bdd;--line:#2a3951;--text:#eef5ff;--muted:#aab5c7;--green:#22c55e;--blue:#2196f3;--red:#ff5b57;--orange:#f59e0b;--purple:#8b5cf6;--input:#07111f;--chip:#182338}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(circle at 92% 64%,#083640 0,#071827 36%,#050b16 100%)}.app{width:min(1830px,calc(100vw - 44px));margin:18px auto 28px}.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.brand{display:flex;gap:14px;align-items:center}.logo{width:58px;height:58px;border-radius:14px;background:radial-gradient(circle at 30% 20%,#6df58e,#23a85c 40%,#12365d 100%);display:grid;place-items:center;box-shadow:0 12px 30px #0008;position:relative}.logo svg{width:45px;height:45px;filter:drop-shadow(0 4px 8px #0009)}.title{font-size:34px;font-weight:900;line-height:1}.sub{color:var(--muted);font-size:16px;margin-top:4px}.toolbar{display:flex;gap:12px;align-items:center}.monthSelect,.iconBtn{background:#0c1524;border:1px solid var(--line);border-radius:9px;color:var(--text);padding:12px 16px;font-weight:800;font-size:16px}.iconBtn{width:52px;padding:12px}.modeTabs{display:grid;grid-template-columns:repeat(3,260px);gap:0;margin:10px 0 12px}.modeTab{border:1px solid var(--line);background:linear-gradient(180deg,#121d2d,#0e1726);color:var(--text);padding:17px;font-weight:900;font-size:17px;cursor:pointer}.modeTab:first-child{border-radius:8px 0 0 8px}.modeTab:last-child{border-radius:0 8px 8px 0}.modeTab.active.household{color:var(--green);border-bottom:3px solid var(--green)}.modeTab.active.eatout{color:var(--orange);border-bottom:3px solid var(--orange)}.modeTab.active.custom{color:var(--purple);border-bottom:3px solid var(--purple)}.modeTab.active.analytics{color:var(--blue);border-bottom:3px solid var(--blue)}.subTabs{grid-column:1/-1;display:flex;gap:10px;margin:0 0 14px}.subTab{border:1px solid var(--line);border-radius:999px;background:#0c1524;color:var(--text);padding:10px 16px;font-weight:900;cursor:pointer}.subTab.active{background:#0e5cf2;border-color:#2b7cff;color:#fff}.grid{display:grid;grid-template-columns:1.01fr 1.13fr;gap:18px}.card{background:linear-gradient(180deg,#131e30df,#101a2add);border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 50px #0008;padding:20px}.card h2{margin:0 0 12px;font-size:23px}.row{display:flex;gap:12px}.grow{flex:1}.textin{width:100%;background:var(--input);border:1px solid var(--line);border-radius:8px;color:var(--text);outline:0;padding:12px 14px;font-size:16px}.textin:focus,.money:focus-within{border-color:#1d74ff}.btn{border:0;border-radius:8px;color:#fff;font-weight:850;font-size:15px;padding:12px 19px;cursor:pointer;background:#263246}.btn.blue{background:#0e5cf2}.btn.green{background:linear-gradient(180deg,#21d760,#16aa48);color:#03130a}.btn.red{background:#352638;color:#ff6863}.btn.orange{background:#a66400}.btn.purple{background:#6633cc}.btn.small{padding:8px 12px;font-size:13px}.hint,.note{color:var(--muted);font-size:14px}.chips{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.chip{display:flex;align-items:center;gap:9px;background:var(--chip);border:1px solid #35445d;border-radius:999px;padding:9px 12px;font-weight:850}.chip button{width:20px;height:20px;border:0;border-radius:50%;color:white;background:#4a5a72;cursor:pointer;font-weight:900}.peopleList{height:172px;background:#07111f;border:1px solid var(--line);border-radius:8px;overflow:auto;padding:14px 16px;line-height:1.55}.personLine{padding:2px 0;cursor:pointer}.personLine.sel{background:#17345a}.divider{height:1px;background:var(--line);margin:18px 0}.billsGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 22px}.field{margin:8px 0 12px}.field label{display:flex;align-items:center;gap:5px;color:var(--text);font-size:16px;margin-bottom:7px;font-weight:800}.money{display:flex;align-items:center;background:var(--input);border:1px solid var(--line);border-radius:8px;overflow:hidden}.money.locked{background:#253246;opacity:.78}.money.locked input{cursor:not-allowed}.lockedNote{font-size:12px;color:var(--muted);margin-top:4px}.finalizedBanner{border:1px solid var(--orange);background:#2d220d;border-radius:8px;padding:10px;margin:10px 0;color:#ffd99a;font-weight:800}.analyticsBox{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:14px;background:#0b1423}.analyticsGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.analyticsTile{border:1px solid var(--line);border-radius:10px;padding:12px;background:#07111f}.analyticsTile b{font-size:24px;color:var(--green)}.analyticsTable{width:100%;border-collapse:collapse;margin-top:12px}.compareControls{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:10px 0 2px}.compareControls select{background:#0c1524;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;font-weight:800}.compareControls label{color:var(--muted);font-size:13px;font-weight:800}.analyticsTable th,.analyticsTable td{border-bottom:1px solid var(--line);padding:9px;text-align:left}.analyticsTable td:last-child,.analyticsTable th:last-child{text-align:right}.insightList{margin:10px 0 0;padding-left:18px;color:#dce6f3}.insightList li{margin:7px 0}.analyticsMiniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.impactBar{height:12px;border-radius:999px;background:#1d2a3d;overflow:hidden;min-width:120px}.impactFill{height:100%;border-radius:999px;background:linear-gradient(90deg,#1d74ff,#22c55e)}.impactFill.down{background:linear-gradient(90deg,#ff5b57,#f59e0b)}.whyBox{border:1px solid var(--line);border-radius:10px;background:#07111f;padding:12px;margin-top:10px}.whyBox b{color:#eaf2ff}.whyTitle{font-weight:900;margin-bottom:6px}.whySmall{color:var(--muted);font-size:13px}.metricUp{color:var(--red);font-weight:900}.metricDown{color:var(--green);font-weight:900}.metricFlat{color:var(--muted);font-weight:900}@media(max-width:1100px){.analyticsGrid,.analyticsMiniGrid{grid-template-columns:1fr}}.money span{padding:10px 12px;border-right:1px solid var(--line);color:#d8e7ff}.money input{width:100%;background:transparent;border:0;color:var(--text);outline:0;padding:11px 12px;font-size:16px}.fixed{opacity:.86;background:#253246}.info{color:#30a6ff;font-size:13px;margin-left:4px}.extraRow{display:grid;grid-template-columns:1.1fr .55fr .9fr auto;gap:8px;margin-bottom:8px;align-items:start}.receiptBox{grid-column:1/-1;border:1px solid var(--line);border-radius:10px;padding:14px;margin:6px 0 10px;background:#0b1423}.receiptToolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}.receiptItem{display:grid;grid-template-columns:1.1fr .55fr 2fr auto;gap:8px;align-items:start;margin:8px 0}.payerChecks{display:flex;gap:8px;flex-wrap:wrap}.payerChecks label{font-size:13px!important;font-weight:600!important;color:var(--muted)!important;margin:0!important}.payerChecks input{margin-right:4px}.payerChecks .allPayers{color:#eaf2ff!important;font-weight:900!important;border-right:1px solid var(--line);padding-right:8px;margin-right:2px!important}.receiptNote{font-size:13px;color:var(--muted);margin-top:8px}.eatoutHero{grid-column:1/-1;border:1px solid #6c4b17;background:linear-gradient(180deg,#22180b,#15101a);border-radius:12px;padding:14px}.eatoutHero h3{margin:0 0 6px;font-size:20px;color:#ffd99a}.receiptMeta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.receiptSummary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.summaryTile{border:1px solid var(--line);border-radius:10px;background:#07111f;padding:10px}.summaryTile label{font-size:12px!important;color:var(--muted)!important;margin:0 0 4px!important}.summaryTile b{font-size:20px}.receiptItem{grid-template-columns:1.05fr .48fr .64fr 1.5fr auto}.itemType{font-size:13px!important;padding:10px!important}.comboTools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.receiptWarn{border:1px solid var(--orange);background:#2b210e;color:#ffe2aa;border-radius:8px;padding:9px;margin:8px 0;font-size:13px}.unallocatedBad{color:#ff958f;font-weight:900}.includedText{color:var(--muted);font-size:12px;margin-top:4px}.actions{display:grid;grid-template-columns:1fr 1fr .9fr 1fr;gap:14px;margin:18px 0 16px}.outputWrap{position:relative}.output{height:342px;width:100%;resize:vertical;background:#050d19;border:1px solid var(--line);border-radius:10px;color:white;padding:16px;font:15px Menlo,Consolas,monospace;white-space:pre-wrap;overflow:auto}.copyBadge{position:absolute;right:16px;top:14px;border:1px solid #51617a;border-radius:8px;padding:9px 14px;background:#0b1321;color:var(--green);font-weight:800}.chartTop{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;text-align:center;margin-top:4px}.bigGreen{font-size:32px;color:var(--green);font-weight:900}.bigBlue{font-size:32px;color:var(--blue);font-weight:900}.delta .num{color:var(--red);font-weight:900;margin-top:4px}.canvasBox{height:300px;margin:14px 0}.details{display:grid;grid-template-columns:1fr 1fr;gap:18px}.detail{border:1px solid var(--green);border-radius:8px;padding:15px}.detail.blueBorder{border-color:#1c7ae8}.detailHead{display:flex;justify-content:space-between;font-size:17px;font-weight:850;margin-bottom:18px}.detail table{width:100%;border-collapse:collapse}.detail th{color:#d2d9e8;text-align:left;font-weight:500;border-bottom:1px solid var(--line);padding-bottom:9px}.detail th:last-child,.detail td:last-child{text-align:right}.detail td{border-bottom:1px solid #28364d;padding:7px 0}.totalLine{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin-top:14px}.history h3{margin:22px 0 10px;font-size:18px}.histTable{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}.histTable td{padding:10px 14px;border-bottom:1px solid var(--line)}.histTable tr:last-child td{border-bottom:0}.histTable td:nth-child(2){text-align:right;font-weight:800}.histTable td:nth-child(3){text-align:right;width:80px}.storage{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}.pill{display:inline-block;border-radius:6px;background:#0e76ee;padding:4px 8px;font-weight:800;font-size:12px}.categoryHelp{font-size:13px;color:var(--muted);margin-top:-4px;margin-bottom:10px}.hidden{display:none}@media (max-width:1100px){.grid,.details,.billsGrid,.extraRow,.permRow,.receiptItem{grid-template-columns:1fr!important}.modeTabs{grid-template-columns:1fr}.modeTab{border-radius:8px!important}.actions{grid-template-columns:1fr}.app{width:calc(100vw - 20px)}}
+
+/* Eat Out redesign: one-time receipt workflow, no monthly comparison UI */
+body.eatoutMode{background:#f6f8fc;color:#0f172a}
+body.eatoutMode .app{width:min(1500px,calc(100vw - 44px))}
+body.eatoutMode .header,body.eatoutMode .modeTabs{color:#0f172a}
+body.eatoutMode .title,body.eatoutMode .sub{color:#0f172a}
+body.eatoutMode .modeTab{background:#fff;color:#334155;border-color:#e2e8f0}
+body.eatoutMode .modeTab.active.eatout{color:#6d28d9;border-bottom-color:#7c3aed}
+body:not(.eatoutMode) #eatoutSummaryPanel{display:none}
+body.eatoutMode .grid{grid-template-columns:minmax(760px,1fr) 430px;align-items:start}
+body.eatoutMode .card{background:#fff;border:1px solid #e2e8f0;box-shadow:0 12px 30px rgba(15,23,42,.08);color:#0f172a}
+body.eatoutMode .textin,body.eatoutMode .money{background:#fff;border-color:#dbe3ef;color:#0f172a}
+body.eatoutMode .money input{color:#0f172a}
+body.eatoutMode .hint,body.eatoutMode .note,body.eatoutMode .categoryHelp,body.eatoutMode .receiptNote{color:#64748b}
+body.eatoutMode .divider{display:none}
+body.eatoutMode #billTitle,body.eatoutMode #billHelp{display:none}
+body.eatoutMode .billsGrid{display:block}
+body.eatoutMode .actions{grid-template-columns:1fr 1fr;gap:12px}
+body.eatoutMode #calc{display:none}
+body.eatoutMode #finalizeMonth{display:none!important}
+body.eatoutMode .outputWrap,body.eatoutMode .storage{display:none}
+body.eatoutMode #compareControls,body.eatoutMode .chartTop,body.eatoutMode .canvasBox,body.eatoutMode .details,body.eatoutMode .history{display:none}
+body.eatoutMode .chip{background:#f3f0ff;border-color:#ddd6fe;color:#312e81}
+body.eatoutMode .chip button{background:#7c3aed}
+body.eatoutMode .eatoutHero{border:0;background:transparent;padding:0;margin-bottom:20px}
+body.eatoutMode .eatoutHero h3{color:#0f172a;font-size:32px;margin-bottom:6px}
+body.eatoutMode .eatoutHero .hint{font-size:16px}
+body.eatoutMode .receiptMeta{grid-template-columns:1.3fr 1fr;margin-top:16px}
+.eatoutImportGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0 20px}
+.eatoutDrop{border:1.5px dashed #cbd5e1;border-radius:16px;background:#f8fafc;min-height:172px;display:grid;place-items:center;text-align:center;padding:22px}
+.eatoutDropIcon{width:66px;height:66px;border-radius:50%;background:#ede9fe;color:#7c3aed;display:grid;place-items:center;font-size:30px;margin:0 auto 12px}
+.eatoutReceiptCard{border:1px solid #e2e8f0;border-radius:16px;padding:18px;background:#fff}
+.eatoutReceiptCard .ok{display:inline-block;background:#dcfce7;color:#15803d;border-radius:999px;padding:4px 10px;font-weight:800;font-size:12px;margin-bottom:12px}
+body.eatoutMode .receiptBox{border:1px solid #e2e8f0;background:#fff;border-radius:16px;padding:20px;margin:20px 0}
+body.eatoutMode .receiptToolbar{justify-content:space-between;align-items:center}
+body.eatoutMode .comboTools{justify-content:flex-end}
+body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1fr) 150px 170px minmax(220px,1fr) 46px;gap:12px;align-items:center;border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#f8fafc}
+body.eatoutMode .receiptItem .itemName{font-weight:800;background:#fff}
+body.eatoutMode .receiptItem .itemType{background:#fff;color:#0f172a;border-color:#dbe3ef}
+body.eatoutMode .receiptItem .payerChecks{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:9px;min-height:44px}
+body.eatoutMode .payerChecks label{color:#334155!important;font-weight:750!important}
+body.eatoutMode .receiptSummary{grid-template-columns:repeat(4,1fr);margin-top:14px}
+body.eatoutMode .summaryTile{background:#f8fafc;border-color:#e2e8f0;color:#0f172a}
+body.eatoutMode .receiptWarn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.eatoutAmounts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+body.eatoutMode .field{margin:0}
+body.eatoutMode .field label{color:#0f172a}
+body.eatoutMode .extraRow{grid-template-columns:1fr 160px 240px auto;border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#f8fafc}
+.eatoutSidePanel{display:grid;gap:16px}
+.eatoutSideCard{border:1px solid #e2e8f0;border-radius:16px;padding:20px;background:#fff}
+.eatoutSideCard h3{margin:0 0 12px;font-size:20px}
+.eatoutTotal{font-size:34px;font-weight:950;color:#10b981;text-align:right}
+.eatoutLine{display:flex;justify-content:space-between;border-bottom:1px solid #eef2f7;padding:10px 0;color:#334155}
+.eatoutLine b{color:#0f172a}
+.eatoutPerson{display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:10px 0;background:#f8fafc}
+.eatoutAvatar{width:34px;height:34px;border-radius:50%;background:#7c3aed;color:#fff;display:inline-grid;place-items:center;font-weight:900;margin-right:10px}
+.eatoutComboNotice{border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;border-radius:14px;padding:14px;line-height:1.35}
+.eatoutSaved table{width:100%;border-collapse:collapse}.eatoutSaved td{padding:9px 0;border-bottom:1px solid #eef2f7}.eatoutSaved td:last-child{text-align:right;font-weight:800}
+@media(max-width:1050px){body.eatoutMode .grid,.eatoutImportGrid,.eatoutAmounts,body.eatoutMode .receiptItem{grid-template-columns:1fr!important}body.eatoutMode .app{width:calc(100vw - 20px)}}
+
+
+/* V34 Eat Out dark palette alignment: keep redesigned workflow, match Household visual system */
+body.eatoutMode{background:radial-gradient(circle at 92% 64%,#083640 0,#071827 36%,#050b16 100%)!important;color:var(--text)!important}
+body.eatoutMode .app{width:min(1500px,calc(100vw - 44px))}
+body.eatoutMode .header,body.eatoutMode .modeTabs,body.eatoutMode .title{color:var(--text)!important}
+body.eatoutMode .sub{color:var(--muted)!important}
+body.eatoutMode .modeTab{background:linear-gradient(180deg,#121d2d,#0e1726)!important;color:var(--text)!important;border-color:var(--line)!important}
+body.eatoutMode .modeTab.active.eatout{color:var(--orange)!important;border-bottom-color:var(--orange)!important}
+body.eatoutMode .grid{grid-template-columns:minmax(760px,1fr) 430px;align-items:start}
+body.eatoutMode .card,body.eatoutMode .eatoutSideCard,body.eatoutMode .eatoutReceiptCard,body.eatoutMode .receiptBox{background:linear-gradient(180deg,#131e30df,#101a2add)!important;border:1px solid var(--line)!important;box-shadow:0 20px 50px #0008!important;color:var(--text)!important}
+body.eatoutMode .textin,body.eatoutMode .money,body.eatoutMode .receiptItem .itemName,body.eatoutMode .receiptItem .itemType{background:var(--input)!important;border-color:var(--line)!important;color:var(--text)!important}
+body.eatoutMode .money input{color:var(--text)!important}
+body.eatoutMode .hint,body.eatoutMode .note,body.eatoutMode .categoryHelp,body.eatoutMode .receiptNote{color:var(--muted)!important}
+body.eatoutMode .divider{display:none}
+body.eatoutMode #billTitle,body.eatoutMode #billHelp{display:none}
+body.eatoutMode .billsGrid{display:block}
+body.eatoutMode .actions{grid-template-columns:1fr 1fr;gap:12px}
+body.eatoutMode #calc{display:none}
+body.eatoutMode #finalizeMonth{display:none!important}
+body.eatoutMode .outputWrap,body.eatoutMode .storage{display:none}
+body.eatoutMode #compareControls,body.eatoutMode .chartTop,body.eatoutMode .canvasBox,body.eatoutMode .details,body.eatoutMode .history{display:none}
+body.eatoutMode .chip{background:var(--chip)!important;border-color:#35445d!important;color:var(--text)!important}
+body.eatoutMode .chip button{background:#4a5a72!important}
+body.eatoutMode .eatoutHero{border:1px solid #6c4b17!important;background:linear-gradient(180deg,#22180b,#15101a)!important;border-radius:12px!important;padding:16px!important;margin-bottom:20px}
+body.eatoutMode .eatoutHero h3{color:#ffd99a!important;font-size:28px;margin-bottom:6px}
+body.eatoutMode .receiptMeta{grid-template-columns:1.3fr 1fr;margin-top:14px}
+body.eatoutMode .eatoutDrop{border:1.5px dashed #4a5a72!important;background:#07111f!important;color:var(--text)!important}
+body.eatoutMode .eatoutDropIcon{background:#2d220d!important;color:var(--orange)!important}
+body.eatoutMode .eatoutReceiptCard .ok{background:#123f28!important;color:#5cf08d!important}
+body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1fr) 150px 170px minmax(220px,1fr) 46px;gap:12px;align-items:center;border:1px solid var(--line)!important;border-radius:12px;padding:12px;background:#0b1423!important}
+body.eatoutMode .receiptItem .payerChecks{background:#07111f!important;border:1px solid var(--line)!important;border-radius:10px;padding:9px;min-height:44px}
+body.eatoutMode .payerChecks label{color:var(--muted)!important;font-weight:750!important}
+body.eatoutMode .summaryTile{background:#07111f!important;border-color:var(--line)!important;color:var(--text)!important}
+body.eatoutMode .receiptWarn{background:#2b210e!important;color:#ffe2aa!important;border-color:var(--orange)!important}
+body.eatoutMode .field label{color:var(--text)!important}
+body.eatoutMode .extraRow{border:1px solid var(--line)!important;border-radius:12px;padding:12px;background:#0b1423!important}
+body.eatoutMode .eatoutTotal{color:var(--green)!important}
+body.eatoutMode .eatoutLine{border-bottom:1px solid var(--line)!important;color:var(--muted)!important}
+body.eatoutMode .eatoutLine b{color:var(--text)!important}
+body.eatoutMode .eatoutPerson{border:1px solid var(--line)!important;background:#07111f!important;color:var(--text)!important}
+body.eatoutMode .eatoutAvatar{background:#0e5cf2!important;color:#fff!important}
+body.eatoutMode .eatoutComboNotice{border:1px solid #1f7a3a!important;background:#0d2c1d!important;color:#b6f5c8!important}
+body.eatoutMode .eatoutSaved{display:none!important}
+body.eatoutMode .btn.purple{background:#0e5cf2!important}
+@media(max-width:1050px){body.eatoutMode .grid,.eatoutImportGrid,.eatoutAmounts{grid-template-columns:1fr!important}body.eatoutMode .app{width:calc(100vw - 20px)}}
+
+/* V37 Eat Out cleanup: no orange instruction banner; receipt import replaces rows and blocks duplicates */
+body.eatoutMode .eatoutHero{display:none!important}
+body.eatoutMode .eatoutReceiptCard .receiptMeta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px}
+@media(max-width:820px){body.eatoutMode .eatoutReceiptCard .receiptMeta{grid-template-columns:1fr}}
+/* V36 Eat Out usability fixes: responsive item rows, updated receipt details, non-duplicated sidebar */
+body.eatoutMode .receiptItem{grid-template-columns:minmax(220px,1.15fr) minmax(120px,.5fr) minmax(140px,.65fr) minmax(220px,1fr) 44px!important;max-width:100%;overflow:hidden}
+body.eatoutMode .receiptItem>*{min-width:0}
+body.eatoutMode .receiptItem .btn{width:42px;height:42px;padding:0;display:grid;place-items:center;justify-self:end}
+body.eatoutMode .receiptItem .itemName{overflow:hidden;text-overflow:ellipsis}
+body.eatoutMode .receiptItem .money input{min-width:0}
+body.eatoutMode .eatoutSidePanel{position:sticky;top:12px}
+body.eatoutMode .eatoutSideCard h3{color:var(--text)!important}
+body.eatoutMode .eatoutReviewBox{width:100%;min-height:260px;resize:vertical;background:var(--input);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:12px;font:13px Menlo,Consolas,monospace;line-height:1.45;white-space:pre-wrap}
+body.eatoutMode .reviewActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:1180px){body.eatoutMode .grid{grid-template-columns:1fr!important}body.eatoutMode .eatoutSidePanel{position:static}}
+@media(max-width:820px){body.eatoutMode .receiptItem{grid-template-columns:1fr 130px!important;align-items:start}body.eatoutMode .receiptItem .itemType,body.eatoutMode .receiptItem .payerChecks{grid-column:1/-1}body.eatoutMode .receiptItem .btn{grid-column:2;grid-row:1;align-self:start}}
+
+/* V39 Eat Out message tabs + previous split memory */
+body.eatoutMode .messageTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 10px}
+body.eatoutMode .messageTabs button{padding:9px 8px;border-radius:8px;border:1px solid var(--line);background:#263246;color:var(--text);font-weight:850;cursor:pointer;font-size:12px}
+body.eatoutMode .messageTabs button.active{background:#0e5cf2;border-color:#2f7dff;color:#fff}
+body.eatoutMode .previousSplitCard .prevTotal{font-size:26px;color:var(--blue);font-weight:900;text-align:right}
+body.eatoutMode .previousSplitCard table{width:100%;border-collapse:collapse;margin-top:10px}
+body.eatoutMode .previousSplitCard td{border-bottom:1px solid var(--line);padding:7px 0}
+body.eatoutMode .previousSplitCard td:last-child{text-align:right;font-weight:900}
+body.eatoutMode .prevMeta{color:var(--muted);font-size:12px;margin-top:2px;line-height:1.35}
+body.eatoutMode .reviewActions.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:500px){body.eatoutMode .messageTabs{grid-template-columns:1fr}body.eatoutMode .reviewActions.three{grid-template-columns:1fr}}
+
+
+/* V40 Eat Out polish */
+body.eatoutMode .summaryTile{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-height:54px!important;padding:12px 14px!important;overflow:hidden!important}
+body.eatoutMode .summaryTile label{display:block!important;white-space:nowrap!important;flex:0 0 auto!important;margin:0!important;line-height:1.1!important}
+body.eatoutMode .summaryTile b{display:block!important;text-align:right!important;white-space:nowrap!important;line-height:1.1!important;font-size:19px!important;min-width:max-content!important}
+body.eatoutMode .previousSplitActions{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:14px}
+body.eatoutMode .previousSplitActions .btn{width:100%;padding:10px 12px}
+body.eatoutMode .previousSplitList{display:grid;gap:12px;margin-top:12px}
+body.eatoutMode .previousSplitMini{border:1px solid var(--line);border-radius:12px;background:#07111f;padding:12px}
+body.eatoutMode .previousSplitMiniHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+body.eatoutMode .previousSplitMiniTitle{font-weight:900;color:#eaf2ff;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.eatoutMode .previousSplitPager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;color:var(--muted);font-size:13px}
+body.eatoutMode .previousSplitPager .btn{padding:8px 10px}
+@media(max-width:900px){body.eatoutMode .receiptSummary{grid-template-columns:1fr 1fr!important}body.eatoutMode .previousSplitActions{grid-template-columns:1fr}}
+body.eatoutMode .splitMethodBox{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin:10px 0}
+body.eatoutMode .splitMethodBox .splitModeBtn{border:1px solid var(--line)!important;background:#263246!important;color:var(--text)!important;opacity:.82;transition:filter .12s ease,box-shadow .12s ease,opacity .12s ease}
+body.eatoutMode .splitMethodBox .splitModeBtn.active{opacity:1;font-weight:950!important}
+body.eatoutMode .splitMethodBox .splitModeBtn.even.active{background:linear-gradient(180deg,#21d760,#16aa48)!important;color:#03130a!important;border-color:#6df58e!important;box-shadow:0 0 0 2px rgba(34,197,94,.24),0 8px 20px rgba(0,0,0,.35)!important}
+body.eatoutMode .splitMethodBox .splitModeBtn.itemized.active{background:linear-gradient(180deg,#f59e0b,#d97706)!important;color:#111827!important;border-color:#ffd18a!important;box-shadow:0 0 0 2px rgba(245,158,11,.22),0 8px 20px rgba(0,0,0,.35)!important}
+body.eatoutMode .splitMethodBox .splitModeBtn.active::before{content:'✓ ';font-weight:900}
+body.eatoutMode .splitMethodHelp{color:var(--muted);font-size:13px;text-align:right;margin-top:-4px}
+
+.itemKindBadge{display:flex;align-items:center;justify-content:center;border:1px solid #263957;background:#0b1424;color:#cbd5e1;border-radius:8px;font-size:13px;font-weight:800;min-height:42px;padding:0 12px}
+.itemNameWrap{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;min-width:0}
+.qtyBadge{border:1px solid #31445f;background:#152134;color:#c8d5e8;border-radius:8px;padding:11px 10px;font-size:13px;font-weight:900;white-space:nowrap;min-height:42px;display:flex;align-items:center}
+@media(max-width:820px){.itemNameWrap{grid-template-columns:1fr}.qtyBadge{width:max-content;padding:7px 9px;min-height:auto}}
+body.eatoutMode .comboTools{justify-content:flex-end}
+
+/* V44 Eat Out qty/name cleanup */
+body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(130px,.55fr) minmax(220px,1fr) 44px!important}
+.itemNameWrap{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;min-width:0}
+.qtyBadge:empty{display:none!important}
+.itemKindBadge{display:none!important}
+@media(max-width:820px){body.eatoutMode .receiptItem{grid-template-columns:1fr!important}.itemNameWrap{grid-template-columns:auto 1fr}.qtyBadge:empty{display:none!important}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#061120">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bill Split">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+</head><body><div class="app">
+  <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><div class="toolbar"><select id="monthPicker" class="monthSelect"></select><button class="iconBtn" id="settingsBtn">⚙</button><button class="iconBtn" id="themeBtn">☾</button></div></div>
+  <div class="modeTabs"><button class="modeTab household active" data-mode="household">⌂ &nbsp; Household Bills</button><button class="modeTab eatout" data-mode="eatout">♨ &nbsp; Eat Out</button><button class="modeTab custom" data-mode="custom">▦ &nbsp; Custom</button></div>
+  <div class="grid"><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
+  <section class="card"><h2 id="chartTitle">This Month vs Last Month</h2><div id="compareControls" class="compareControls hidden"><label>Compare</label><select id="compareA"></select><label>vs</label><select id="compareB"></select></div><div class="chartTop"><div><div id="curBig" class="bigGreen">$0.00</div><div id="curLabel">This Month</div></div><div class="delta"><div id="deltaText">No saved comparison</div><div id="deltaPct" class="num">—</div><div id="arrow" style="font-size:28px;color:var(--red)">↓</div></div><div><div id="prevBig" class="bigBlue">$0.00</div><div id="prevLabel">Last Month</div></div></div><div class="canvasBox"><canvas id="chart"></canvas></div><div class="details"><div id="currentDetail" class="detail"></div><div id="lastDetail" class="detail blueBorder"></div></div><div class="history"><h3>▣ Saved History</h3><table class="histTable"><tbody id="historyRows"></tbody></table><div class="note" style="margin-top:12px">You can save up to 24 entries per tab.</div><button id="clearHistory" class="btn red small" style="float:right;margin-top:-26px">🗑 Clear History</button></div></section></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+const cents=n=>Math.round((Number(n)||0)*100);
+const fromCents=c=>(Number(c)||0)/100;
+const ceilToCents=n=>fromCents(Math.ceil(((Number(n)||0)*100)-1e-9));
+const roundToCents=n=>fromCents(cents(n));
+const today=new Date();
+const monthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+const labelMonth=k=>{let [y,m]=String(k).split('-').map(Number);return new Date(y,m-1,1).toLocaleString(undefined,{month:'long',year:'numeric'})};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const STORE_KEY='billSplitUniversalV26';
+const OLD_KEYS=['billSplitUniversalV25','billSplitUniversalV24','billSplitUniversalV23','billSplitUniversalV19','billSplitUniversalV18','billSplitUniversalV16','billSplitUniversalV15','billSplitUniversalV14'];
+
+let data={
+  version:26,
+  mode:'household',
+  selectedMonth:monthKey(today),
+  people:{household:['Quan','Selena','Bayron','Deanna','William','Kim'],eatout:[],custom:[]},
+  settings:{permanentBills:[
+    {name:'Electric + Gas',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
+    {name:'Water',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
+    {name:'Internet (Fixed)',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]}
+  ]},
+  history:{household:[],eatout:[],custom:[]},
+  drafts:{household:{},eatout:{},custom:{}},
+  monthDrafts:{household:{},eatout:{},custom:{}},
+  finalized:{household:{},eatout:{},custom:{}},
+  snapshots:{household:{}},
+  edited:{household:{}},
+  analyticsPeople:{household:[],eatout:[],custom:[]},
+  workingMemory:{eatoutLastSplit:null,eatoutPreviousPage:0},
+  view:'calculator'
+};
+
+const configs={
+  household:{title:'▣ Bills',help:'Permanent bills are saved as your monthly template. Fixed monthly locks the user-entered amount. Extra bills are one-time for the selected month.',accent:'green',calcTitle:'Household Bill Split'},
+  eatout:{title:'🍴 Receipt Split',help:'One-time restaurant receipt splitter. Import OCR/PDF, review detected items, enter missing prices, then assign items to people.',accent:'orange',calcTitle:'Receipt Split'},
+  custom:{title:'▦ Custom Split',help:'Create any bill list, choose how each bill is split, then calculate.',accent:'purple',calcTitle:'Custom Bill Split'},
+  analytics:{title:'📊 Analytics Dashboard',help:'Review saved Household history and finalized months.',accent:'blue',calcTitle:'Analytics'}
+};
+
+function parseMoney(v){let n=Number(String(v||'0').replace(/[$,]/g,''));return isFinite(n)?n:0}
+function fmtInput(v){v=parseMoney(v);return v===0?'0':v.toFixed(2)}
+function moneySignedDiscount(v){v=parseMoney(v);return v===0?money(0):('-'+money(v))}
+function migratePeople(){if(Array.isArray(data.people)){let old=[...data.people];data.people={household:old,eatout:[],custom:[]}};data.people=data.people||{};['household','eatout','custom'].forEach(m=>{if(!Array.isArray(data.people[m]))data.people[m]=[]})}
+function migrateAnalyticsPeople(){
+  if(Array.isArray(data.analyticsPeople)){data.analyticsPeople={household:[...data.analyticsPeople],eatout:[],custom:[]}}
+  data.analyticsPeople=data.analyticsPeople||{};
+  ['household','eatout','custom'].forEach(m=>{if(!Array.isArray(data.analyticsPeople[m]))data.analyticsPeople[m]=[]});
+}
+function analyticsPeopleForMode(mode=data.mode){
+  migrateAnalyticsPeople();
+  let m=(mode==='analytics'?'household':mode);
+  return data.analyticsPeople[m]||[];
+}
+function people(mode=data.mode){migratePeople();return data.people[mode]||[]}
+function setPeople(arr){migratePeople();if(data.mode!=='analytics')data.people[data.mode]=arr}
+function cleanTrash(list){return (list||[]).filter(x=>String(x?.name||'').trim().toLowerCase()!=='trash')}
+function normalizeBill(b){
+  return {
+    name:String(b?.name||'Bill'),
+    amount:parseMoney(b?.amount),
+    fixed:!!b?.fixed,
+    fixedAmount:parseMoney(b?.fixedAmount ?? (b?.fixed ? b?.amount : 0)),
+    split:b?.split||'equal',
+    payer:b?.payer||'',
+    people:Array.isArray(b?.people)?b.people:[]
+  }
+}
+function isFinalized(mode=data.mode,month=data.selectedMonth){return !!(data.finalized&&data.finalized[mode]&&data.finalized[mode][month])}
+
+function waterCoverage(month=data.selectedMonth){
+  let [y,m]=String(month).split('-').map(Number);
+  let a=new Date(y,m-3,1), b=new Date(y,m-2,1);
+  return a.toLocaleString(undefined,{month:'long'})+' and '+b.toLocaleString(undefined,{month:'long'});
+}
+function householdSnapshot(rec){
+  return JSON.parse(JSON.stringify({
+    month:rec.month,label:rec.label,total:rec.total,
+    people:rec.people,personTotals:rec.personTotals,bills:rec.bills,
+    savedAt:new Date().toISOString(),version:26
+  }));
+}
+function billMapFromRec(rec){
+  let map={};
+  ((rec&&rec.bills&&rec.bills.permanentBills)||[]).forEach(b=>map['Permanent: '+b.name]=parseMoney(b.amount));
+  ((rec&&rec.bills&&rec.bills.extras)||[]).forEach(b=>map['Extra: '+b.name]=parseMoney(b.amount));
+  return map;
+}
+function editChangesForCurrent(){
+  if(data.mode!=='household')return [];
+  let snap=data.snapshots?.household?.[data.selectedMonth];
+  if(!snap)return [];
+  let rec=record(), oldMap=billMapFromRec(snap), newMap=billMapFromRec(rec);
+  let keys=[...new Set([...Object.keys(oldMap),...Object.keys(newMap)])].sort();
+  return keys.filter(k=>Math.abs((oldMap[k]||0)-(newMap[k]||0))>.004)
+    .map(k=>({name:k.replace(/^Permanent: /,'').replace(/^Extra: /,''),
+      oldAmount:oldMap[k]||0,newAmount:newMap[k]||0}));
+}
+function hasEditedChanges(){
+  return editChangesForCurrent().length>0;
+}
+function copyReadyHtml(text){
+  let safe=esc(text);
+  safe=safe.replace(/(\$-?\d[\d,]*(?:\.\d{2})?|-?\$?\d[\d,]*(?:\.\d{2})? difference due to rounding)/g, '<b><u>$1</u></b>');
+  safe=safe.replace(/^(⚠ EDITED AFTER FINALIZATION|EDIT CHANGE:.+)$/gm,'<mark><b>$1</b></mark>');
+  return '<div style="font-family:Arial,sans-serif;white-space:pre-wrap">'+safe+'</div>';
+}
+async function copyMessage(text){
+  let html=copyReadyHtml(text);
+  try{
+    if(navigator.clipboard&&window.ClipboardItem){
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/plain':new Blob([text],{type:'text/plain'}),
+        'text/html':new Blob([html],{type:'text/html'})
+      })]);
+    }else if(navigator.clipboard){
+      await navigator.clipboard.writeText(text);
+    }
+    showCopied();
+  }catch(e){
+    try{await navigator.clipboard.writeText(text);showCopied();}catch(_){}
+  }
+}
+
+
+function householdTemplate(){
+  return cleanTrash(data.settings.permanentBills||[]).map(b=>{
+    b=normalizeBill(b);
+    return {...b, amount:b.fixed ? parseMoney(b.fixedAmount) : 0};
+  });
+}
+
+function migrateData(){
+  data.version=26;
+  migratePeople();
+  data.settings=data.settings||{};
+  data.history=data.history||{household:[],eatout:[],custom:[]};
+  data.drafts=data.drafts||{household:{},eatout:{},custom:{}};
+  data.monthDrafts=data.monthDrafts||{household:{},eatout:{},custom:{}};
+  data.finalized=data.finalized||{household:{},eatout:{},custom:{}};
+  data.snapshots=data.snapshots||{household:{}};
+  data.edited=data.edited||{household:{}};
+  migrateAnalyticsPeople();
+  data.workingMemory=data.workingMemory||{};
+  if(!Object.prototype.hasOwnProperty.call(data.workingMemory,'eatoutLastSplit'))data.workingMemory.eatoutLastSplit=null;
+  if(!Object.prototype.hasOwnProperty.call(data.workingMemory,'eatoutPreviousPage'))data.workingMemory.eatoutPreviousPage=0;
+  if(!data.eatoutMessageMode)data.eatoutMessageMode='payment';
+  if(!data.view)data.view='calculator';
+  if(data.mode==='analytics')data.mode='household';
+  data.snapshots.household=data.snapshots.household||{};
+  data.edited.household=data.edited.household||{};
+
+  ['household','eatout','custom'].forEach(m=>{
+    if(!Array.isArray(data.history[m]))data.history[m]=[];
+    if(!data.monthDrafts[m])data.monthDrafts[m]={};
+    if(!data.finalized[m])data.finalized[m]={};
+  });
+
+  if(!Array.isArray(data.settings.permanentBills)){
+    data.settings.permanentBills=[
+      {name:'Electric + Gas',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
+      {name:'Water',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},
+      {name:'Internet (Fixed)',fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]}
+    ];
+  }
+  data.settings.permanentBills=cleanTrash(data.settings.permanentBills).map(normalizeBill);
+
+  let cur=monthKey(new Date());
+
+  ['household','eatout','custom'].forEach(m=>{
+    if(!data.monthDrafts[m][data.selectedMonth]){
+      let old=data.drafts[m]||{};
+      if(m==='household'){
+        let pb=Array.isArray(old.permanentBills)&&old.permanentBills.length?old.permanentBills.map(normalizeBill):householdTemplate();
+        data.monthDrafts[m][data.selectedMonth]={permanentBills:cleanTrash(pb),extras:cleanTrash(old.extras||[])};
+      }else{
+        data.monthDrafts[m][data.selectedMonth]=JSON.parse(JSON.stringify(old||{}));
+      }
+    }
+  });
+
+  if(!data.monthDrafts.household[cur]) data.monthDrafts.household[cur]={permanentBills:householdTemplate(),extras:[]};
+  if(!data.monthDrafts.eatout[cur]) data.monthDrafts.eatout[cur]={extras:[],items:[],subtotal:0,tax:0,tip:0,discount:0,eventName:'',orderNote:'',splitMode:'itemized'};
+  if(!data.monthDrafts.custom[cur]) data.monthDrafts.custom[cur]={extras:[]};
+
+  data.selectedMonth=cur;
+}
+function lightMigrate(){
+  data.version=26;migratePeople();
+  data.settings=data.settings||{};
+  data.settings.permanentBills=cleanTrash(data.settings.permanentBills||[]).map(normalizeBill);
+  data.history=data.history||{household:[],eatout:[],custom:[]};
+  data.monthDrafts=data.monthDrafts||{household:{},eatout:{},custom:{}};
+  data.finalized=data.finalized||{household:{},eatout:{},custom:{}};
+  data.snapshots=data.snapshots||{household:{}};
+  data.edited=data.edited||{household:{}};
+  migrateAnalyticsPeople();
+  data.workingMemory=data.workingMemory||{};
+  if(!Object.prototype.hasOwnProperty.call(data.workingMemory,'eatoutLastSplit'))data.workingMemory.eatoutLastSplit=null;
+  if(!Object.prototype.hasOwnProperty.call(data.workingMemory,'eatoutPreviousPage'))data.workingMemory.eatoutPreviousPage=0;
+  if(!data.eatoutMessageMode)data.eatoutMessageMode='payment';
+  if(!data.view)data.view='calculator';
+  if(data.mode==='analytics')data.mode='household';
+  data.snapshots.household=data.snapshots.household||{};
+  data.edited.household=data.edited.household||{};
+  ['household','eatout','custom'].forEach(m=>{
+    if(!Array.isArray(data.history[m]))data.history[m]=[];
+    if(!data.monthDrafts[m])data.monthDrafts[m]={};
+    if(!data.finalized[m])data.finalized[m]={};
+  });
+}
+function load(){
+  try{
+    let s=localStorage.getItem(STORE_KEY);
+    if(!s)for(let k of OLD_KEYS){s=localStorage.getItem(k);if(s)break}
+    if(s)data=Object.assign(data,JSON.parse(s));
+  }catch(e){}
+  migrateData();
+  persist();
+}
+function persist(){lightMigrate();localStorage.setItem(STORE_KEY,JSON.stringify(data))}
+function currentDraft(){
+  data.monthDrafts[data.mode]=data.monthDrafts[data.mode]||{};
+  if(!data.monthDrafts[data.mode][data.selectedMonth]){
+    if(data.mode==='household')data.monthDrafts[data.mode][data.selectedMonth]={permanentBills:householdTemplate(),extras:[]};
+    else if(data.mode==='eatout')data.monthDrafts[data.mode][data.selectedMonth]={extras:[],items:[],subtotal:0,tax:0,tip:0,discount:0,eventName:'',orderNote:'',splitMode:'itemized'};
+    else data.monthDrafts[data.mode][data.selectedMonth]={extras:[]};
+  }
+  if(data.mode==='eatout' && !data.monthDrafts[data.mode][data.selectedMonth].splitMode)data.monthDrafts[data.mode][data.selectedMonth].splitMode='itemized';
+  return data.monthDrafts[data.mode][data.selectedMonth];
+}
+function history(){data.history=data.history||{};return data.history[data.mode]||(data.history[data.mode]=[])}
+function tabName(){return data.mode==='household'?'Household Bills':data.mode==='eatout'?'Eat Out':'Custom'}
+function billButtonColor(){let a=configs[data.mode].accent;return a==='orange'?'orange':a==='purple'?'purple':'blue'}
+
+function saveHouseholdChoices(){
+  let rows=[...document.querySelectorAll('.permRow')];
+  if(!rows.length)return;
+  data.settings.permanentBills=rows.map(r=>{
+    let fixed=r.querySelector('.permFixed').checked;
+    let amount=parseMoney(r.querySelector('.permAmount').value);
+    return {
+      name:r.querySelector('.permName').value.trim()||'Bill',
+      fixed,
+      fixedAmount:fixed?amount:0,
+      split:r.querySelector('.splitMode').value,
+      payer:r.querySelector('.payerSel')?.value||'',
+      people:[...r.querySelectorAll('.sharePerson:checked')].map(x=>x.value),
+      amount:0
+    }
+  });
+}
+
+function splitControls(obj={},context=''){
+  let mode=obj.split||'equal',isHouse=context==='household';
+  let equalSel=mode!=='paid'&&mode!=='selected';
+  return `<select class="textin splitMode" title="Split type">
+    <option value="equal" ${equalSel?'selected':''}>Split equally</option>
+    <option value="selected" ${mode==='selected'?'selected':''}>Custom people</option>
+    <option value="paid" ${mode==='paid'?'selected':''}>Paid by one person</option>
+  </select>
+  <select class="textin payerSel ${isHouse?'houseOnly':''}" title="Person" style="margin-top:6px;${isHouse&&mode!=='paid'?'display:none':''}">
+    <option value="">Select person</option>${people().map(p=>`<option value="${esc(p)}" ${obj.payer===p?'selected':''}>${esc(p)}</option>`).join('')}
+  </select>
+  <div class="payerChecks ${isHouse?'houseOnly':''}" style="margin-top:6px;${isHouse&&mode!=='selected'?'display:none':''}">
+    ${people().map(p=>`<label><input type="checkbox" class="sharePerson" value="${esc(p)}" ${(obj.people||[]).includes(p)?'checked':''}>${esc(p)}</label>`).join('')||'<span class="note">Add people first.</span>'}
+  </div>`;
+}
+function updateSplitUI(root){
+  let mode=root.querySelector('.splitMode')?.value||'equal',payer=root.querySelector('.payerSel'),checks=root.querySelector('.payerChecks');
+  if(!payer||!checks)return;
+  if(data.mode==='household'){
+    payer.style.display=mode==='paid'?'':'none';
+    checks.style.display=mode==='selected'?'':'none';
+  }
+}
+function bindSplitControls(){
+  document.querySelectorAll('.permRow,.extraRow').forEach(r=>{
+    updateSplitUI(r);
+    let s=r.querySelector('.splitMode');
+    if(s&&!s.dataset.bound){
+      s.dataset.bound='1';
+      s.addEventListener('change',()=>{updateSplitUI(r);saveDraft();renderAll(false)});
+    }
+  });
+}
+function bindMoneyFocus(el){
+  if(el.dataset.boundMoney)return;
+  el.dataset.boundMoney='1';
+  el.addEventListener('focus',()=>{if(['0','0.0','0.00'].includes(el.value.trim()))el.value=''});
+  el.addEventListener('blur',()=>{el.value=el.value.trim()===''?'0':fmtInput(el.value);saveDraft();renderAll(false)});
+  el.addEventListener('input',()=>{saveDraft();renderAll(false)});
+}
+
+
+function subViewTabsHTML(){
+  return `<div class="subTabs"><button class="subTab ${data.view!=='analytics'?'active':''}" onclick="setView('calculator')">Calculator</button><button class="subTab ${data.view==='analytics'?'active':''}" onclick="setView('analytics')">Analytics</button></div>`;
+}
+function setView(v){
+  saveDraft();
+  data.view=v==='analytics'?'analytics':'calculator';
+  persist();renderMode();renderAll(true);
+}
+function renderMode(){
+  document.querySelectorAll('.modeTab').forEach(b=>b.classList.toggle('active',b.dataset.mode===data.mode));
+  document.body.classList.toggle('eatoutMode',data.mode==='eatout');
+  if(data.mode==='analytics')data.mode='household';
+  if($('monthPicker'))$('monthPicker').style.display=data.mode==='eatout'?'none':'';
+  let c=configs[data.mode];
+  $('billTitle').textContent=c.title;
+  $('billHelp').textContent=c.help;
+  $('chartTitle').textContent=data.view==='analytics'?(tabName()+' Analytics'):(data.mode==='household'?'Selected Month Comparison':(data.mode==='eatout'?'Bill Summary':'Current Split vs Last Saved')); 
+  if($('saveMonth'))$('saveMonth').textContent=data.mode==='eatout'?'▣ Save Receipt':'▣ Save Month';
+  if($('resetBills'))$('resetBills').textContent=data.mode==='eatout'?'↻ New Receipt':'↻ Reset Current Month';
+  if($('finalizeMonth'))$('finalizeMonth').style.display=data.mode==='eatout'?'none':'';
+
+  let fields=$('fields');
+  fields.innerHTML=subViewTabsHTML();
+
+  if(data.view==='analytics'){
+    renderAnalyticsMode();
+    return;
+  }
+
+  let d=currentDraft();
+  let locked=isFinalized();
+
+  if(locked){
+    fields.insertAdjacentHTML('beforeend',`<div class="finalizedBanner" style="grid-column:1/-1">✓ ${labelMonth(data.selectedMonth)} is finalized and locked. Use the Unlock Month button if a correction is needed.</div>`);
+  }
+
+  if(data.mode==='household'){
+    if(!Array.isArray(d.permanentBills)||!d.permanentBills.length)d.permanentBills=householdTemplate();
+    fields.insertAdjacentHTML('beforeend',`<div class="field" style="grid-column:1/-1"><label>Permanent Bills</label><div id="permanentBills"></div><button id="addPermanent" class="btn blue small" ${locked?'disabled':''}>＋ Add Permanent Bill</button></div>`);
+    d.permanentBills.forEach(b=>addPermanentBill(b,false,locked));
+  }
+
+  if(data.mode==='eatout'){
+    fields.insertAdjacentHTML('beforeend',`<div class="eatoutImportGrid"><div class="eatoutDrop"><div><div class="eatoutDropIcon">📄</div><b>Import receipt</b><div class="receiptNote">Upload JPG, PNG, screenshot, PDF, TXT, CSV, or JSON.</div><button id="importReceipt" class="btn orange" style="margin-top:14px" ${locked?'disabled':''}>Choose Receipt / OCR</button><input id="receiptFile" type="file" accept=".txt,.csv,.json,.pdf,text/plain,text/csv,application/json,application/pdf,image/*" class="hidden"></div></div><div class="eatoutReceiptCard"><span class="ok">Receipt details</span><div class="receiptMeta"><input data-key="eventName" class="textin" placeholder="Restaurant or receipt name" value="${esc(d.eventName||'')}" ${locked?'disabled':''}><input data-key="orderNote" class="textin" placeholder="Optional note / order number" value="${esc(d.orderNote||'')}" ${locked?'disabled':''}></div><div class="eatoutLine"><span>Subtotal</span><b>${money(d.subtotal)}</b></div><div class="eatoutLine"><span>Tax & Fees</span><b>${money(d.tax)}</b></div><div class="eatoutLine"><span>Total</span><b>${money(parseMoney(d.subtotal)+parseMoney(d.tax)+parseMoney(d.tip)-parseMoney(d.discount))}</b></div></div></div><div class="receiptBox"><div class="receiptToolbar"><div><h2 style="margin:0">Items</h2><div class="receiptNote">Import replaces the current item list. Re-uploading the same receipt is blocked to prevent duplicate rows.</div></div><button id="addReceiptItem" class="btn blue small" ${locked?'disabled':''}>＋ Add Item</button></div><div class="splitMethodBox"><button id="splitEven" type="button" aria-pressed="${d.splitMode==='even'?'true':'false'}" class="btn small splitModeBtn even ${d.splitMode==='even'?'active':''}" ${locked?'disabled':''}>Divide Bill Evenly</button><button id="splitItemized" type="button" aria-pressed="${d.splitMode!=='even'?'true':'false'}" class="btn small splitModeBtn itemized ${d.splitMode!=='even'?'active':''}" ${locked?'disabled':''}>Itemized Split</button></div><div class="splitMethodHelp">Even split divides the full bill across everyone. Itemized split charges only the people checked on each item; unchecked people stay at $0 unless they are checked on another item.</div><div id="receiptImportStatus" class="receiptNote hidden"></div><div id="receiptItems"></div><div id="receiptSummary" class="receiptNote"></div></div><div class="eatoutAmounts"><div class="field"><label>Subtotal</label><div class="money"><span>$</span><input data-key="subtotal" value="${fmtInput(d.subtotal)}" inputmode="decimal" ${locked?'disabled':''}></div></div><div class="field"><label>Tax & Fees</label><div class="money"><span>$</span><input data-key="tax" value="${fmtInput(d.tax)}" inputmode="decimal" ${locked?'disabled':''}></div></div><div class="field"><label>Tip</label><div class="money"><span>$</span><input data-key="tip" value="${fmtInput(d.tip)}" inputmode="decimal" ${locked?'disabled':''}></div></div><div class="field"><label>Discount</label><div class="money"><span>$</span><input data-key="discount" value="${fmtInput(d.discount)}" inputmode="decimal" ${locked?'disabled':''}></div></div></div>`);
+  }
+
+  fields.insertAdjacentHTML('beforeend',`<div class="field" style="grid-column:1/-1"><label>${data.mode==='custom'?'Bills':'Extra Bills'} ${data.mode!=='custom'?'<span class="note">(One-time)</span>':''}</label><div id="extras"></div><button id="addExtra" class="btn ${billButtonColor()} small" ${locked?'disabled':''}>＋ Add Bill</button></div>`);
+
+  (d.extras||[]).forEach(e=>addExtra(e.name,e.amount,e,false,locked));
+
+  if(data.mode==='eatout'){
+    (d.items||[]).forEach(i=>addReceiptItem(i.name,i.amount,i.people,false,locked,i.type||'standalone',i.qty||i.quantity||'1')); // V46 keep Qty badge when UI re-renders
+    if($('addReceiptItem'))$('addReceiptItem').onclick=()=>addReceiptItem();
+    if($('importReceipt'))$('importReceipt').onclick=()=>$('receiptFile').click();
+    if($('receiptFile'))$('receiptFile').onchange=e=>{
+      let f=e.target.files[0];if(!f)return;
+      importReceiptFile(f).finally(()=>{e.target.value=''});
+    };
+    if($('splitEven'))$('splitEven').onclick=()=>setEatOutSplitMode('even');
+    if($('splitItemized'))$('splitItemized').onclick=()=>setEatOutSplitMode('itemized');
+    updateReceiptSummary();
+  }
+
+  let ap=$('addPermanent');if(ap)ap.onclick=()=>addPermanentBill();
+  let ae=$('addExtra');if(ae)ae.onclick=()=>addExtra();
+  document.querySelectorAll('[data-key]:not([data-key="eventName"]):not([data-key="orderNote"]),.permAmount,.extraAmount,.itemAmount').forEach(bindMoneyFocus);
+  document.querySelectorAll('[data-key="eventName"],[data-key="orderNote"]').forEach(el=>{if(!el.dataset.boundText){el.dataset.boundText='1';el.addEventListener('input',saveDraft)}});
+  bindSplitControls();
+  lockInputsIfNeeded();
+}
+function lockInputsIfNeeded(){
+  let locked=isFinalized();
+  if(locked){
+    document.querySelectorAll('#fields input,#fields select,#fields button:not(.subTab)').forEach(el=>el.disabled=true);
+  }
+}
+
+function addPermanentBill(b={name:'',amount:0,fixed:false,fixedAmount:0,split:'equal',payer:'',people:[]},rerender=true,locked=false){
+  let box=$('permanentBills');if(!box)return;
+  b=normalizeBill(b);
+  let isFixed=!!b.fixed;
+  let shownAmount=isFixed?parseMoney(b.fixedAmount||b.amount):parseMoney(b.amount);
+  box.insertAdjacentHTML('beforeend',`<div class="permRow" style="display:grid;grid-template-columns:1.1fr .55fr .9fr auto;gap:8px;margin-bottom:8px;align-items:start">
+    <input class="textin permName" placeholder="Bill name" value="${esc(b.name)}" ${locked?'disabled':''}>
+    <div><div class="money ${isFixed?'locked':''}"><span>$</span><input class="permAmount" value="${fmtInput(shownAmount)}" inputmode="decimal" ${isFixed||locked?'disabled':''}></div>${isFixed?'<div class="lockedNote">Fixed amount locked from user input.</div>':''}</div>
+    <div>${splitControls(b,'household')}</div>
+    <button class="btn small" onclick="this.closest('.permRow').remove();saveDraft();renderAll(false)" ${locked||isFixed?'disabled':''}>🗑</button>
+    <label class="note" style="grid-column:1/-1"><input type="checkbox" class="permFixed" ${isFixed?'checked':''} ${locked?'disabled':''}> Fixed monthly bill</label>
+  </div>`);
+  let row=box.lastElementChild;
+  row.querySelector('.permFixed').addEventListener('change',()=>{
+    let cb=row.querySelector('.permFixed'), amt=row.querySelector('.permAmount'), wrap=row.querySelector('.money');
+    amt.disabled=cb.checked;
+    wrap.classList.toggle('locked',cb.checked);
+    saveDraft();renderMode();renderAll(false);
+  });
+  if(rerender){saveDraft();renderAll(false)}
+}
+function addExtra(name='',amount=0,obj={},rerender=true,locked=false){
+  let box=$('extras');if(!box)return;
+  if(typeof name==='object'){obj=name;name=obj.name||'';amount=obj.amount||0}
+  box.insertAdjacentHTML('beforeend',`<div class="extraRow"><input class="textin extraName" placeholder="Bill name" value="${esc(name)}" ${locked?'disabled':''}><div class="money"><span>$</span><input class="extraAmount" value="${fmtInput(amount)}" inputmode="decimal" ${locked?'disabled':''}></div><div>${splitControls(obj,data.mode==='household'?'household':'')}</div><button class="btn small" onclick="this.closest('.extraRow').remove();saveDraft();renderAll(false)" ${locked?'disabled':''}>🗑</button></div>`);
+  if(rerender){document.querySelectorAll('.extraAmount').forEach(bindMoneyFocus);saveDraft();renderAll(false)}
+}
+function payerCheckboxes(selected=[]){
+  let ps=people();
+  if(!ps.length)return '<span class="note">Add people first.</span>';
+  let allChecked=ps.every(p=>selected.includes(p));
+  let all=`<label class="allPayers"><input type="checkbox" class="payerAll" ${allChecked?'checked':''}>All</label>`;
+  let boxes=ps.map(p=>`<label><input type="checkbox" class="payer" value="${esc(p)}" ${selected.includes(p)?'checked':''}>${esc(p)}</label>`).join('');
+  return all+boxes;
+} 
+function bindPayerAllControls(row){
+  let all=row.querySelector('.payerAll');
+  let payers=[...row.querySelectorAll('.payer')];
+  if(!all)return;
+  all.addEventListener('change',()=>{
+    payers.forEach(p=>p.checked=all.checked);
+    saveDraft();updateReceiptSummary();renderAll(false);
+  });
+  payers.forEach(p=>p.addEventListener('change',()=>{
+    all.checked=payers.length>0 && payers.every(x=>x.checked);
+    saveDraft();updateReceiptSummary();renderAll(false);
+  }));
+}
+
+function normalizeReceiptDisplayName(name,qty){
+  let raw=String(name||'').trim().replace(/#\s+(\d+)/,'#$1').replace(/\s{2,}/g,' ');
+  let q=qty||'';
+
+  // OCR can read a combo line like "1  #1 Urban Combo" as "1 1 Urban Combo".
+  // Treat the first number as quantity and the second number as the combo/menu number.
+  let comboNo=raw.match(/^\s*(\d+)\s+(\d+)\s+(.+)$/);
+  if(comboNo){
+    q=q||comboNo[1];
+    raw='#'+comboNo[2]+' '+comboNo[3];
+  }else{
+    let m=raw.match(/^\s*(\d+)\s+((?:#\s*\d+\s+)?[A-Za-z].*)$/);
+    if(m){q=q||m[1]; raw=m[2].trim()}
+  }
+  raw=raw.replace(/^#\s+(\d+)/,'#$1').replace(/\s{2,}/g,' ').trim();
+  return {qty:q||'',name:raw};
+}
+function addReceiptItem(name='',amount=0,ps=[],rerender=true,locked=false,type='standalone',qty=''){
+  // Eat Out rows are quantity-based. Default to 1 so the Qty badge never disappears after render.
+  if(qty==='' || qty==null) qty='1';
+  if(typeof name==='object'){let o=name;name=o.name||'';amount=o.amount||0;ps=o.people||[];type=o.type||'standalone';qty=o.qty||o.quantity||'1'}
+  qty=(qty===''||qty==null)?'1':qty;
+  let norm=normalizeReceiptDisplayName(name,qty); name=norm.name; qty=norm.qty;
+  let wrap=$('receiptItems');if(!wrap)return;
+  wrap.insertAdjacentHTML('beforeend',`<div class="receiptItem"><div class="itemNameWrap"><input type="hidden" class="itemQty" value="${esc(qty)}"><span class="qtyBadge">${qty?('Qty '+esc(qty)):''}</span><input class="textin itemName" placeholder="Item name" value="${esc(name)}" ${locked?'disabled':''}></div><div><div class="money"><span>$</span><input class="itemAmount" value="${fmtInput(amount)}" inputmode="decimal" ${locked?'disabled':''}></div><div class="includedText hidden">Included — no extra charge</div></div><input type="hidden" class="itemType" value="${type||'standalone'}"><div class="payerChecks">${payerCheckboxes(ps)}</div><button class="btn small deleteItemBtn" title="Delete item" onclick="this.closest('.receiptItem').remove();saveDraft();updateReceiptSummary();renderAll(false)" ${locked?'disabled':''}>🗑</button></div>`);
+  let row=wrap.lastElementChild;
+  row.querySelector('.itemType').addEventListener('change',()=>{updateReceiptRowState(row);saveDraft();updateReceiptSummary();renderAll(false)});
+  row.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',()=>{saveDraft();updateReceiptSummary();renderAll(false)}));
+  updateReceiptRowState(row);
+  bindPayerAllControls(row);
+  if(locked)row.querySelectorAll('input,select').forEach(i=>i.disabled=true);
+  if(rerender){document.querySelectorAll('.itemAmount').forEach(bindMoneyFocus);saveDraft();updateReceiptSummary();renderAll(false)}
+}
+function updateReceiptRowState(row){
+  let type=row.querySelector('.itemType')?.value||'standalone', amt=row.querySelector('.itemAmount'), moneyWrap=row.querySelector('.money'), note=row.querySelector('.includedText');
+  if(type==='included'){amt.value='0';amt.disabled=true;moneyWrap.classList.add('locked');note.classList.remove('hidden')}
+  else{amt.disabled=false;moneyWrap.classList.remove('locked');note.classList.add('hidden')}
+}
+function updateReceiptSummary(){
+  if(data.mode!=='eatout')return;
+  let el=$('receiptSummary');if(!el)return;
+  let subtotal=parseMoney(document.querySelector('[data-key="subtotal"]')?.value||0);
+  let priced=[...document.querySelectorAll('.receiptItem')].filter(r=>(r.querySelector('.itemType')?.value||'standalone')!=='included');
+  let pricedTotal=priced.reduce((s,r)=>s+parseMoney(r.querySelector('.itemAmount')?.value),0);
+  let unallocated=subtotal?subtotal-pricedTotal:0;
+  let displayUnallocated=Math.abs(unallocated)<=0.021?0:unallocated;
+  el.innerHTML=`<div class="receiptSummary"><div class="summaryTile"><label>Food Subtotal</label><b>${money(subtotal)}</b></div><div class="summaryTile"><label>Priced Items</label><b>${money(pricedTotal)}</b></div><div class="summaryTile"><label>Unallocated</label><b class="${Math.abs(displayUnallocated)>.004?'unallocatedBad':''}">${money(displayUnallocated)}</b></div><div class="summaryTile"><label>Charged Rows</label><b>${priced.length}</b></div></div>${Math.abs(displayUnallocated)>.004?'<div class="receiptWarn">Subtotal does not match priced items. Use Even Split to divide the receipt total equally, or use Itemized Split after correcting/adding missing item prices.</div>':''}`;
+}
+function markReceiptOneCombo(){
+  let rows=[...document.querySelectorAll('.receiptItem')];if(!rows.length)return;
+  let subtotal=parseMoney(document.querySelector('[data-key="subtotal"]')?.value||0);
+  rows.forEach((r,i)=>{r.querySelector('.itemType').value=i===0?'combo':'included';r.querySelector('.itemAmount').value=i===0?fmtInput(subtotal):'0';updateReceiptRowState(r)});
+  saveDraft();updateReceiptSummary();renderAll(false);
+}
+
+function setEatOutSplitMode(mode){
+  let next=(mode==='even')?'even':'itemized';
+  let d=currentDraft();
+  d.splitMode=next;
+  let evenBtn=$('splitEven'), itemizedBtn=$('splitItemized');
+  if(evenBtn){evenBtn.classList.toggle('active',next==='even');evenBtn.setAttribute('aria-pressed',next==='even'?'true':'false')}
+  if(itemizedBtn){itemizedBtn.classList.toggle('active',next!=='even');itemizedBtn.setAttribute('aria-pressed',next!=='even'?'true':'false')}
+  saveDraft();
+  currentDraft().splitMode=next;
+  persist();
+  renderAll(false);
+}
+function divideSubtotalAcrossItems(){
+  let rows=[...document.querySelectorAll('.receiptItem')].filter(r=>(r.querySelector('.itemType')?.value||'standalone')!=='included');
+  let subtotal=parseMoney(document.querySelector('[data-key="subtotal"]')?.value||0);if(!rows.length||!subtotal)return;
+  let each=subtotal/rows.length;rows.forEach(r=>{r.querySelector('.itemAmount').value=fmtInput(each)});
+  saveDraft();updateReceiptSummary();renderAll(false);
+}
+function makeAllStandalone(){
+  document.querySelectorAll('.receiptItem').forEach(r=>{r.querySelector('.itemType').value='standalone';updateReceiptRowState(r)});
+  saveDraft();updateReceiptSummary();renderAll(false);
+}
+function receiptStatus(msg,busy=false){
+  let el=$('receiptImportStatus');if(!el)return;
+  el.classList.remove('hidden');
+  el.textContent=msg;
+  el.style.color=busy?'#ffd99a':'var(--muted)';
+}
+function loadScriptOnce(src,globalName){
+  return new Promise((resolve,reject)=>{
+    if(globalName&&window[globalName])return resolve(window[globalName]);
+    let existing=[...document.scripts].find(s=>s.src===src);
+    if(existing){existing.addEventListener('load',()=>resolve(globalName?window[globalName]:true));existing.addEventListener('error',reject);return;}
+    let s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>resolve(globalName?window[globalName]:true);s.onerror=()=>reject(new Error('Could not load '+src));document.head.appendChild(s);
+  });
+}
+async function importReceiptFile(file){
+  let name=(file.name||'').toLowerCase(), type=file.type||'';
+  receiptStatus('Reading '+file.name+'...',true);
+  try{
+    if(type.includes('json')||name.endsWith('.json')||type.startsWith('text/')||name.endsWith('.txt')||name.endsWith('.csv')){
+      parseReceiptText(await file.text(),'file');
+      return;
+    }
+    if(type.startsWith('image/')){
+      let text=await ocrImageFile(file);
+      parseReceiptText(text,'ocr');
+      return;
+    }
+    if(type==='application/pdf'||name.endsWith('.pdf')){
+      let text=await ocrPdfFile(file);
+      parseReceiptText(text,'ocr');
+      return;
+    }
+    alert('Unsupported receipt file. Use TXT, CSV, JSON, screenshot/photo, or PDF.');
+    receiptStatus('Unsupported file type.');
+  }catch(err){
+    console.error(err);
+    alert('Receipt import failed: '+(err.message||err));
+    receiptStatus('Import failed. You can still add items manually.');
+  }
+}
+async function ocrImageFile(file){
+  receiptStatus('Loading OCR engine...',true);
+  await loadScriptOnce('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js','Tesseract');
+  receiptStatus('Scanning image receipt with OCR...',true);
+  let result=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status)receiptStatus('OCR: '+m.status+(m.progress?(' '+Math.round(m.progress*100)+'%'):''),true)}});
+  return result.data.text||'';
+}
+async function ocrPdfFile(file){
+  receiptStatus('Loading PDF reader...',true);
+  await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js','pdfjsLib');
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  let pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+  let textPages=[];
+  for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+    receiptStatus('Checking PDF text on page '+pageNo+' of '+pdf.numPages+'...',true);
+    let page=await pdf.getPage(pageNo);
+    try{
+      let content=await page.getTextContent();
+      let pageText=content.items.map(i=>i.str||'').join('\n').trim();
+      if(pageText)textPages.push(pageText);
+    }catch(e){}
+  }
+  if(textPages.join('\n').replace(/\s/g,'').length>25){
+    receiptStatus('Imported readable PDF text. Parsing receipt...',true);
+    return textPages.join('\n');
+  }
+  let all=[];
+  for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+    receiptStatus('OCR scanning PDF page '+pageNo+' of '+pdf.numPages+'...',true);
+    let page=await pdf.getPage(pageNo), viewport=page.getViewport({scale:2.5});
+    let canvas=document.createElement('canvas'), ctx=canvas.getContext('2d');
+    canvas.width=viewport.width;canvas.height=viewport.height;
+    await page.render({canvasContext:ctx,viewport}).promise;
+    let blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
+    all.push(await ocrImageFile(blob));
+  }
+  return all.join('\n');
+}
+function cleanReceiptName(s){
+  let x=String(s||'').replace(/[*•]+/g,' ').replace(/#\s+(\d+)/g,'#$1');
+  // OCR artifacts sometimes appear before a menu number, e.g. "ab #3 Spicy Chicken Combo".
+  x=x.replace(/^\s*[a-z]{1,3}\s+(#\d+\b)/i,'$1');
+  // OCR can merge the quantity with a stray letter, e.g. "1k Loaded Nachos".
+  x=x.replace(/^\s*(\d+)\s*[a-z]\s+([A-Za-z#])/,'$1 $2');
+  // OCR can inject garbage before receipt total labels; these are handled as meta, not item names.
+  x=x.replace(/^\s*[a-z0-9\s]*?(items?|etems?|tems)\s*total\b/i,'Items Total');
+  return x.replace(/\b(qty|quantity|ea|each|item|price)\b/ig,' ').replace(/\s{2,}/g,' ').trim().replace(/^[\-:,.\s]+|[\-:,.\s]+$/g,'');
+}
+function splitQtyAndName(s){
+  let x=String(s||'').trim().replace(/#\s+(\d+)/g,'#$1').replace(/\s{2,}/g,' ');
+
+  // Normal rows: "2 Milkshake" => qty 2, name Milkshake.
+  // Combo/menu rows: "1 #1 Urban Combo" or OCR "1 1 Urban Combo" => qty 1, name #1 Urban Combo.
+  let mx=x.match(/^\s*(\d+)x\s+(.+)$/i);
+  if(mx)return normalizeReceiptDisplayName(mx[2].trim(),mx[1]);
+
+  let comboHash=x.match(/^\s*(\d+)\s+(#\d+\s+.+)$/);
+  if(comboHash)return {qty:comboHash[1],name:comboHash[2].trim()};
+
+  let comboNo=x.match(/^\s*(\d+)\s+(\d+)\s+(.+)$/);
+  if(comboNo)return {qty:comboNo[1],name:'#'+comboNo[2]+' '+comboNo[3].trim()};
+
+  let m=x.match(/^\s*(\d+)\s+(.+)$/);
+  if(m)return {qty:m[1],name:m[2].trim()};
+  return {qty:'',name:x};
+}
+function inferReceiptDetails(rawLines){
+  let details={eventName:'',orderNote:''};
+  let lines=(rawLines||[]).map(x=>String(x||'').trim()).filter(Boolean);
+  let skip=/^(www\.|http|server|table|guests|date|time|check|pickup|order|food ordered|dine in|subtotal|tax|total|paid|questions|contact|thank you|please come again|suggested)/i;
+  let addr=/\b(street|st\.?|ave\.?|avenue|road|rd\.?|blvd\.?|drive|dr\.?|ca\b|\d{5}|\(\d{3}\)|\d{3}[- ]\d{3}[- ]\d{4})/i;
+  for(let line of lines.slice(0,18)){
+    let cleaned=line.replace(/[─_=-]+/g,' ').replace(/\s{2,}/g,' ').trim();
+    if(!cleaned||skip.test(cleaned)||addr.test(cleaned))continue;
+    if(/[A-Za-z]/.test(cleaned)&&cleaned.length>=3){details.eventName=cleaned.replace(/^the\s+/i,'The ');break;}
+  }
+  let check=lines.find(l=>/\b(check|order)\s*#?\s*[:#]?\s*\w+/i.test(l));
+  let dt=lines.find(l=>/\b\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}\b/.test(l));
+  let tm=lines.find(l=>/\b\d{1,2}:\d{2}\s*(am|pm)?\b/i.test(l));
+  let note=[check,dt,tm].filter(Boolean).map(x=>x.replace(/\s{2,}/g,' ').trim()).filter((v,i,a)=>a.indexOf(v)===i).join(' • ');
+  details.orderNote=note;
+  return details;
+}
+
+function addMetaMoney(meta,key,amount){
+  amount=parseMoney(amount);
+  if(key==='discount'){meta.discount=parseMoney(meta.discount||0)+Math.abs(amount);return;}
+  if(key==='tip'){meta.tip=parseMoney(meta.tip||0)+Math.abs(amount);return;}
+  if(key==='tax'){meta.tax=parseMoney(meta.tax||0)+Math.abs(amount);return;}
+  meta[key]=amount;
+}
+function isReceiptSubtotalLabel(lower){
+  let x=String(lower||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  // Handles normal labels and common OCR errors such as "ETEMSHTOTAL" or "ITEMSHTOTAL".
+  return /\b(subtotal|sub total|food total|merchandise total)\b/.test(x) || /\b(i?tems?|etems?|tems)\s*h?\s*total\b/.test(x) || /items?total|etemstotal|itemstotal/.test(x.replace(/\s+/g,''));
+}
+function isItemsTotalLabel(lower){
+  let x=String(lower||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  return /\b(i?tems?|etems?|tems)\s*h?\s*total\b/.test(x) || /items?total|etemstotal|itemstotal/.test(x.replace(/\s+/g,''));
+}
+function isFeeLabel(lower){
+  return /\b(surcharge|service charge|service fee|processing fee|convenience fee|delivery fee|credit card fee|large party charge|fee)\b/.test(String(lower||'').toLowerCase());
+}
+
+function receiptFingerprint(rawLines,rows,meta){
+  let parts=[];
+  (rawLines||[]).forEach(l=>{
+    let x=String(l||'').toLowerCase().replace(/[^a-z0-9.$]+/g,' ').replace(/\s+/g,' ').trim();
+    if(x)parts.push(x);
+  });
+  (rows||[]).forEach(r=>parts.push(String(r.name||'').toLowerCase()+' '+fmtInput(r.amount||0)+' '+(r.type||'')));
+  ['subtotal','tax','tip','discount','total'].forEach(k=>{if(meta&&meta[k]!=null)parts.push(k+':'+fmtInput(meta[k]))});
+  let str=parts.join('|').slice(0,5000), h=0;
+  for(let i=0;i<str.length;i++)h=((h<<5)-h+str.charCodeAt(i))|0;
+  return String(h)+'-'+String(str.length);
+}
+function parseReceiptText(txt,source='file'){
+  let rows=[], meta={tax:null,tip:null,discount:null,subtotal:null,total:null,itemSubtotal:null,netSubtotal:null};
+  let rawLines=String(txt||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  let inferred=inferReceiptDetails(rawLines);
+  try{
+    let obj=JSON.parse(txt);
+    if(Array.isArray(obj))rows=obj.map(x=>({name:x.name||x.item||'Receipt Item',amount:parseMoney(x.amount||x.price||0),people:x.people||[],type:x.type||'standalone',qty:x.qty||x.quantity||''}));
+    else if(obj&&Array.isArray(obj.items)){rows=obj.items.map(x=>({name:x.name||x.item||'Receipt Item',amount:parseMoney(x.amount||x.price||0),people:x.people||[],type:x.type||'standalone',qty:x.qty||x.quantity||''}));meta.tax=parseMoney(obj.tax);meta.tip=parseMoney(obj.tip);meta.discount=parseMoney(obj.discount);meta.subtotal=parseMoney(obj.subtotal);meta.total=parseMoney(obj.total)}
+  }catch(e){}
+  if(!rows.length){
+    let inSuggestedTip=false;
+    rawLines.forEach(line=>{
+      let normalized=line.replace(/[|]/g,' ').replace(/\s{2,}/g,' ').trim();
+      let lower=normalized.toLowerCase();
+
+      // Restaurant receipts often include sections that look like items but are not billable rows.
+      // Examples: "Suggested Gratuity", "15% 18% 20%", "$14.71 $17.65 $19.70", or "(2 @ $2.99)".
+      if(/suggested\s+(tip|gratuity)|gratuity options?|tip guide|recommended tip/.test(lower)){inSuggestedTip=true;return;}
+      if(inSuggestedTip){
+        if(/thank you|please come again|signature|merchant copy|customer copy|subtotal|total/i.test(normalized))inSuggestedTip=false;
+        if(inSuggestedTip)return;
+      }
+      if(/^\(?\s*\d+\s*@\s*\$?\d+(?:\.\d{2})?\s*\)?$/i.test(normalized))return;
+      if(/^\s*(\d{1,2}%\s*){2,}$/.test(normalized))return;
+
+      let moneyMatches=[...normalized.matchAll(/\$?(-?\d{1,4}(?:,\d{3})*(?:\.\d{2}))/g)];
+      if(moneyMatches.length){
+        let amount=parseMoney(moneyMatches[moneyMatches.length-1][1]);
+        if(isItemsTotalLabel(lower)){meta.itemSubtotal=amount; meta.subtotal=amount; return;}
+        if(/\b(subtotal|sub total|food total|merchandise total)\b/.test(lower)){meta.netSubtotal=amount; if(meta.subtotal==null)meta.subtotal=amount; return;}
+        if(/\b(tax|sales tax)\b/.test(lower) || isFeeLabel(lower)){addMetaMoney(meta,'tax',amount);return;}
+        if(/\b(tip|gratuity)\b/.test(lower)){addMetaMoney(meta,'tip',amount);return;}
+        if(/\b(discount|coupon|promo|reward|credit)\b/.test(lower)){addMetaMoney(meta,'discount',amount);return;}
+        if(/\b(total|balance|amount due|change|cash|card|visa|mastercard|amex|debit|credit|payment|tender|paid)\b/.test(lower)){if(/\btotal\b/.test(lower))meta.total=amount;return;}
+
+        // Skip pure money / tip suggestion rows and quantity-unit-price helper rows.
+        let before=normalized.slice(0,moneyMatches[moneyMatches.length-1].index).trim();
+        let alphaCount=(before.match(/[a-z]/ig)||[]).length;
+        if(/\b(total|subtotal|discount|surcharge|service charge|tax|fee|payment|suggested|tip)\b/i.test(before))return;
+        if(alphaCount<2)return;
+        if(moneyMatches.length>1 && !/[a-z]/i.test(before.replace(/\$?\d+(?:\.\d{2})?/g,'')))return;
+
+        let parsed=splitQtyAndName(cleanReceiptName(before.replace(/^\d+\s*@\s*/i,'')));
+        if(parsed.name) parsed=splitQtyAndName(cleanReceiptName(parsed.name));
+        let name=parsed.name;
+        if(name&&amount>0)rows.push({name,amount,people:[],type:'standalone',qty:parsed.qty});
+      }
+    });
+  }
+  if(!rows.length && meta.subtotal){
+    let itemLines=[], inFood=false;
+    for(let i=0;i<rawLines.length;i++){
+      let line=rawLines[i].replace(/\s{2,}/g,' ').trim();
+      if(/^(food ordered|items ordered|order items|items|order):?$/i.test(line)){inFood=true;continue;}
+      if(inFood && /^(order totals?|subtotal|sales tax|tax|total|paid|questions|contact us)/i.test(line))break;
+      if(!inFood)continue;
+      if(/\$?\d+\.\d{2}/.test(line))continue;
+      if(/\b(no napkins|no sauce)\b/i.test(line))continue;
+      if(/^(choose your|add extra|type of|mayo or|sauce|napkins?)\b/i.test(line))continue;
+      let name=cleanReceiptName(line.replace(/^\d+\s*x\s*/i,''));
+      if(name && name.length>2 && !itemLines.some(x=>x.toLowerCase()===name.toLowerCase()))itemLines.push(name);
+    }
+    if(itemLines.length){
+      let likelyCombo=itemLines.length>1 && /meal|combo|plate|bundle/i.test(itemLines[0]);
+      itemLines.forEach((name,idx)=>{let parsed=splitQtyAndName(name);rows.push({name:parsed.name,qty:parsed.qty,amount:likelyCombo&&idx===0?meta.subtotal:0,people:[],type:likelyCombo?(idx===0?'combo':'included'):'standalone'})});
+    }else rows.push({name:'Receipt Items',amount:0,people:[],type:'standalone'});
+  }
+  if(!rows.length && meta.total){
+    let amount=Math.max(0,meta.total-(meta.tax||0)-(meta.tip||0)+(meta.discount||0));
+    if(amount>0)rows.push({name:'Receipt Items',amount,people:[],type:'standalone'});
+  }
+
+  // Prefer the receipt's item/food total as the subtotal when discounts and fees are present.
+  // Some receipts also show a post-discount subtotal; keeping the item subtotal makes Priced Items validation meaningful.
+  if(meta.itemSubtotal!=null) meta.subtotal=meta.itemSubtotal;
+  // If OCR did not find a subtotal but found total/tax/tip/discount, back-calculate the item subtotal.
+  if((meta.subtotal==null || meta.subtotal===0) && meta.total!=null){
+    let backCalc=parseMoney(meta.total)-parseMoney(meta.tax)-parseMoney(meta.tip)+parseMoney(meta.discount);
+    if(backCalc>0) meta.subtotal=backCalc;
+  }
+  if(!rows.length){alert('No receipt items found. This receipt may not show item-level prices. Try a clearer screenshot/PDF or CSV like: Burger, 12.99');receiptStatus('No receipt items found.');return}
+  let d=currentDraft();
+  let fp=receiptFingerprint(rawLines,rows,meta);
+  if(d.receiptFingerprint && d.receiptFingerprint===fp){
+    alert('This receipt is already imported. Duplicate import was blocked.');
+    receiptStatus('Duplicate receipt blocked. Current item list was not changed.');
+    return;
+  }
+  let existing=document.querySelectorAll('.receiptItem').length;
+  if(existing>0){
+    let ok=confirm('Import this receipt and replace the current '+existing+' item row'+(existing===1?'':'s')+'? This prevents duplicate receipt rows.');
+    if(!ok){receiptStatus('Import canceled. Current item list was not changed.');return;}
+    let wrap=$('receiptItems'); if(wrap)wrap.innerHTML='';
+  }
+  rows.forEach(r=>{
+    // Receipt imports should always display a quantity badge. If OCR/parser did not
+    // capture a quantity, assume 1 so normal rows do not lose their Qty box.
+    let importQty=(r.qty||r.quantity||'').toString().trim() || '1';
+    addReceiptItem(r.name,r.amount,r.people,false,false,r.type||'standalone',importQty);
+  });
+  d.receiptFingerprint=fp;
+  ['subtotal','tax','tip','discount'].forEach(k=>{let el=document.querySelector(`[data-key="${k}"]`);if(el&&meta[k]!=null)el.value=fmtInput(meta[k])});
+  let eventEl=document.querySelector('[data-key="eventName"]'), noteEl=document.querySelector('[data-key="orderNote"]');
+  if(eventEl && !eventEl.value.trim() && inferred.eventName)eventEl.value=inferred.eventName;
+  if(noteEl && !noteEl.value.trim() && inferred.orderNote)noteEl.value=inferred.orderNote;
+  saveDraft();renderMode();renderAll(false);
+  updateReceiptSummary();
+  let missing=rows.some(r=>parseMoney(r.amount)===0&&r.type!=='included');
+  let combo=rows.some(r=>r.type==='combo');
+  let fallback=combo?' Detected a likely combo: combo price is set to subtotal and included items are listed with no extra charge.':(missing?' Item names were found but item prices were not; enter missing prices or use the combo/subtotal tools.':'');
+  receiptStatus('Imported '+rows.length+' item'+(rows.length===1?'':'s')+(source==='ocr'?'. Review OCR amounts before calculating.':'.')+fallback);
+}
+
+function saveDraft(){
+  if(data.view==='analytics'||isFinalized())return;
+  let d=currentDraft();
+  document.querySelectorAll('[data-key]').forEach(i=>{d[i.dataset.key]=['eventName','orderNote'].includes(i.dataset.key)?i.value:parseMoney(i.value)});
+  if(data.mode==='household'){
+    d.permanentBills=[...document.querySelectorAll('.permRow')].map(r=>{
+      let fixed=r.querySelector('.permFixed').checked;
+      let amount=parseMoney(r.querySelector('.permAmount').value);
+      return {
+        name:r.querySelector('.permName').value.trim()||'Bill',
+        amount:fixed ? amount : amount,
+        fixed,
+        fixedAmount:fixed ? amount : 0,
+        split:r.querySelector('.splitMode').value,
+        payer:r.querySelector('.payerSel')?.value||'',
+        people:[...r.querySelectorAll('.sharePerson:checked')].map(x=>x.value)
+      }
+    });
+    saveHouseholdChoices();
+  }
+  d.extras=[...document.querySelectorAll('.extraRow')].map(r=>({
+    name:r.querySelector('.extraName').value.trim()||'Bill',
+    amount:parseMoney(r.querySelector('.extraAmount').value),
+    split:r.querySelector('.splitMode').value,
+    payer:r.querySelector('.payerSel').value,
+    people:[...r.querySelectorAll('.sharePerson:checked')].map(x=>x.value)
+  }));
+  if(data.mode==='eatout'){d.splitMode=d.splitMode||'itemized'; d.items=[...document.querySelectorAll('.receiptItem')].map(r=>({
+    name:r.querySelector('.itemName').value.trim()||'Receipt Item',
+    qty:r.querySelector('.itemQty')?.value||'',
+    amount:parseMoney(r.querySelector('.itemAmount').value),
+    type:r.querySelector('.itemType')?.value||'standalone',
+    people:[...r.querySelectorAll('.payer:checked')].map(x=>x.value)
+  }));}
+  persist();
+}
+
+function applyBill(totals,bill){
+  let ps=people(), amount=parseMoney(bill.amount);
+  if(!amount)return;
+  if(bill.split==='paid'&&bill.payer){totals[bill.payer]=(totals[bill.payer]||0)+amount;return}
+  let group=(bill.split==='selected'&&bill.people&&bill.people.length)?bill.people:ps;
+  let share=amount/(group.length||1);
+  group.forEach(p=>totals[p]=(totals[p]||0)+share);
+}
+function eatOutPersonTotals(rec){
+  let ps=people(), totals={};ps.forEach(p=>totals[p]=0);
+  let b=rec.bills||{},items=(b.items||[]).filter(i=>i.type!=='included'),food=items.reduce((s,i)=>s+parseMoney(i.amount),0);
+  let extrasTotal=(b.extras||[]).reduce((s,e)=>s+parseMoney(e.amount),0);
+  if(b.splitMode==='even'){
+    let base=parseMoney(b.subtotal)||food;
+    let total=Math.max(0,base+parseMoney(b.tax)+parseMoney(b.tip)-parseMoney(b.discount)+extrasTotal);
+    let share=total/(ps.length||1);
+    ps.forEach(p=>totals[p]=share);
+    return totals;
+  }
+  items.forEach(i=>{
+    let group=(i.people&&i.people.length)?i.people:[];
+    if(!group.length)return;
+    let share=parseMoney(i.amount)/(group.length||1);
+    group.forEach(p=>totals[p]=(totals[p]||0)+share);
+  });
+  let subtotal=parseMoney(b.subtotal);
+  let subtotalCorrection=(subtotal&&Math.abs(subtotal-food)<=0.021)?(subtotal-food):0;
+  let service=parseMoney(b.tax)+parseMoney(b.tip)-parseMoney(b.discount)+subtotalCorrection;
+  let assignedFood=ps.reduce((sum,p)=>sum+(totals[p]||0),0);
+  ps.forEach(p=>{let ratio=assignedFood?(totals[p]||0)/assignedFood:0;totals[p]+=service*ratio});
+  (b.extras||[]).forEach(e=>applyBill(totals,e));
+  return totals;
+}
+function record(){
+  saveDraft();
+  let d=currentDraft(), bills={}, total=0, totals={};people().forEach(p=>totals[p]=0);
+  if(data.mode==='household'){
+    bills.permanentBills=(d.permanentBills||[]).map(x=>normalizeBill(x));
+    bills.extras=(d.extras||[]).map(x=>({...x,amount:parseMoney(x.amount)}));
+    [...bills.permanentBills,...bills.extras].forEach(b=>{total+=parseMoney(b.amount);applyBill(totals,b)});
+  }else if(data.mode==='eatout'){
+    bills.items=d.items||[];bills.subtotal=parseMoney(d.subtotal);bills.tax=parseMoney(d.tax);bills.tip=parseMoney(d.tip);bills.discount=parseMoney(d.discount);bills.eventName=d.eventName||'';bills.orderNote=d.orderNote||'';bills.extras=d.extras||[];bills.splitMode=d.splitMode||'itemized';
+    let food=bills.items.filter(i=>i.type!=='included').reduce((s,i)=>s+parseMoney(i.amount),0);
+    let extrasTotal=bills.extras.reduce((s,e)=>s+parseMoney(e.amount),0);
+    let base=(bills.splitMode==='even' && bills.subtotal)?bills.subtotal:food;
+    if(bills.splitMode!=='even' && bills.subtotal && Math.abs(bills.subtotal-food)<=0.021)base=bills.subtotal;
+    total=Math.max(0,base+bills.tax+bills.tip-bills.discount+extrasTotal);
+    totals=eatOutPersonTotals({bills,total});
+  }else if(data.mode==='custom'){
+    bills.extras=(d.extras||[]).map(x=>({...x,amount:parseMoney(x.amount)}));
+    bills.extras.forEach(b=>{total+=parseMoney(b.amount);applyBill(totals,b)});
+  }
+  return{mode:data.mode,month:data.selectedMonth,label:labelMonth(data.selectedMonth),people:[...people()],bills,total:Math.max(total,0),personTotals:totals,savedAt:new Date().toISOString(),finalized:isFinalized(),version:26};
+}
+function billRows(rec){
+  let b=rec.bills||{}, rows=[];
+  if(rec.mode==='household'){
+    (b.permanentBills||[]).forEach(x=>{
+      let isWater=String(x.name).toLowerCase().includes('water'), amt=parseMoney(x.amount);
+      if(isWater&&amt===0) rows.push([x.name,'No water bill this month']);
+      else if(isWater&&amt>0) rows.push([x.name,money(amt)+' (covers '+waterCoverage(rec.month)+')']);
+      else rows.push([x.name,money(amt)]);
+    });
+  }else if(rec.mode==='eatout'){
+    let pricedTotal=(b.items||[]).filter(i=>i.type!=='included').reduce((s,i)=>s+parseMoney(i.amount),0);
+    rows=[['Receipt Subtotal',money(b.subtotal||pricedTotal)],['Priced Items',money(pricedTotal)],['Tax & Fees',money(b.tax)],['Tip',money(b.tip)],['Discount',moneySignedDiscount(b.discount)]];
+    (b.items||[]).forEach(i=>rows.push(['  • '+i.name+(i.type==='included'?' (included in combo)':i.type==='combo'?' (combo price)':'')+(i.people&&i.people.length?' — '+i.people.join(', '):''),i.type==='included'?'Included':money(i.amount)]));
+  }
+  (b.extras||[]).forEach(e=>rows.push([e.name,money(e.amount)]));
+  if(!rows.length)rows.push(['Bills',money(0)]);
+  return rows;
+}
+
+function receiptItemLabel(i){
+  let q=i&&i.qty?String(i.qty).trim():'';
+  let n=i&&i.name?String(i.name).trim():'Receipt Item';
+  return (q? q+' × ' : '') + n;
+}
+function eatOutBreakdown(rec){
+  let ps=rec.people||[], b=rec.bills||{}, items=(b.items||[]), billable=items.filter(i=>i.type!=='included'), food=billable.reduce((sum,i)=>sum+parseMoney(i.amount),0);
+  let subtotal=parseMoney(b.subtotal), subtotalCorrection=(subtotal&&Math.abs(subtotal-food)<=0.021)?(subtotal-food):0;
+  let service=parseMoney(b.tax)+parseMoney(b.tip)-parseMoney(b.discount)+subtotalCorrection, extras=b.extras||[];
+  let personLines={}, personFood={}; ps.forEach(p=>{personLines[p]=[];personFood[p]=0});
+  billable.forEach(i=>{
+    let group=(i.people&&i.people.length)?i.people:[];
+    if(!group.length)return;
+    let amt=parseMoney(i.amount), share=amt/(group.length||1);
+    group.forEach(p=>{
+      personFood[p]=(personFood[p]||0)+share;
+      personLines[p].push({name:receiptItemLabel(i), amount:share, group:[...group], type:i.type||'standalone'});
+    });
+  });
+  extras.forEach(e=>{
+    let amt=parseMoney(e.amount); if(!amt)return;
+    let group=(e.split==='selected'&&e.people&&e.people.length)?e.people:ps;
+    if(e.split==='paid'&&e.payer)group=[e.payer];
+    let share=amt/(group.length||1);
+    group.forEach(p=>{personFood[p]=(personFood[p]||0)+share;personLines[p].push({name:e.name||'Extra Bill',amount:share,group:[...group],type:'extra'});});
+  });
+  let totals=rec.personTotals||{}, displayTotals={}; ps.forEach(p=>displayTotals[p]=ceilToCents(totals[p]||0));
+  let displaySumCents=ps.reduce((sum,p)=>sum+cents(displayTotals[p]),0), diffCents=Math.abs(displaySumCents-cents(rec.total));
+  return {ps,b,items,billable,food,service,personLines,personFood,totals,displayTotals,diffCents};
+}
+function eatOutPaymentRequestText(rec){
+  let {ps,b,displayTotals,diffCents}=eatOutBreakdown(rec);
+  let title=b.eventName||'Eat Out Split';
+  let lines=[title,'','Bill Total: '+money(rec.total),'','Amount Due'];
+  ps.forEach(p=>lines.push(p+' .......... '+money(displayTotals[p])));
+  if(diffCents>0)lines.push('','Rounding: '+money(fromCents(diffCents))+' adjustment included.');
+  lines.push('','Please send payment at your convenience.');
+  return lines.join('\n');
+}
+function eatOutDetailedReviewText(rec){
+  let {ps,b,items,food,personLines,personFood,totals,displayTotals,diffCents}=eatOutBreakdown(rec);
+  let title=b.eventName||'Eat Out Split';
+  if(b.splitMode==='even'){
+    let lines=[title,'────────────────────────────'];
+    if(b.orderNote)lines.push('Note / Order: '+b.orderNote);
+    lines.push('Split method: Even split','Subtotal: '+money(b.subtotal||food),'Tax & Fees: '+money(b.tax),'Tip: '+money(b.tip),'Discount: '+moneySignedDiscount(b.discount),'Total: '+money(rec.total),'','Who owes what:');
+    ps.forEach(p=>lines.push(p+': '+money(displayTotals[p])));
+    if(diffCents>0)lines.push('','Rounding note: '+money(fromCents(diffCents))+' difference due to rounding.');
+    return lines.join('\n');
+  }
+  let lines=[title,'────────────────────────────'];
+  if(b.orderNote)lines.push('Note / Order: '+b.orderNote);
+  lines.push('Split method: '+(b.splitMode==='even'?'Even split':'Itemized split'),'Subtotal: '+money(b.subtotal||food),'Tax & Fees: '+money(b.tax),'Tip: '+money(b.tip),'Discount: '+moneySignedDiscount(b.discount),'Total: '+money(rec.total),'');
+  if(items.length){
+    lines.push('Items:');
+    items.forEach(i=>{
+      let assigned=(i.people&&i.people.length)?i.people.join(', '):'Unassigned';
+      if(i.type==='included') lines.push('  • '+receiptItemLabel(i)+' — included in combo');
+      else lines.push('  • '+receiptItemLabel(i)+(i.type==='combo'?' (combo)':'')+' — '+money(i.amount)+' — '+assigned);
+    });
+    lines.push('');
+  }
+  lines.push('Detailed Breakdown');
+  ps.forEach(p=>{
+    let serviceShare=(totals[p]||0)-(personFood[p]||0), pct=rec.total?((displayTotals[p]||0)/rec.total*100):0;
+    lines.push('',p+' — '+money(displayTotals[p])+' ('+pct.toFixed(1)+'% of bill)');
+    (personLines[p]||[]).forEach(x=>{
+      let shared=x.group.length>1?' — split '+x.group.length+' ways':'', label=x.type==='combo'?' (combo)':x.type==='extra'?' (extra)':'';
+      lines.push('• '+x.name+label+' — '+money(x.amount)+shared);
+    });
+    if(Math.abs(serviceShare)>.004)lines.push('• Tax/fees/tip/discount share — '+money(serviceShare));
+  });
+  if(diffCents>0)lines.push('','Rounding note: '+money(fromCents(diffCents))+' difference due to rounding.');
+  return lines.join('\n');
+}
+function eatOutIndividualMessagesText(rec){
+  let {ps,b,personLines,personFood,totals,displayTotals}=eatOutBreakdown(rec);
+  let title=b.eventName||'Eat Out Split';
+  let blocks=[];
+  ps.forEach(p=>{
+    let serviceShare=(totals[p]||0)-(personFood[p]||0);
+    let lines=[title,'','Hi '+p+',','','Your portion of the bill is '+money(displayTotals[p])+'.',''];
+    if((personLines[p]||[]).length){
+      lines.push('Items:');
+      personLines[p].forEach(x=>{
+        let shared=x.group.length>1?' (shared)':'';
+        lines.push('• '+x.name+shared+' — '+money(x.amount));
+      });
+      if(Math.abs(serviceShare)>.004)lines.push('• Tax/fees/tip share — '+money(serviceShare));
+      lines.push('');
+    }
+    lines.push('Total Due: '+money(displayTotals[p]));
+    blocks.push(lines.join('\n'));
+  });
+  return blocks.join('\n\n────────────────────────────\n\n');
+}
+function eatOutReviewText(rec,mode){
+  mode=mode||data.eatoutMessageMode||'payment';
+  if(mode==='detailed')return eatOutDetailedReviewText(rec);
+  if(mode==='individual')return eatOutIndividualMessagesText(rec);
+  return eatOutPaymentRequestText(rec);
+}
+function setEatOutMessageMode(mode){
+  data.eatoutMessageMode=mode;
+  let txt=eatOutReviewText(record(),mode);
+  $('output').value=txt;
+  let box=$('eatoutReviewText'); if(box)box.value=txt;
+  document.querySelectorAll('.messageTabs button').forEach(b=>b.classList.toggle('active',b.dataset.msgmode===mode));
+  persist();
+}
+function eatOutSplitFingerprint(rec){
+  rec=rec||{};
+  let bills=rec.bills||{};
+  let people=[...(rec.people||[])].map(String).sort();
+  let totals={};
+  Object.keys(rec.personTotals||{}).sort().forEach(k=>{totals[k]=Number(rec.personTotals[k]||0).toFixed(2)});
+  let items=[...(bills.items||[])].map(it=>({
+    qty:Number(it.qty||1),
+    name:String(it.name||'').trim().toLowerCase(),
+    price:Number(it.price||0).toFixed(2),
+    assigned:[...(it.assigned||[])].map(String).sort()
+  }));
+  let extras=[...(bills.extras||[])].map(ex=>({
+    name:String(ex.name||'').trim().toLowerCase(),
+    amount:Number(ex.amount||0).toFixed(2),
+    assigned:[...(ex.assigned||[])].map(String).sort()
+  }));
+  return JSON.stringify({
+    event:String(bills.eventName||'').trim().toLowerCase(),
+    order:String(bills.orderNote||'').trim().toLowerCase(),
+    subtotal:Number(bills.subtotal||0).toFixed(2),
+    tax:Number(bills.tax||0).toFixed(2),
+    tip:Number(bills.tip||0).toFixed(2),
+    discount:Number(bills.discount||0).toFixed(2),
+    splitMode:String(bills.splitMode||'itemized'),
+    total:Number(rec.total||0).toFixed(2),
+    people,totals,items,extras
+  });
+}
+function getEatOutPreviousSplits(){
+  let list=[...(data.history?.eatout||[])];
+  let map=new Map();
+  list.forEach(r=>{
+    let key=eatOutSplitFingerprint(r);
+    let existing=map.get(key);
+    if(!existing || String(r.savedAt||r.receiptId||'').localeCompare(String(existing.savedAt||existing.receiptId||''))>0){
+      map.set(key,r);
+    }
+  });
+  return [...map.values()].sort((a,b)=>String(b.savedAt||b.receiptId||'').localeCompare(String(a.savedAt||a.receiptId||'')));
+}
+function getEatOutPreviousSplit(id){
+  let all=getEatOutPreviousSplits();
+  if(id)return all.find(r=>String(r.receiptId)===String(id))||null;
+  data.workingMemory=data.workingMemory||{};
+  return data.workingMemory.eatoutLastSplit || all[0] || null;
+}
+function eatOutPreviousSplitHTML(){
+  let all=getEatOutPreviousSplits();
+  if(!all.length)return '<div class="eatoutSideCard previousSplitCard"><h3>Previous Split</h3><div class="note">No split has been saved yet.</div></div>';
+  data.workingMemory=data.workingMemory||{};
+  let page=Math.max(0,parseInt(data.workingMemory.eatoutPreviousPage||0,10)||0);
+  let per=3, maxPage=Math.max(0,Math.ceil(all.length/per)-1);
+  if(page>maxPage)page=maxPage;
+  data.workingMemory.eatoutPreviousPage=page;
+  let slice=all.slice(page*per,page*per+per);
+  let cards=slice.map(rec=>{
+    let rows=(rec.people||[]).map(p=>`<tr><td>${esc(p)}</td><td>${money(rec.personTotals?.[p]||0)}</td></tr>`).join('');
+    let title=rec.bills?.eventName||'Saved split';
+    let saved=rec.savedAt?new Date(rec.savedAt).toLocaleString():'';
+    let id=esc(rec.receiptId||'');
+    return `<div class="previousSplitMini"><div class="previousSplitMiniHead"><div><div class="previousSplitMiniTitle">${esc(title)}</div><div class="prevMeta">${esc(saved)}</div></div><div class="prevTotal">${money(rec.total)}</div></div><table>${rows||'<tr><td colspan="2" class="note">No people on this split.</td></tr>'}</table><div class="previousSplitActions"><button class="btn blue" onclick="loadEatOutPreviousSplit('${id}')">Load to Edit</button><button class="btn" onclick="reviewEatOutPreviousSplit('${id}')">Review Only</button><button class="btn red" title="Delete saved split" onclick="deleteEatOutPreviousSplit('${id}')">🗑</button></div></div>`;
+  }).join('');
+  let from=page*per+1,to=Math.min(all.length,page*per+per);
+  return `<div class="eatoutSideCard previousSplitCard"><div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><h3>Previous Splits</h3><div class="note">Showing ${from}-${to} of ${all.length}. Latest saves are kept in memory.</div></div></div><div class="previousSplitList">${cards}</div>${all.length>per?`<div class="previousSplitPager"><button class="btn" onclick="changeEatOutPreviousPage(-1)" ${page===0?'disabled':''}>‹ Newer</button><span>Page ${page+1} of ${maxPage+1}</span><button class="btn" onclick="changeEatOutPreviousPage(1)" ${page===maxPage?'disabled':''}>Older ›</button></div>`:''}</div>`;
+}
+
+function deleteEatOutPreviousSplit(id){
+  let rec=getEatOutPreviousSplit(id);
+  if(!rec)return;
+  let title=rec.bills?.eventName||'this saved split';
+  if(!confirm('Delete '+title+' from Previous Splits?'))return;
+  let key=eatOutSplitFingerprint(rec);
+  data.history.eatout=(data.history.eatout||[]).filter(r=>String(r.receiptId)!==String(id) && eatOutSplitFingerprint(r)!==key);
+  if(data.workingMemory?.eatoutLastSplit && (String(data.workingMemory.eatoutLastSplit.receiptId)===String(id) || eatOutSplitFingerprint(data.workingMemory.eatoutLastSplit)===key)){
+    delete data.workingMemory.eatoutLastSplit;
+  }
+  persist();renderAll(false);
+}
+
+function changeEatOutPreviousPage(delta){
+  data.workingMemory=data.workingMemory||{};
+  let all=getEatOutPreviousSplits(), per=3, maxPage=Math.max(0,Math.ceil(all.length/per)-1);
+  let page=Math.max(0,Math.min(maxPage,(parseInt(data.workingMemory.eatoutPreviousPage||0,10)||0)+delta));
+  data.workingMemory.eatoutPreviousPage=page;
+  persist();renderAll(false);
+}
+
+function loadEatOutPreviousSplit(id){
+  let rec=getEatOutPreviousSplit(id);
+  if(!rec){alert('No previous split to load.');return}
+  if(data.mode!=='eatout')data.mode='eatout';
+  data.people.eatout=[...(rec.people||[])];
+  let d=currentDraft();
+  d.eventName=rec.bills?.eventName||'';
+  d.orderNote=rec.bills?.orderNote||'';
+  d.subtotal=parseMoney(rec.bills?.subtotal);
+  d.tax=parseMoney(rec.bills?.tax);
+  d.tip=parseMoney(rec.bills?.tip);
+  d.discount=parseMoney(rec.bills?.discount);
+  d.items=JSON.parse(JSON.stringify(rec.bills?.items||[]));
+  d.extras=JSON.parse(JSON.stringify(rec.bills?.extras||[]));
+  d.lastReceiptHash=rec.bills?.lastReceiptHash||d.lastReceiptHash||'';
+  d.splitMode=rec.bills?.splitMode||'itemized';
+  data.eatoutMessageMode=data.eatoutMessageMode||'payment';
+  persist();
+  renderMode();renderPeople();renderAll(false);
+  let txt=eatOutReviewText(record(),data.eatoutMessageMode);
+  if($('eatoutReviewText'))$('eatoutReviewText').value=txt;
+  $('output').value=txt;
+}
+
+function reviewEatOutPreviousSplit(id){
+  let rec=getEatOutPreviousSplit(id);
+  if(!rec){alert('No previous split to review.');return}
+  let mode=data.eatoutMessageMode||'payment';
+  let txt=rec[mode==='detailed'?'detailedReviewText':(mode==='individual'?'individualMessagesText':'paymentRequestText')]||eatOutReviewText(rec,mode);
+  let box=$('eatoutReviewText');if(box)box.value=txt;
+  $('output').value=txt;
+}
+
+function copyEatOutReview(){
+  let box=$('eatoutReviewText');
+  let txt=box&&box.value?box.value:eatOutReviewText(record());
+  if(box)box.value=txt;
+  $('output').value=txt;
+  copyMessage(txt);
+}
+
+function calculate(copy=true){
+  if(data.view==='analytics'){renderAnalyticsMode();return}
+  if(data.mode==='eatout'){
+    let rec=record();
+    let txt=eatOutReviewText(rec,data.eatoutMessageMode||'payment');
+    $('output').value=txt;
+    let box=$('eatoutReviewText'); if(box)box.value=txt;
+    if(copy)copyMessage(txt);
+    renderEatOutDashboard(true);
+    return;
+  }
+  let rec=record(), ps=people(), header=labelMonth(rec.month)+' '+configs[data.mode].calcTitle, lines=[header,'────────────────────────────',''];
+
+  let editChanges=[];
+  if(data.mode==='household' && data.snapshots?.household?.[data.selectedMonth]){
+    editChanges=editChangesForCurrent();
+    if(editChanges.length){
+      lines.push('⚠ EDITED AFTER FINALIZATION');
+      editChanges.forEach(c=>lines.push('EDIT CHANGE: '+c.name+' changed from '+money(c.oldAmount)+' to '+money(c.newAmount)));
+      lines.push('');
+      lines.push('────────────────────────────');
+      lines.push('');
+    }
+  }
+
+  billRows(rec).forEach(r=>lines.push(r[0]+': '+r[1]));
+  lines.push('','────────────────────────────','','Total: '+money(rec.total),'People: '+ps.length,'');
+  if(ps.length===0){lines.push('Add at least one person to split this bill.');$('output').value=lines.join('\n');return}
+
+  let totals=rec.personTotals||{};
+  let totalCents=cents(rec.total);
+  let allEqual=ps.every(p=>Math.abs((totals[p]||0)-rec.total/ps.length)<.001);
+
+  let displayTotals={};
+  if(allEqual){
+    let each=ceilToCents(rec.total/ps.length);
+    ps.forEach(p=>displayTotals[p]=each);
+    lines.push('Each person pays: '+money(each));
+  }else{
+    ps.forEach(p=>displayTotals[p]=ceilToCents(totals[p]||0));
+    lines.push('Person totals:');
+  }
+
+  let displaySumCents=ps.reduce((s,p)=>s+cents(displayTotals[p]),0);
+  let diffCents=Math.abs(displaySumCents-totalCents);
+  if(diffCents>0)lines.push('('+money(fromCents(diffCents))+' difference due to rounding)');
+
+  lines.push('','────────────────────────────','');
+  ps.forEach(p=>lines.push(p+': '+money(displayTotals[p])));
+  $('output').value=lines.join('\n');
+  if(copy)copyMessage($('output').value);
+}
+
+function detailHTML(rec,title,color){
+  let rows=billRows(rec);
+  return`<div class="detailHead"><span style="color:${color}">${title}</span><span>Total: <b style="color:${color}">${money(rec.total)}</b></span></div><table><thead><tr><th>Bill</th><th>Amount</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table><div class="totalLine" style="color:${color}"><span>Total</span><span>${money(rec.total)}</span></div>`;
+}
+function getPrev(){
+  let h=history().filter(r=>r.month!==data.selectedMonth && r.month<data.selectedMonth).sort((a,b)=>b.month.localeCompare(a.month));
+  return h[0]||null;
+}
+function getCurrentMonthRecord(){
+  let saved=history().find(r=>r.month===data.selectedMonth);
+  if(saved)return saved;
+  return record();
+}
+function compareRecords(){
+  if(data.mode!=='household')return {left:record(),right:getPrev(),kind:'previous'};
+  let saved=[...history()].sort((a,b)=>a.month.localeCompare(b.month));
+  let current=getCurrentMonthRecord();
+  let left=current, right=null, kind='previous';
+  let a=$('compareA'), b=$('compareB');
+  if(a&&b&&a.value&&b.value){
+    left = a.value==='__current__' ? current : saved.find(r=>r.month===a.value)||current;
+    right = b.value==='__current__' ? current : saved.find(r=>r.month===b.value)||null;
+    kind='custom';
+  }else{
+    right=getPrev();
+  }
+  return {left,right,kind};
+}
+function renderCompareControls(){
+  let box=$('compareControls');
+  if(!box)return;
+  if(data.mode!=='household'){box.classList.add('hidden');return}
+  box.classList.remove('hidden');
+  let saved=[...history()].sort((a,b)=>b.month.localeCompare(a.month));
+  let opts=['<option value="">Previous saved month</option>','<option value="__current__">Current draft ('+labelMonth(data.selectedMonth)+')</option>']
+    .concat(saved.map(r=>`<option value="${r.month}">${labelMonth(r.month)}${r.finalized?' ✓':''}</option>`)).join('');
+  let a=$('compareA'), b=$('compareB');
+  let oldA=a.value, oldB=b.value;
+  a.innerHTML=opts;b.innerHTML=opts;
+  if([...a.options].some(o=>o.value===oldA))a.value=oldA;
+  if([...b.options].some(o=>o.value===oldB))b.value=oldB;
+  if(!a.dataset.bound){a.dataset.bound='1';a.onchange=()=>renderAll(true)}
+  if(!b.dataset.bound){b.dataset.bound='1';b.onchange=()=>renderAll(true)}
+}
+function addPerson(){
+  let n=$('nameInput').value.trim();if(!n)return;
+  if(data.view==='analytics'){
+    let list=analyticsPeopleForMode();
+    if(!list.some(p=>p.toLowerCase()===n.toLowerCase()))list.push(n);
+    $('nameInput').value='';persist();renderPeople();renderAll(true);
+    return;
+  }
+  people().push(n);$('nameInput').value='';persist();renderMode();renderAll();
+}
+function addAllCurrentPeopleToAnalytics(){
+  let list=analyticsPeopleForMode();
+  list.splice(0,list.length,...(data.people?.[data.mode]||[]));
+  persist();renderPeople();renderAll(true);
+}
+function removeAnalyticsPerson(i){
+  analyticsPeopleForMode().splice(i,1);persist();renderPeople();renderAll(true);
+}
+function removePerson(i){
+  if(isFinalized())return;
+  people().splice(i,1);persist();renderMode();renderAll();
+}
+function renderPeople(){
+  if(data.view==='analytics'){
+    let list=analyticsPeopleForMode();
+    let chips=list.map((p,i)=>`<span class="chip">${esc(p)}<button onclick="removeAnalyticsPerson(${i})">×</button></span>`).join('');
+    $('chips').innerHTML=(chips||'<span class="note">Type a name to switch this tab\'s chart into individual payment mode.</span>')+`<button class="btn small blue" onclick="addAllCurrentPeopleToAnalytics()">Add All ${esc(tabName())}</button>`;
+    return;
+  }
+  $('chips').innerHTML=people().map((p,i)=>`<span class="chip">${esc(p)}<button onclick="removePerson(${i})" ${isFinalized()?'disabled':''}>×</button></span>`).join('')||'<span class="note">No people added for this tab.</span>';
+}
+function saveMonth(){
+  if(data.view==='analytics')return;
+  let rec=record();
+  if(data.mode==='household'){
+    rec.snapshot=householdSnapshot(rec);
+    if(data.snapshots?.household?.[rec.month])rec.editedAfterFinalize=hasEditedChanges();
+  }
+  if(data.mode!=='eatout' && history().some(r=>r.month===rec.month)&&!confirm('Replace '+labelMonth(rec.month)+' '+tabName()+'?'))return;
+  if(data.mode==='eatout'){
+    rec.receiptId=Date.now().toString();
+    rec.reviewText=eatOutReviewText(rec,data.eatoutMessageMode||'payment');
+    rec.paymentRequestText=eatOutPaymentRequestText(rec);
+    rec.detailedReviewText=eatOutDetailedReviewText(rec);
+    rec.individualMessagesText=eatOutIndividualMessagesText(rec);
+    $('output').value=rec.reviewText;
+    data.workingMemory=data.workingMemory||{};
+    data.workingMemory.eatoutLastSplit=JSON.parse(JSON.stringify(rec));
+    data.workingMemory.eatoutPreviousPage=0;
+  }
+  data.history[data.mode]=data.mode==='eatout'?history():history().filter(r=>r.month!==rec.month);
+  if(data.mode==='eatout'){
+    let key=eatOutSplitFingerprint(rec);
+    data.history[data.mode]=data.history[data.mode].filter(r=>eatOutSplitFingerprint(r)!==key);
+  }
+  data.history[data.mode].push(rec);
+  data.history[data.mode].sort((a,b)=>data.mode==='eatout'?String(a.savedAt||a.receiptId||'').localeCompare(String(b.savedAt||b.receiptId||'')):a.month.localeCompare(b.month));
+  if(data.mode!=='eatout')data.history[data.mode]=data.history[data.mode].slice(-24);
+  persist();renderAll();if(data.mode==='eatout'){let box=$('eatoutReviewText');if(box)box.value=rec.reviewText||eatOutReviewText(rec);alert('Saved split and generated message review.');}else alert('Saved '+rec.label+' in '+tabName()+'.');
+}
+function finalizeMonth(){
+  if(data.mode!=='household'){alert('Finalize Month is only for Household Bills.');return}
+  if(isFinalized()){
+    if(!confirm('Unlock '+labelMonth(data.selectedMonth)+' so changes can be made? If you change any finalized amounts, the copied message will mark it as an EDIT.'))return;
+    data.finalized.household[data.selectedMonth]=false;
+    data.edited.household[data.selectedMonth]=data.edited.household[data.selectedMonth]||{};
+    data.edited.household[data.selectedMonth].unlockedAt=new Date().toISOString();
+    persist();renderMode();renderAll(false);
+    return;
+  }
+  let rec=record();
+  let zeros=(rec.bills.permanentBills||[]).filter(b=>parseMoney(b.amount)===0).map(b=>b.name);
+  let msg='Finalize and lock '+labelMonth(data.selectedMonth)+'?';
+  if(zeros.length) msg='These permanent bills are still $0:\n\n'+zeros.join('\n')+'\n\nContinue anyway and finalize?';
+  if(!confirm(msg))return;
+
+  if(!data.snapshots)data.snapshots={household:{}};
+  if(!data.snapshots.household)data.snapshots.household={};
+  if(!data.snapshots.household[data.selectedMonth]){
+    data.snapshots.household[data.selectedMonth]=householdSnapshot(rec);
+  }
+
+  rec.snapshot=householdSnapshot(rec);
+  rec.originalSnapshot=data.snapshots.household[data.selectedMonth];
+  rec.editedAfterFinalize=!!data.snapshots.household[data.selectedMonth] && hasEditedChanges();
+
+  data.history.household=data.history.household.filter(r=>r.month!==rec.month);
+  data.history.household.push(rec);
+  data.history.household.sort((a,b)=>a.month.localeCompare(b.month));
+  data.history.household=data.history.household.slice(-24);
+
+  data.finalized.household[data.selectedMonth]=true;
+  let h=data.history.household.find(r=>r.month===data.selectedMonth);
+  if(h)h.finalized=true;
+  persist();renderMode();renderAll(false);
+}
+function showCopied(){let b=$('copyBadge');b.classList.remove('hidden');setTimeout(()=>b.classList.add('hidden'),1500)}
+
+function drawChart(cur,prev){
+  let canvas=$('chart'),box=canvas.parentElement,dpr=devicePixelRatio||1;
+  canvas.width=box.clientWidth*dpr;canvas.height=box.clientHeight*dpr;canvas.style.width='100%';canvas.style.height='100%';
+  let ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  let W=box.clientWidth,H=box.clientHeight,left=66,right=26,top=28,base=H-42,max=Math.max(cur.total,prev?prev.total:0,1)*1.16;
+  ctx.clearRect(0,0,W,H);ctx.strokeStyle='rgba(124,144,170,.28)';ctx.fillStyle='#eaf2ff';ctx.font='14px -apple-system';
+  for(let i=0;i<=5;i++){let y=base-(base-top)*i/5;ctx.beginPath();ctx.setLineDash([2,3]);ctx.moveTo(left,y);ctx.lineTo(W-right,y);ctx.stroke();ctx.setLineDash([]);ctx.fillText(money(max*i/5).replace('.00',''),8,y+4)}
+  ctx.strokeStyle='#52657e';ctx.beginPath();ctx.moveTo(left,base);ctx.lineTo(W-right,base);ctx.stroke();
+  let bw=Math.min(230,(W-left-right)*.25),x1=left+(W-left-right)*.28,x2=left+(W-left-right)*.73;
+  function bar(x,val,label,color,color2){let bh=(base-top)*(val/max);let g=ctx.createLinearGradient(0,base-bh,0,base);g.addColorStop(0,color);g.addColorStop(1,color2);ctx.fillStyle=g;ctx.fillRect(x-bw/2,base-bh,bw,bh);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 15px -apple-system';ctx.fillText(money(val),x,base-bh-10);ctx.font='14px -apple-system';ctx.fillStyle='#dce6f3';ctx.fillText(label,x,base+27);ctx.textAlign='left'}
+  bar(x1,cur.total,labelMonth(cur.month),'#22c55e','#1fb451');
+  bar(x2,prev?prev.total:0,prev?labelMonth(prev.month):'Last Saved','#2196f3','#168ee8');
+}
+function renderMonthPicker(){
+  let sel=$('monthPicker'),opts=[];
+  for(let off=-12;off<=12;off++){let d=new Date(today.getFullYear(),today.getMonth()+off,1),k=monthKey(d);opts.push(`<option value="${k}" ${k===data.selectedMonth?'selected':''}>📅 ${labelMonth(k)}</option>`)}
+  sel.innerHTML=opts.join('');
+}
+function renderHistory(){
+  let rows=[...history()].sort((a,b)=>String(b.receiptId||b.savedAt||b.month).localeCompare(String(a.receiptId||a.savedAt||a.month))).map(m=>{let title=data.mode==='eatout'?(m.bills?.eventName||'Receipt')+' — '+(m.savedAt?new Date(m.savedAt).toLocaleString():labelMonth(m.month)):labelMonth(m.month);return `<tr><td>${esc(title)}${data.mode!=='eatout'&&m.month===data.selectedMonth?' (Current)':''}${m.finalized?' ✓':''}</td><td style="color:${m.month===data.selectedMonth?'var(--green)':'white'}">${money(m.total)}</td><td>${data.mode!=='eatout'&&m.month===data.selectedMonth?'<span class="pill">Current</span>':`<button class="btn small" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`}</td></tr>`}).join('');
+  $('historyRows').innerHTML=rows||'<tr><td colspan="3" class="note">No saved history for this tab yet.</td></tr>';
+}
+function viewMonth(k,rid=''){
+  let rec=history().find(r=>rid?(r.receiptId===rid):(r.month===k));if(!rec)return;
+  data.selectedMonth=k;
+  setPeople([...(rec.people||[])]);
+  if(!data.monthDrafts[data.mode])data.monthDrafts[data.mode]={};
+  data.monthDrafts[data.mode][k]=JSON.parse(JSON.stringify(rec.bills||{}));
+  persist();renderMode();renderAll();
+}
+function resetBills(){
+  if(data.mode==='analytics')return;
+  if(isFinalized()){alert('This month is finalized and locked.');return}
+  let msg=data.mode==='eatout'
+    ? 'Start a new Eat Out split? This clears the current receipt, people list, items, totals, and message review. Previous saved splits stay saved.'
+    : 'Reset current month? This clears variable bill amounts and one-time extra bills, but keeps people, permanent bills, fixed monthly bills, and split settings.';
+  if(!confirm(msg))return;
+  if(data.mode==='household'){
+    saveDraft();
+    let d=currentDraft();
+    let keep=(Array.isArray(d.permanentBills)&&d.permanentBills.length?d.permanentBills:householdTemplate());
+    d.permanentBills=keep.map(b=>{
+      b=normalizeBill(b);
+      return {...b,amount:b.fixed?parseMoney(b.fixedAmount):0};
+    });
+    d.extras=[];
+    saveHouseholdChoices();
+    persist();
+  }else if(data.mode==='eatout'){data.monthDrafts[data.mode][data.selectedMonth]={extras:[],items:[],subtotal:0,tax:0,tip:0,discount:0,eventName:'',orderNote:'',splitMode:'itemized'};data.people.eatout=[];data.eatoutMessageMode='payment';}
+  else data.monthDrafts[data.mode][data.selectedMonth]={extras:[]};
+  renderMode();renderAll();
+}
+
+
+function analyticsRecords(){
+  let mode=(data.mode==='analytics'?'household':data.mode);
+  return [...(data.history[mode]||[])].sort((a,b)=>String(a.month||a.savedAt||'').localeCompare(String(b.month||b.savedAt||'')));
+}
+function analyticsSummary(records=analyticsRecords()){
+  let totals=records.map(r=>parseMoney(r.total));
+  let avg=totals.length?totals.reduce((a,b)=>a+b,0)/totals.length:0;
+  let hi=records.length?records[totals.indexOf(Math.max(...totals))]:null;
+  let lo=records.length?records[totals.indexOf(Math.min(...totals))]:null;
+  let latest=records.at(-1)||null, prev=records.length>1?records.at(-2):null;
+  let deltas=[];
+  for(let i=1;i<records.length;i++)deltas.push({from:records[i-1],to:records[i],change:parseMoney(records[i].total)-parseMoney(records[i-1].total)});
+  let inc=deltas.length?[...deltas].sort((a,b)=>b.change-a.change)[0]:null;
+  let dec=deltas.length?[...deltas].sort((a,b)=>a.change-b.change)[0]:null;
+  let variance=totals.length?totals.reduce((a,b)=>a+Math.pow(b-avg,2),0)/totals.length:0;
+  let std=Math.sqrt(variance);
+  let latestDelta=(latest&&prev)?parseMoney(latest.total)-parseMoney(prev.total):0;
+  return {totals,avg,hi,lo,latest,prev,deltas,inc,dec,std,latestDelta};
+}
+function billStats(records=analyticsRecords()){
+  let names=[...new Set(records.flatMap(r=>[...(r.bills?.permanentBills||[]),...(r.bills?.extras||[])].map(b=>b.name)))];
+  return names.map(name=>{
+    let vals=records.map(r=>{
+      let all=[...(r.bills?.permanentBills||[]),...(r.bills?.extras||[])];
+      return parseMoney(all.find(b=>b.name===name)?.amount);
+    });
+    let nonzero=vals.filter(v=>v>0);
+    if(!nonzero.length)return null;
+    let avg=nonzero.reduce((a,b)=>a+b,0)/nonzero.length;
+    let first=vals.find(v=>v>0)||0;
+    let last=[...vals].reverse().find(v=>v>0)||0;
+    return {name,avg,highest:Math.max(...nonzero),lowest:Math.min(...nonzero),first,last,change:last-first};
+  }).filter(Boolean).sort((a,b)=>Math.abs(b.change)-Math.abs(a.change));
+}
+
+function billAmountMap(rec){
+  let map={};
+  let all=[...(rec?.bills?.permanentBills||[]),...(rec?.bills?.extras||[])];
+  all.forEach(b=>{let name=String(b.name||'Unnamed Bill');map[name]=(map[name]||0)+parseMoney(b.amount)});
+  return map;
+}
+function billImpactRows(cur,prev){
+  if(!cur||!prev)return [];
+  let cm=billAmountMap(cur), pm=billAmountMap(prev), keys=[...new Set([...Object.keys(cm),...Object.keys(pm)])];
+  return keys.map(k=>({name:k,current:cm[k]||0,previous:pm[k]||0,change:(cm[k]||0)-(pm[k]||0)})).sort((a,b)=>Math.abs(b.change)-Math.abs(a.change));
+}
+function monthWhyText(cur,prev){
+  if(!cur||!prev)return 'Need at least two saved months to explain the change.';
+  let totalChange=parseMoney(cur.total)-parseMoney(prev.total), pct=parseMoney(prev.total)?totalChange/parseMoney(prev.total)*100:0;
+  let rows=billImpactRows(cur,prev), main=rows.filter(r=>Math.abs(r.change)>=0.005).slice(0,3);
+  let direction=totalChange>0?'higher':totalChange<0?'lower':'unchanged';
+  let lines=[`${labelMonth(cur.month)} was ${direction} than ${labelMonth(prev.month)} by ${(totalChange>=0?'+':'')}${money(totalChange)} (${(pct>=0?'+':'')}${pct.toFixed(1)}%).`];
+  if(main.length){
+    lines.push('Main driver'+(main.length>1?'s':'')+':');
+    main.forEach(r=>{
+      if(r.previous<=0&&r.current>0)lines.push(`• ${r.name} was added at ${money(r.current)}.`);
+      else if(r.previous>0&&r.current<=0)lines.push(`• ${r.name} was not charged this month (${money(r.previous)} removed).`);
+      else lines.push(`• ${r.name} changed ${(r.change>=0?'+':'')}${money(r.change)} (${money(r.previous)} → ${money(r.current)}).`);
+    });
+  }else lines.push('No bill-level movement was detected. The saved totals were effectively the same.');
+  return lines.join('\n');
+}
+function impactTableHTML(records){
+  if(records.length<2)return '<div class="note">Need at least two saved months to show bill impact.</div>';
+  let cur=records.at(-1), prev=records.at(-2), rows=billImpactRows(cur,prev), max=Math.max(...rows.map(r=>Math.abs(r.change)),1);
+  let body=rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${money(r.previous)}</td><td>${money(r.current)}</td><td class="${r.change>0?'metricUp':r.change<0?'metricDown':'metricFlat'}">${r.change>=0?'+':''}${money(r.change)}</td><td><div class="impactBar"><div class="impactFill ${r.change<0?'down':''}" style="width:${Math.max(4,Math.abs(r.change)/max*100)}%"></div></div></td></tr>`).join('');
+  return `<div class="whyBox"><div class="whyTitle">Why ${labelMonth(cur.month)} changed</div><div class="whySmall">${monthWhyText(cur,prev).replace(/\n/g,'<br>')}</div></div><table class="analyticsTable"><tr><th>Bill</th><th>${labelMonth(prev.month)}</th><th>${labelMonth(cur.month)}</th><th>Impact</th><th>Size</th></tr>${body}</table>`;
+}
+
+function eatOutPersonReasonHTML(rec){
+  let bd=eatOutBreakdown(rec), ps=bd.ps;
+  if(!ps.length)return '<div class="note">Add people and assign receipt items to build person-level insight.</div>';
+  let fees=parseMoney(bd.service), totals=bd.totals||{};
+  let assignedFood=ps.reduce((sum,p)=>sum+(bd.personFood[p]||0),0);
+  let ranked=[...ps].map(p=>{
+    let direct=bd.personFood[p]||0;
+    let feeShare=assignedFood?fees*(direct/assignedFood):0;
+    let total=parseMoney(totals[p]);
+    let lines=bd.personLines[p]||[];
+    let top=[...lines].sort((a,b)=>parseMoney(b.amount)-parseMoney(a.amount)).slice(0,3);
+    return {name:p,direct,feeShare,total,lines,top,count:lines.length};
+  }).sort((a,b)=>b.total-a.total);
+  let max=Math.max(...ranked.map(x=>x.total),1);
+  let avg=ranked.reduce((a,b)=>a+b.total,0)/(ranked.length||1);
+  let rows=ranked.map(x=>{
+    let why=[];
+    if(x.count) why.push(`${x.count} assigned item${x.count===1?'':'s'}`); else why.push('no assigned priced items');
+    if(x.top.length) why.push('largest: '+x.top.map(t=>`${t.name} ${money(t.amount)}`).join(', '));
+    if(Math.abs(x.feeShare)>0.004) why.push(`tax/fees share ${money(x.feeShare)}`);
+    let diff=x.total-avg;
+    return `<tr><td><b>${esc(x.name)}</b></td><td>${money(x.direct)}</td><td>${money(x.feeShare)}</td><td><b>${money(x.total)}</b></td><td><div class="impactBar"><div class="impactFill" style="width:${Math.max(4,x.total/max*100)}%"></div></div></td><td class="whySmall">${esc(why.join(' • '))}${Math.abs(diff)>.004?`<br><span class="${diff>0?'metricUp':'metricDown'}">${diff>0?'+':''}${money(diff)} vs group average</span>`:''}</td></tr>`;
+  }).join('');
+  let high=ranked[0], low=ranked.at(-1);
+  let summary=high?`${high.name} pays the most because ${high.count?('they were assigned '+high.count+' priced item'+(high.count===1?'':'s')):'they have the largest allocated share'}. ${low&&low!==high?low.name+' pays the least at '+money(low.total)+'.':''}`:'No split result yet.';
+  return `<div class="whyBox"><div class="whyTitle">Why people paid different amounts</div><div class="whySmall">${esc(summary)}</div></div><table class="analyticsTable"><tr><th>Person</th><th>Assigned Items</th><th>Tax/Fee Share</th><th>Total Due</th><th>Size</th><th>Reason</th></tr>${rows}</table>`;
+}
+function eatOutItemImpactHTML(rec){
+  let bd=eatOutBreakdown(rec), rows=[];
+  (bd.billable||[]).forEach(i=>{
+    let group=(i.people&&i.people.length)?i.people:[];
+    rows.push({name:receiptItemLabel(i),amount:parseMoney(i.amount),people:group.join(', ')||'Unassigned',share:group.length?parseMoney(i.amount)/group.length:0,type:i.type||'standalone'});
+  });
+  rows.sort((a,b)=>b.amount-a.amount);
+  if(!rows.length)return '<div class="note">No priced receipt items to analyze yet.</div>';
+  let max=Math.max(...rows.map(r=>r.amount),1);
+  return `<table class="analyticsTable"><tr><th>Item</th><th>Item Price</th><th>Assigned To</th><th>Per-Person Share</th><th>Impact</th></tr>${rows.map(r=>`<tr><td>${esc(r.name)}${r.type==='combo'?' <span class="pill">Combo</span>':''}</td><td>${money(r.amount)}</td><td>${esc(r.people)}</td><td>${r.share?money(r.share):'—'}</td><td><div class="impactBar"><div class="impactFill" style="width:${Math.max(4,r.amount/max*100)}%"></div></div></td></tr>`).join('')}</table>`;
+}
+function eatOutAnalyticsText(rec=record()){
+  let bd=eatOutBreakdown(rec), ps=bd.ps;
+  if(!ps.length)return 'No Eat Out people yet.';
+  let ranked=[...ps].map(p=>({name:p,total:parseMoney(rec.personTotals?.[p]),items:bd.personLines[p]||[],food:bd.personFood[p]||0})).sort((a,b)=>b.total-a.total);
+  let lines=['Eat Out Analytics','────────────────────','Total: '+money(rec.total),'Split method: '+((rec.bills||{}).splitMode==='even'?'Even Split':'Itemized'),''];
+  if(ranked[0])lines.push('Highest payer: '+ranked[0].name+' at '+money(ranked[0].total));
+  if(ranked.at(-1))lines.push('Lowest payer: '+ranked.at(-1).name+' at '+money(ranked.at(-1).total));
+  lines.push('Tax/fees/discount pool: '+money(bd.service));
+  lines.push('');
+  ranked.forEach(p=>{
+    let top=[...p.items].sort((a,b)=>parseMoney(b.amount)-parseMoney(a.amount)).slice(0,2).map(i=>i.name+' '+money(i.amount)).join(', ');
+    lines.push(p.name+': '+money(p.total)+' — '+(p.items.length?p.items.length+' item(s) assigned'+(top?' | '+top:''):'no assigned items'));
+  });
+  return lines.join('\n');
+}
+function renderEatOutAnalyticsMode(){
+  $('fields').innerHTML=subViewTabsHTML()+'<div class="analyticsBox" id="analyticsContent"></div>';
+  $('compareControls').classList.add('hidden');
+  $('calc').textContent='↻ Refresh';$('saveMonth').textContent='▣ Save Split';$('resetBills').textContent='📋 Copy Insights';$('finalizeMonth').textContent='⇩ Export CSV';
+  $('calc').className='btn green';$('saveMonth').className='btn blue';$('resetBills').className='btn';$('finalizeMonth').className='btn orange';
+  $('calc').disabled=false;$('saveMonth').disabled=false;$('resetBills').disabled=false;$('finalizeMonth').disabled=false;
+  $('calc').onclick=()=>{renderMode();renderAll(true)};$('saveMonth').onclick=saveMonth;$('resetBills').onclick=()=>copyMessage(eatOutAnalyticsText(record()));$('finalizeMonth').onclick=exportAnalyticsCSV;
+  let rec=record(), bd=eatOutBreakdown(rec), ps=bd.ps, totals=rec.personTotals||{};
+  $('output').value=eatOutAnalyticsText(rec);
+  if(!ps.length){$('analyticsContent').innerHTML='<div class="note">Add people and receipt items first.</div>';return;}
+  let ranked=[...ps].map(p=>({name:p,total:parseMoney(totals[p]),items:(bd.personLines[p]||[]).length,food:bd.personFood[p]||0})).sort((a,b)=>b.total-a.total);
+  let avg=ranked.reduce((a,b)=>a+b.total,0)/(ranked.length||1), high=ranked[0], low=ranked.at(-1);
+  $('analyticsContent').innerHTML=`
+    <div class="analyticsGrid">
+      <div class="analyticsTile"><div class="note">Receipt Total</div><b>${money(rec.total)}</b><div>${esc((rec.bills||{}).eventName||'Current receipt')}</div></div>
+      <div class="analyticsTile"><div class="note">Highest Payer</div><b>${esc(high.name)}</b><div>${money(high.total)}</div></div>
+      <div class="analyticsTile"><div class="note">Group Average</div><b>${money(avg)}</b><div>${ps.length} people</div></div>
+    </div>
+    <h3>Person Payment Chart</h3>
+    <div class="note">The chart above compares each person’s total due. Higher bars usually mean more assigned item cost or a larger share of tax/fees.</div>
+    <h3>Person-Level Explanation</h3>
+    ${eatOutPersonReasonHTML(rec)}
+    <h3>Item Impact Breakdown</h3>
+    ${eatOutItemImpactHTML(rec)}
+    <h3>Receipt Cost Components</h3>
+    <table class="analyticsTable"><tr><th>Component</th><th>Amount</th><th>How it affects split</th></tr>
+      <tr><td>Subtotal / Priced Items</td><td>${money((rec.bills||{}).subtotal||bd.food)}</td><td>Assigned by checked item names in itemized mode, or split evenly in even mode.</td></tr>
+      <tr><td>Tax & Fees</td><td>${money((rec.bills||{}).tax)}</td><td>Allocated proportionally based on each person’s assigned item subtotal.</td></tr>
+      <tr><td>Tip</td><td>${money((rec.bills||{}).tip)}</td><td>Allocated proportionally based on each person’s assigned item subtotal.</td></tr>
+      <tr><td>Discount</td><td>${moneySignedDiscount((rec.bills||{}).discount)}</td><td>Reduces each person proportionally based on assigned item subtotal.</td></tr>
+    </table>`;
+}
+
+function analyticsInsightsText(){
+  let records=analyticsRecords(), s=analyticsSummary(records), stats=billStats(records), names=selectedAnalyticsPeople(), pstats=analyticsPersonStats(records,names);
+  if(!records.length)return 'No '+tabName()+' history yet. Save entries to build analytics.';
+  let lines=[];
+  lines.push(tabName()+' Analytics');
+  lines.push('────────────────────');
+  lines.push('Months analyzed: '+records.length);
+  if(names.length){
+    lines.push('Individual mode: '+names.join(', '));
+    pstats.forEach(p=>lines.push(p.name+': latest '+money(p.latest)+', average '+money(p.avg)+', change '+(p.change>=0?'+':'')+money(p.change)));
+  }
+  lines.push('Average monthly cost: '+money(s.avg));
+  lines.push('Highest month: '+money(s.hi.total)+' ('+labelMonth(s.hi.month)+')');
+  lines.push('Lowest month: '+money(s.lo.total)+' ('+labelMonth(s.lo.month)+')');
+  if(s.latest&&s.prev){
+    let pct=s.prev.total?s.latestDelta/s.prev.total*100:0;
+    lines.push('Latest month change: '+(s.latestDelta>=0?'+':'')+money(s.latestDelta)+' ('+(pct>=0?'+':'')+pct.toFixed(2)+'%) vs '+labelMonth(s.prev.month));
+    lines.push('');
+    lines.push('Why it changed:');
+    lines.push(monthWhyText(s.latest,s.prev));
+  }
+  if(s.inc)lines.push('Largest increase: '+money(s.inc.change)+' from '+labelMonth(s.inc.from.month)+' to '+labelMonth(s.inc.to.month));
+  if(s.dec)lines.push('Largest decrease: '+money(s.dec.change)+' from '+labelMonth(s.dec.from.month)+' to '+labelMonth(s.dec.to.month));
+  if(stats[0])lines.push('Largest bill change: '+stats[0].name+' '+(stats[0].change>=0?'+':'')+money(stats[0].change));
+  return lines.join('\n');
+}
+function exportAnalyticsCSV(){
+  let records=analyticsRecords();
+  let names=[...new Set(records.flatMap(r=>[...(r.bills?.permanentBills||[]),...(r.bills?.extras||[])].map(b=>b.name)))];
+  let selected=selectedAnalyticsPeople();
+  let rows=[['Month','Total',...names,...selected.map(n=>'Person: '+n)]];
+  records.forEach(r=>{
+    let all=[...(r.bills?.permanentBills||[]),...(r.bills?.extras||[])];
+    rows.push([labelMonth(r.month),money(r.total),...names.map(n=>money(parseMoney(all.find(b=>b.name===n)?.amount))),...selected.map(n=>money(personValueForRecord(r,n)))]);
+  });
+  let csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  let blob=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=data.mode+'-analytics.csv';a.click();URL.revokeObjectURL(a.href);
+}
+function exportAnalyticsJSON(){
+  let obj={exportedAt:new Date().toISOString(),summary:analyticsSummary(),billStats:billStats(),records:analyticsRecords()};
+  let blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=data.mode+'-analytics.json';a.click();URL.revokeObjectURL(a.href);
+}
+
+function selectedAnalyticsPeople(){
+  return analyticsPeopleForMode().map(p=>String(p).trim()).filter(Boolean);
+}
+function personValueForRecord(rec,name){
+  let pt=rec&&rec.personTotals?rec.personTotals:{};
+  let key=Object.keys(pt).find(k=>k.toLowerCase()===String(name).toLowerCase());
+  return parseMoney(key?pt[key]:0);
+}
+function analyticsPersonStats(records=analyticsRecords(),names=selectedAnalyticsPeople()){
+  return names.map(name=>{
+    let vals=records.map(r=>personValueForRecord(r,name));
+    let paid=vals.filter(v=>v>0);
+    let avg=paid.length?paid.reduce((a,b)=>a+b,0)/paid.length:0;
+    let latest=vals.length?vals.at(-1):0, prev=vals.length>1?vals.at(-2):0;
+    return {name,vals,avg,latest,prev,change:latest-prev,total:vals.reduce((a,b)=>a+b,0),monthsPaid:paid.length};
+  });
+}
+function analyticsModeLabel(){return selectedAnalyticsPeople().length?'Individual Payments':'Household Total'}
+function drawAnalyticsChart(records=analyticsRecords()){
+  let canvas=$('chart'),box=canvas.parentElement,dpr=devicePixelRatio||1;
+  if(data.view==='analytics'&&data.mode==='eatout'){
+    let rec=record(), ps=people(), totals=rec.personTotals||{};
+    canvas.width=box.clientWidth*dpr;canvas.height=box.clientHeight*dpr;canvas.style.width='100%';canvas.style.height='100%';
+    let ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+    let W=box.clientWidth,H=box.clientHeight,left=70,right=28,top=32,base=H-64;ctx.clearRect(0,0,W,H);
+    ctx.font='13px -apple-system';ctx.fillStyle='#dce6f3';
+    if(!ps.length){ctx.fillText('Add people and assign items to build an Eat Out payment chart.',left,top+20);return;}
+    let vals=ps.map(p=>parseMoney(totals[p]));let max=Math.max(...vals,1);
+    ctx.strokeStyle='rgba(124,144,170,.28)';
+    for(let i=0;i<=5;i++){let y=base-(base-top)*i/5, val=max*i/5;ctx.beginPath();ctx.setLineDash([2,3]);ctx.moveTo(left,y);ctx.lineTo(W-right,y);ctx.stroke();ctx.setLineDash([]);ctx.textAlign='right';ctx.fillStyle='#dce6f3';ctx.fillText(money(val).replace('.00',''),left-10,y+4)}
+    ctx.strokeStyle='#52657e';ctx.beginPath();ctx.moveTo(left,base);ctx.lineTo(W-right,base);ctx.stroke();
+    let gap=12, avail=W-left-right, bw=Math.max(24,Math.min(74,(avail-gap*(ps.length-1))/(ps.length||1)));
+    ps.forEach((p,i)=>{let x=left+i*(avail/(ps.length||1))+avail/(ps.length||1)/2, v=vals[i], h=(base-top)*(v/max);let g=ctx.createLinearGradient(0,base-h,0,base);g.addColorStop(0,'#22c55e');g.addColorStop(1,'#0e5cf2');ctx.fillStyle=g;ctx.fillRect(x-bw/2,base-h,bw,h);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 12px -apple-system';ctx.fillText(money(v),x,Math.max(top+12,base-h-8));ctx.font='12px -apple-system';ctx.fillStyle='#dce6f3';let name=String(p);ctx.fillText(name.length>9?name.slice(0,8)+'…':name,x,base+24);});
+    return;
+  }
+  canvas.width=box.clientWidth*dpr;canvas.height=box.clientHeight*dpr;canvas.style.width='100%';canvas.style.height='100%';
+  let ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  let W=box.clientWidth,H=box.clientHeight,left=72,right=28,top=34,base=H-54;
+  ctx.clearRect(0,0,W,H);ctx.font='13px -apple-system';ctx.fillStyle='#dce6f3';
+  if(!records.length){ctx.fillText('Save '+tabName()+' records to build a trend chart.',left,top+20);return;}
+  let names=selectedAnalyticsPeople();
+  let series=names.length?analyticsPersonStats(records,names).map(x=>({name:x.name,vals:x.vals})):[{name:tabName()+' total',vals:records.map(r=>parseMoney(r.total))}];
+  let allVals=series.flatMap(s=>s.vals);
+  let min=Math.min(...allVals,0), max=Math.max(...allVals,1); let pad=(max-min)*.15||50; min=Math.max(0,min-pad); max=max+pad;
+  ctx.strokeStyle='rgba(124,144,170,.28)';ctx.fillStyle='#eaf2ff';
+  for(let i=0;i<=5;i++){let y=base-(base-top)*i/5, val=min+(max-min)*i/5;ctx.beginPath();ctx.setLineDash([2,3]);ctx.moveTo(left,y);ctx.lineTo(W-right,y);ctx.stroke();ctx.setLineDash([]);ctx.textAlign='right';ctx.fillText(money(val).replace('.00',''),left-10,y+4)}
+  ctx.strokeStyle='#52657e';ctx.beginPath();ctx.moveTo(left,base);ctx.lineTo(W-right,base);ctx.stroke();
+  let x=i=>records.length===1?(left+W-right)/2:left+(W-left-right)*i/(records.length-1);
+  let y=v=>base-(base-top)*(v-min)/(max-min);
+  const colors=['#22c55e','#2196f3','#f59e0b','#8b5cf6','#ff5b57','#14b8a6','#e879f9','#a3e635'];
+  series.forEach((ser,si)=>{
+    ctx.strokeStyle=colors[si%colors.length];ctx.lineWidth=names.length?2.4:3;ctx.beginPath();
+    ser.vals.forEach((v,i)=>{let px=x(i),py=y(v);i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();
+    ser.vals.forEach((v,i)=>{let px=x(i),py=y(v);ctx.fillStyle=colors[si%colors.length];ctx.beginPath();ctx.arc(px,py,names.length?3.5:5,0,Math.PI*2);ctx.fill();});
+  });
+  if(!names.length && records.length>=3){
+    let vals=series[0].vals;ctx.strokeStyle='#2196f3';ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();
+    vals.forEach((v,i)=>{let start=Math.max(0,i-2),avg=vals.slice(start,i+1).reduce((a,b)=>a+b,0)/(i-start+1),px=x(i),py=y(avg);i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();ctx.setLineDash([]);
+  }
+  ctx.font='12px -apple-system';ctx.textAlign='center';ctx.fillStyle='#dce6f3';records.forEach((r,i)=>ctx.fillText(labelMonth(r.month).replace(' 20',' \''),x(i),base+24));
+  ctx.textAlign='left';ctx.font='12px -apple-system';let lx=left,ly=top-12;
+  series.forEach((ser,si)=>{ctx.fillStyle=colors[si%colors.length];ctx.fillText('● '+ser.name,lx,ly);lx+=Math.min(160,ctx.measureText('● '+ser.name).width+22);if(lx>W-170){lx=left;ly+=16;}});
+  if(!names.length&&records.length>=3){ctx.fillStyle='#2196f3';ctx.fillText('– 3-month moving average',lx,ly)}
+}
+
+function renderAnalyticsMode(){
+  if(data.mode==='eatout'){renderEatOutAnalyticsMode();return;}
+  $('fields').innerHTML=subViewTabsHTML()+'<div class="analyticsBox" id="analyticsContent"></div>';
+  $('compareControls').classList.add('hidden');
+  $('calc').disabled=false;$('saveMonth').disabled=false;$('resetBills').disabled=false;$('finalizeMonth').disabled=false;
+  $('calc').textContent='⇧ Export Analytics';$('saveMonth').textContent='⇩ Export CSV';$('resetBills').textContent='📋 Copy Insights';$('finalizeMonth').textContent='↻ Refresh';
+  $('calc').className='btn green';$('saveMonth').className='btn blue';$('resetBills').className='btn';$('finalizeMonth').className='btn orange';
+  $('calc').onclick=exportAnalyticsJSON;$('saveMonth').onclick=exportAnalyticsCSV;$('resetBills').onclick=()=>copyMessage(analyticsInsightsText());$('finalizeMonth').onclick=()=>{renderMode();renderAll(true)};
+  $('output').value=analyticsInsightsText();
+  let records=analyticsRecords(), names=selectedAnalyticsPeople();
+  if(!records.length){
+    $('analyticsContent').innerHTML='<div class="note">No '+tabName()+' history yet. Save entries in this tab first.</div>';
+    return;
+  }
+  let s=analyticsSummary(records), stats=billStats(records), personStats=analyticsPersonStats(records,names);
+  let latestPct=s.prev&&s.prev.total?s.latestDelta/s.prev.total*100:0;
+  let latestClass=s.latestDelta>0?'metricUp':s.latestDelta<0?'metricDown':'metricFlat';
+  let trend=records.map((r,i)=>{let prev=i?records[i-1]:null,chg=prev?parseMoney(r.total)-parseMoney(prev.total):0,pct=prev&&prev.total?chg/prev.total*100:0,cls=chg>0?'metricUp':chg<0?'metricDown':'metricFlat';return `<tr><td>${labelMonth(r.month)}${r.finalized?' ✓':''}</td><td>${money(r.total)}</td><td class="${cls}">${i?((chg>=0?'+':'')+money(chg)+' / '+(pct>=0?'+':'')+pct.toFixed(1)+'%'):'—'}</td></tr>`}).join('');
+  let billRows=stats.map(x=>`<tr><td>${esc(x.name)}</td><td>${money(x.avg)}</td><td>${money(x.highest)}</td><td>${money(x.lowest)}</td><td class="${x.change>0?'metricUp':x.change<0?'metricDown':'metricFlat'}">${x.change>=0?'+':''}${money(x.change)}</td></tr>`).join('');
+  $('analyticsContent').innerHTML=`
+    <div class="analyticsGrid">
+      <div class="analyticsTile"><div class="note">Average Saved Total</div><b>${money(s.avg)}</b><div>${records.length} month${records.length===1?'':'s'} analyzed</div></div>
+      <div class="analyticsTile"><div class="note">Latest Month</div><b>${money(s.latest.total)}</b><div>${labelMonth(s.latest.month)}</div></div>
+      <div class="analyticsTile"><div class="note">Latest Change</div><b class="${latestClass}">${s.prev?(s.latestDelta>=0?'+':'')+money(s.latestDelta):'—'}</b><div>${s.prev?(latestPct>=0?'+':'')+latestPct.toFixed(2)+'% vs '+labelMonth(s.prev.month):'Need 2 months'}</div></div>
+    </div>
+    ${names.length?`<h3>Individual Payment Mode</h3><table class="analyticsTable"><tr><th>Name</th><th>Average Paid</th><th>Latest Paid</th><th>Latest Change</th><th>Months Found</th></tr>${personStats.map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.avg)}</td><td>${money(p.latest)}</td><td class="${p.change>0?'metricUp':p.change<0?'metricDown':'metricFlat'}">${p.change>=0?'+':''}${money(p.change)}</td><td>${p.monthsPaid}/${records.length}</td></tr>`).join('')}</table>`:''}
+    <div class="analyticsMiniGrid">
+      <div class="analyticsTile"><div class="note">Highest Month</div><b>${money(s.hi.total)}</b><div>${labelMonth(s.hi.month)}</div></div>
+      <div class="analyticsTile"><div class="note">Lowest Month</div><b>${money(s.lo.total)}</b><div>${labelMonth(s.lo.month)}</div></div>
+      <div class="analyticsTile"><div class="note">Largest Increase</div><b class="metricUp">${s.inc?money(s.inc.change):'—'}</b><div>${s.inc?labelMonth(s.inc.from.month)+' → '+labelMonth(s.inc.to.month):'Need 2 months'}</div></div>
+      <div class="analyticsTile"><div class="note">Largest Decrease</div><b class="metricDown">${s.dec?money(s.dec.change):'—'}</b><div>${s.dec?labelMonth(s.dec.from.month)+' → '+labelMonth(s.dec.to.month):'Need 2 months'}</div></div>
+    </div>
+    <h3>Key Insights</h3>
+    <ul class="insightList">
+      <li>Monthly average is <b>${money(s.avg)}</b>; normal month-to-month swing is about <b>${money(s.std)}</b>.</li>
+      <li>${s.latestDelta>0?'Latest month increased':s.latestDelta<0?'Latest month decreased':'Latest month is flat'} ${s.prev?'by <b>'+money(Math.abs(s.latestDelta))+'</b> compared with '+labelMonth(s.prev.month):'after the first saved month'}.</li>
+      <li>${stats[0]?'Biggest bill movement is <b>'+esc(stats[0].name)+'</b> at '+(stats[0].change>=0?'+':'')+money(stats[0].change)+'.':'More bill detail will appear after saved months include bills.'}</li>
+    </ul>
+    <h3>Bill Impact Breakdown</h3>
+    ${impactTableHTML(records)}
+    <h3>Month-over-Month Change %</h3>
+    <table class="analyticsTable"><tr><th>Month</th><th>Total</th><th>Dollar Change</th><th>Percent Change</th></tr>${records.map((r,i)=>{let prev=i?records[i-1]:null,chg=prev?parseMoney(r.total)-parseMoney(prev.total):0,pct=prev&&prev.total?chg/prev.total*100:0,cls=chg>0?'metricUp':chg<0?'metricDown':'metricFlat';return `<tr><td>${labelMonth(r.month)}${r.finalized?' ✓':''}</td><td>${money(r.total)}</td><td class="${cls}">${i?((chg>=0?'+':'')+money(chg)):'—'}</td><td class="${cls}">${i?((pct>=0?'+':'')+pct.toFixed(1)+'%'):'—'}</td></tr>`}).join('')}</table>
+    <h3>Monthly Trend Table</h3>
+    <table class="analyticsTable"><tr><th>Month</th><th>Total</th><th>Change vs Previous</th></tr>${trend}</table>
+    <h3>Bill Movement</h3>
+    <table class="analyticsTable"><tr><th>Bill</th><th>Average</th><th>Highest</th><th>Lowest</th><th>First → Latest</th></tr>${billRows||'<tr><td colspan="5">No bill details yet.</td></tr>'}</table>`;
+}
+
+function renderEatOutDashboard(skipCalc=false){
+  $('compareControls').classList.add('hidden');
+  $('calc').disabled=false;$('saveMonth').disabled=false;$('resetBills').disabled=false;$('finalizeMonth').disabled=true;
+  $('saveMonth').textContent='▣ Save Split';$('resetBills').textContent='＋ New Split';
+  $('saveMonth').className='btn blue';$('resetBills').className='btn';
+  $('calc').onclick=()=>calculate(true);$('saveMonth').onclick=saveMonth;$('resetBills').onclick=resetBills;
+  let rec=record(), b=rec.bills||{}, ps=people();
+  let items=b.items||[], priced=items.filter(i=>i.type!=='included'), pricedTotal=priced.reduce((s,i)=>s+parseMoney(i.amount),0);
+  let unallocated=parseMoney(b.subtotal)-pricedTotal; if(Math.abs(unallocated)<=0.021)unallocated=0;
+  let combo=items.some(i=>i.type==='combo'||i.type==='included');
+  let panel=$('eatoutSummaryPanel');
+  if(!panel){panel=document.createElement('div');panel.id='eatoutSummaryPanel';panel.className='eatoutSidePanel';$('chartTitle').insertAdjacentElement('afterend',panel);}
+  $('chartTitle').textContent='Bill Summary';
+  let peopleRows=ps.map(p=>`<div class="eatoutPerson"><div><span class="eatoutAvatar">${esc((p||'?')[0].toUpperCase())}</span><b>${esc(p)}</b></div><b>${money(rec.personTotals?.[p]||0)}</b></div>`).join('')||'<div class="note">Add people to assign items and split the bill.</div>';
+  let saved=[...history()].sort((a,b)=>String(b.receiptId||b.savedAt||'').localeCompare(String(a.receiptId||a.savedAt||''))).slice(0,6);
+  let savedRows=saved.map(r=>`<tr><td>${esc(r.bills?.eventName||'Receipt')}<div class="note">${r.savedAt?new Date(r.savedAt).toLocaleString():''}</div></td><td>${money(r.total)}</td></tr>`).join('')||'<tr><td colspan="2" class="note">No saved receipts yet.</td></tr>';
+  let currentMsgMode=data.eatoutMessageMode||'payment';
+  let messageText=$('output').value||eatOutReviewText(rec,currentMsgMode);
+  panel.innerHTML=`<div class="eatoutSideCard"><div style="display:flex;justify-content:space-between;align-items:start;gap:14px"><h3>Total</h3><div class="eatoutTotal">${money(rec.total)}</div></div><div class="eatoutLine"><span>Subtotal</span><b>${money(b.subtotal||pricedTotal)}</b></div><div class="eatoutLine"><span>Priced items</span><b>${money(pricedTotal)}</b></div><div class="eatoutLine"><span>Tax & Fees</span><b>${money(b.tax)}</b></div><div class="eatoutLine"><span>Tip</span><b>${money(b.tip)}</b></div><div class="eatoutLine"><span>Discount</span><b>${moneySignedDiscount(b.discount)}</b></div><div class="eatoutLine"><span>Split method</span><b>${b.splitMode==='even'?'Even Split':'Itemized'}</b></div>${Math.abs(unallocated)>.004&&b.splitMode!=='even'?`<div class="receiptWarn">Subtotal and priced items do not match. Unallocated: <b>${money(unallocated)}</b>. Use <b>Divide Bill Evenly</b> or fix missing item prices.</div>`:''}${combo?'<div class="eatoutComboNotice">✨ Combo mode active. Included rows display on the receipt but do not add extra cost.</div>':''}</div><div class="eatoutSideCard"><h3>Split Result</h3>${peopleRows}</div><div class="eatoutSideCard"><h3>Message Review</h3><div class="messageTabs"><button data-msgmode="payment" class="${currentMsgMode==='payment'?'active':''}" onclick="setEatOutMessageMode('payment')">Payment Request</button><button data-msgmode="detailed" class="${currentMsgMode==='detailed'?'active':''}" onclick="setEatOutMessageMode('detailed')">Detailed Review</button><button data-msgmode="individual" class="${currentMsgMode==='individual'?'active':''}" onclick="setEatOutMessageMode('individual')">Individual</button></div><textarea id="eatoutReviewText" class="eatoutReviewBox" readonly>${esc(messageText)}</textarea><div class="reviewActions three"><button class="btn blue" onclick="copyEatOutReview()">Copy</button><button class="btn" onclick="calculate(false)">Refresh</button><button class="btn orange" onclick="setEatOutMessageMode('individual')">Per Person</button></div></div>${eatOutPreviousSplitHTML()}<div class="eatoutSideCard eatoutSaved"><h3>Saved Receipts</h3><table>${savedRows}</table></div>`;
+  if(!skipCalc)calculate(false);
+}
+
+function renderAll(skipCalc=false){
+  renderMonthPicker();renderPeople();
+  if(data.view==='analytics'){
+    $('compareControls').classList.add('hidden');
+    if(data.mode==='eatout'){
+      let rec=record(), bd=eatOutBreakdown(rec), ps=people(), ranked=ps.map(p=>({name:p,total:parseMoney(rec.personTotals?.[p]),items:(bd.personLines[p]||[]).length})).sort((a,b)=>b.total-a.total);
+      let avg=ranked.length?ranked.reduce((a,b)=>a+b.total,0)/ranked.length:0, high=ranked[0];
+      $('curBig').textContent=money(rec.total);$('curLabel').textContent='Current Receipt Total';
+      $('prevBig').textContent=high?money(high.total):'$0.00';$('prevLabel').textContent=high?'Highest Payer: '+high.name:'No Split Yet';
+      $('deltaText').textContent=money(avg);$('deltaPct').textContent='average due';$('arrow').textContent='';
+      drawAnalyticsChart([]);
+      $('currentDetail').innerHTML=ranked.length?`<div class="detailHead"><span style="color:var(--green)">Person Totals</span><span>${ranked.length} people</span></div><table>${ranked.map(p=>`<tr><td>${esc(p.name)} (${p.items} item${p.items===1?'':'s'})</td><td>${money(p.total)}</td></tr>`).join('')}</table>`:'<div class="hint">Add people and assign items to show person totals.</div>';
+      let items=(rec.bills?.items||[]).filter(i=>i.type!=='included').sort((a,b)=>parseMoney(b.amount)-parseMoney(a.amount)).slice(0,5);
+      $('lastDetail').innerHTML=items.length?`<div class="detailHead"><span style="color:var(--blue)">Largest Item Drivers</span><span>Top ${items.length}</span></div><table>${items.map(i=>`<tr><td>${esc(receiptItemLabel(i))}</td><td>${money(i.amount)}</td></tr>`).join('')}</table>`:'<div class="hint">Priced receipt items will appear here.</div>';
+      $('historyRows').innerHTML=history().slice().reverse().slice(0,8).map(r=>`<tr><td>${esc(r.bills?.eventName||'Receipt')}<div class="note">${r.savedAt?new Date(r.savedAt).toLocaleString():''}</div></td><td>${money(r.total)}</td><td></td></tr>`).join('')||'<tr><td colspan="3" class="note">Save Eat Out splits to build receipt history.</td></tr>';
+      return;
+    }
+    let records=analyticsRecords(), s=analyticsSummary(records), names=selectedAnalyticsPeople(), pstats=analyticsPersonStats(records,names);
+    if(names.length){
+      let latestTotal=pstats.reduce((a,b)=>a+b.latest,0), avgTotal=pstats.reduce((a,b)=>a+b.avg,0);
+      $('curBig').textContent=records.length?money(avgTotal):'$0.00';$('curLabel').textContent='Selected People Average';
+      $('prevBig').textContent=records.length?money(latestTotal):'$0.00';$('prevLabel').textContent=records.length?'Selected People Latest':tabName()+' History';
+    }else{
+      $('curBig').textContent=records.length?money(s.avg):'$0.00';$('curLabel').textContent='Average Monthly Cost';
+      $('prevBig').textContent=records.length?money(s.latest.total):'$0.00';$('prevLabel').textContent=records.length?'Latest Saved Entry':tabName()+' History';
+    }
+    if(s.latest&&s.prev){let pct=s.prev.total?s.latestDelta/s.prev.total*100:0;$('deltaText').textContent=(s.latestDelta>=0?'+':'')+money(s.latestDelta);$('deltaPct').textContent=(pct>=0?'+':'')+pct.toFixed(2)+'%';$('arrow').textContent=s.latestDelta>=0?'↑':'↓';}
+    else{$('deltaText').textContent=records.length?'Need another month':'No saved months';$('deltaPct').textContent='—';$('arrow').textContent='';}
+    drawAnalyticsChart(records);
+    $('currentDetail').innerHTML=records.length?(names.length?`<div class="detailHead"><span style="color:var(--green)">Individual Payment Trend</span><span>${names.length} selected</span></div><table>${pstats.map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.latest)} latest / ${money(p.avg)} avg</td></tr>`).join('')}</table>`:`<div class="detailHead"><span style="color:var(--green)">Trend Summary</span><span>${records.length} months</span></div><table><tr><td>Average</td><td>${money(s.avg)}</td></tr><tr><td>Highest</td><td>${money(s.hi.total)} — ${labelMonth(s.hi.month)}</td></tr><tr><td>Lowest</td><td>${money(s.lo.total)} — ${labelMonth(s.lo.month)}</td></tr><tr><td>Typical swing</td><td>${money(s.std)}</td></tr></table>`):'<div class="hint">Save entries in this tab to build analytics.</div>';
+    let stats=billStats(records).slice(0,5);
+    $('lastDetail').innerHTML=stats.length?`<div class="detailHead"><span style="color:var(--blue)">Top Bill Movers</span><span>First → Latest</span></div><table>${stats.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.change>=0?'+':''}${money(x.change)}</td></tr>`).join('')}</table>`:'<div class="hint">Bill movement appears after saved months include bill detail.</div>';
+    $('historyRows').innerHTML=records.slice().reverse().map(r=>`<tr><td>${labelMonth(r.month)}${r.finalized?' ✓':''}</td><td>${money(r.total)}</td><td></td></tr>`).join('')||'<tr><td colspan="3" class="note">Analytics uses saved history from this tab.</td></tr>';
+    return;
+  }
+  if(data.mode==='eatout'){renderEatOutDashboard(skipCalc);return;}
+  $('calc').disabled=false;$('saveMonth').disabled=false;$('resetBills').disabled=isFinalized();$('finalizeMonth').disabled=data.mode!=='household';
+  $('calc').textContent='▦ Calculate';$('saveMonth').textContent='▣ Save Month';$('resetBills').textContent='↻ Reset Current Month';$('finalizeMonth').textContent=isFinalized()?'🔓 Unlock Month':'✓ Finalize Month';
+  $('calc').className='btn green';$('saveMonth').className='btn blue';$('resetBills').className='btn';$('finalizeMonth').className='btn orange';
+  $('calc').onclick=()=>calculate(true);$('saveMonth').onclick=saveMonth;$('resetBills').onclick=resetBills;$('finalizeMonth').onclick=finalizeMonth;
+  renderCompareControls();
+  let cmp=compareRecords(),cur=cmp.left,prev=cmp.right;
+  let rightTitle=cmp.kind==='custom'?'Compared Month':'Previous Month';
+  $('curBig').textContent=money(cur.total);$('curLabel').textContent=(cur.month===data.selectedMonth?'This Split':'Saved Split')+' ('+labelMonth(cur.month)+')';
+  $('prevBig').textContent=money(prev?prev.total:0);$('prevLabel').textContent=prev?rightTitle+' ('+labelMonth(prev.month)+')':'No Previous Month';
+  if(prev){let delta=cur.total-prev.total,pct=prev.total?delta/prev.total*100:0;$('deltaText').textContent=money(Math.abs(delta))+(delta>=0?' more':' less');$('deltaPct').textContent=(delta>=0?'+':'')+pct.toFixed(2)+'%';$('arrow').textContent=delta>=0?'↑':'↓'}else{$('deltaText').textContent='No previous month saved';$('deltaPct').textContent='—';$('arrow').textContent=''}
+  drawChart(cur,prev);
+  $('currentDetail').innerHTML=detailHTML(cur,(cur.month===data.selectedMonth?'Current Split':'Saved Split')+' ('+labelMonth(cur.month)+')','var(--green)');
+  $('lastDetail').innerHTML=prev?detailHTML(prev,rightTitle+' ('+labelMonth(prev.month)+')','var(--blue)'):'<div class="detailHead"><span style="color:var(--blue)">Previous Month</span><span>Total: $0.00</span></div><div class="hint">No earlier saved month exists for the selected month. Use custom Compare controls to choose another month.</div>';
+  renderHistory();
+  if(!skipCalc)calculate(false);
+}
+function exportData(){
+  data.version=26;
+  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bill-split-v26-history.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importText(txt){
+  try{let obj=JSON.parse(txt);data=Object.assign(data,obj);migrateData();persist();renderMode();renderAll();alert('Imported.')}catch(e){alert('Could not import JSON.')}
+}
+function setMode(m){saveDraft();data.mode=m;data.view='calculator';persist();renderMode();renderAll()}
+function init(){
+  load();
+  renderMode();
+  document.querySelectorAll('.modeTab').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+  $('addPerson').onclick=addPerson;
+  $('nameInput').onkeydown=e=>{if(e.key==='Enter'){addPerson();e.preventDefault()}};
+  $('clearPeople').onclick=()=>{if(data.view==='analytics'){let list=analyticsPeopleForMode();list.splice(0,list.length);persist();renderPeople();renderAll(true);return;}if(isFinalized())return alert('This month is finalized and locked.');setPeople([]);persist();renderMode();renderAll()};
+  $('calc').onclick=()=>calculate(true);
+  $('saveMonth').onclick=saveMonth;
+  $('finalizeMonth').onclick=finalizeMonth;
+  $('resetBills').onclick=resetBills;
+  $('monthPicker').onchange=e=>{if(data.mode!=='analytics')saveDraft();data.selectedMonth=e.target.value;persist();renderMode();renderAll()};
+  $('exportBtn').onclick=exportData;
+  $('importBtn').onclick=()=>$('fileInput').click();
+  $('fileInput').onchange=e=>{let f=e.target.files[0];if(f)f.text().then(importText)};
+  $('clearHistory').onclick=()=>{if(confirm('Clear saved history for this tab?')){data.history[data.mode]=[];persist();renderAll()}};
+  $('settingsBtn').onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
+  $('themeBtn').onclick=()=>alert('Dark theme is enabled.');
+  window.onresize=()=>renderAll(true);
+  renderAll();
+}
+init();
+</script>
+
+<script>
+(function(){
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js').catch(function(err){
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+})();
+</script>
+</body></html>
