@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-v73-pwa';
+const CACHE_NAME = 'bill-split-v74-pwa';
 const APP_SHELL = [
   './',
   './index.html',
