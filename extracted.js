@@ -13,7 +13,7 @@ const STORE_KEY='billSplit';
 const OLD_KEYS=[26,25,24,23,19,18,16,15,14].map(v=>'billSplitUniversalV'+v);
 
 let data={
-  version:74,
+  version:75,
   mode:'household',
   selectedMonth:monthKey(today),
   people:{household:['Quan','Selena','Bayron','Deanna','William','Kim'],eatout:[],custom:[]},
@@ -121,7 +121,7 @@ function householdSnapshot(rec){
   return JSON.parse(JSON.stringify({
     month:rec.month,label:rec.label,total:rec.total,
     people:rec.people,personTotals:rec.personTotals,bills:rec.bills,
-    savedAt:new Date().toISOString(),version:74
+    savedAt:new Date().toISOString(),version:75
   }));
 }
 function billMapFromRec(rec){
@@ -175,7 +175,7 @@ function householdTemplate(){
 }
 
 function migrateData(){
-  data.version=74;
+  data.version=75;
   migratePeople();
   data.settings=data.settings||{};
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -236,7 +236,7 @@ function migrateData(){
   }
 }
 function lightMigrate(){
-  data.version=74;migratePeople();
+  data.version=75;migratePeople();
   data.settings=data.settings||{};
   data.settings.permanentBills=cleanTrash(data.settings.permanentBills||[]).map(normalizeBill);
   data.history=data.history||{household:[],eatout:[],custom:[]};
@@ -914,7 +914,7 @@ function record(){
     bills.extras=(d.extras||[]).map(x=>({...x,amount:parseMoney(x.amount)}));
     bills.extras.forEach(b=>{total+=parseMoney(b.amount);applyBill(totals,b)});
   }
-  return{mode:data.mode,month:data.selectedMonth,label:labelMonth(data.selectedMonth),people:[...people()],bills,total:Math.max(total,0),personTotals:totals,savedAt:new Date().toISOString(),finalized:isFinalized(),version:74};
+  return{mode:data.mode,month:data.selectedMonth,label:labelMonth(data.selectedMonth),people:[...people()],bills,total:Math.max(total,0),personTotals:totals,savedAt:new Date().toISOString(),finalized:isFinalized(),version:75};
 }
 function billRows(rec){
   let b=rec.bills||{}, rows=[];
@@ -1869,7 +1869,8 @@ const EDIT_UNLOCK_CODE='5433';
 let editUnlocked=false;
 const EDIT_REMEMBER_KEY='billSplitRememberEditMode';
 const EDIT_SESSION_KEY='billSplitEditUnlocked';
-function isEditUnlocked(){return editUnlocked===true;}
+function isEatOutUnlocked(){return data.mode==='eatout' && data.view!=='analytics';}
+function isEditUnlocked(){return editUnlocked===true || isEatOutUnlocked();}
 function rememberEditModeEnabled(){return localStorage.getItem(EDIT_REMEMBER_KEY)==='1';}
 function saveEditSession(){ if(rememberEditModeEnabled()) localStorage.setItem(EDIT_SESSION_KEY,'1'); }
 function clearEditSession(){ localStorage.removeItem(EDIT_SESSION_KEY); }
@@ -1884,16 +1885,22 @@ function canUseWhileLocked(el){
   return false;
 }
 function updateEditLockUI(){
+  const eatOutOpen=isEatOutUnlocked();
   document.body.classList.toggle('viewOnly',!isEditUnlocked());
   const btn=$('editLockBtn');
   if(btn){
+    btn.style.display=eatOutOpen?'none':'';
     btn.textContent=isEditUnlocked()?'✏️':'🔒';
     btn.classList.toggle('unlocked',isEditUnlocked());
     btn.title=isEditUnlocked()?'Edit Mode: tap to lock':'View Only: tap to unlock';
     btn.setAttribute('aria-label', isEditUnlocked()?'Lock editing':'Unlock editing');
   }
   const hint=$('editLockedHint');
-  if(hint){hint.style.display='block';hint.textContent=isEditUnlocked()?'✏️ Edit Mode':'🔒 View Only';hint.classList.toggle('unlocked',isEditUnlocked());}
+  if(hint){
+    hint.style.display=eatOutOpen?'none':'block';
+    hint.textContent=isEditUnlocked()?'✏️ Edit Mode':'🔒 View Only';
+    hint.classList.toggle('unlocked',isEditUnlocked());
+  }
 }
 function setFormEditLock(){
   const locked=!isEditUnlocked();
@@ -1914,7 +1921,8 @@ function setFormEditLock(){
   updateEditLockUI();
 }
 function promptUnlockEdit(){
-  if(isEditUnlocked()){
+  if(isEatOutUnlocked())return;
+  if(editUnlocked===true){
     editUnlocked=false;
     clearEditSession();
     saveDraft();persist();renderMode();renderAll(true);setFormEditLock();
@@ -1942,14 +1950,14 @@ function requireEditMode(actionName='edit this data'){
 }
 
 function exportData(){
-  data.version=74;
+  data.version=75;
   let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bill_Split_History.json';a.click();URL.revokeObjectURL(a.href);
 }
 function importText(txt){if(!requireEditMode('import data'))return;
   try{let obj=JSON.parse(txt);data=Object.assign(data,obj);migrateData();persist();renderMode();renderAll();alert('Imported.')}catch(e){alert('Could not import JSON.')}
 }
-function setMode(m){saveDraft();data.mode=m;data.view='calculator';ensureMonthPeople(data.mode,data.selectedMonth);syncLegacyPeople(data.mode);persist();renderMode();renderAll(true)}
+function setMode(m){saveDraft();data.mode=m;data.view='calculator';ensureMonthPeople(data.mode,data.selectedMonth);syncLegacyPeople(data.mode);persist();renderMode();renderAll(true);setFormEditLock()}
 
 document.addEventListener('click',function(e){
   if(isEditUnlocked())return;
@@ -2080,14 +2088,3 @@ try{init();}catch(e){console.error('Startup failed; recovery render will run.',e
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bootRenderRetry,{once:true});}else{bootRenderRetry();}
 window.addEventListener('load',bootRenderRetry,{once:true});
 window.addEventListener('pageshow',bootRenderRetry);
-
-
-(function(){
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('./sw.js').catch(function(err){
-        console.warn('Service worker registration failed:', err);
-      });
-    });
-  }
-})();
