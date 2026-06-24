@@ -276,6 +276,38 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom));}
   .eatoutImportGrid{margin-top:14px!important;}
 }
 
+
+/* V68: equal mobile tabs, fixed summary data, color-coded saved history */
+.modeTabs{align-items:stretch;}
+.modeTab{min-height:64px;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;line-height:1.15!important;white-space:normal!important;}
+.histTable tr.hist-current{background:linear-gradient(90deg,rgba(34,197,94,.16),rgba(34,197,94,.04));box-shadow:inset 4px 0 0 var(--green);}
+.histTable tr.hist-selected{background:linear-gradient(90deg,rgba(33,150,243,.16),rgba(33,150,243,.04));box-shadow:inset 4px 0 0 var(--blue);}
+.histTable tr.hist-finalized{background:linear-gradient(90deg,rgba(245,158,11,.14),rgba(245,158,11,.035));}
+.histTable tr.hist-current.hist-finalized{box-shadow:inset 4px 0 0 var(--green);}
+.histTable tr.hist-selected.hist-finalized{box-shadow:inset 4px 0 0 var(--blue);}
+.histTitle{font-weight:950;}
+.histMeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;align-items:center;}
+.histBadge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900;border:1px solid var(--line);background:#172238;color:#dce6f3;}
+.histBadge.current{background:#0d3d23;border-color:#22c55e;color:#9ff6bd;}
+.histBadge.viewing{background:#0c2d55;border-color:#2196f3;color:#a8d8ff;}
+.histBadge.finalized{background:#3a2708;border-color:#f59e0b;color:#ffd99a;}
+.histTrend{font-size:12px;font-weight:900;}
+.histTrend.up{color:var(--red);}
+.histTrend.down{color:var(--green);}
+.histTrend.flat{color:var(--muted);}
+.histAmount{font-size:18px;font-weight:950!important;}
+.histAmount.current,.histAmount.selected{color:var(--green)!important;}
+@media(max-width:700px){
+  .modeTabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;}
+  .modeTab{height:72px!important;min-height:72px!important;padding:10px 6px!important;font-size:14px!important;border-radius:12px!important;}
+  .histTable tr{border-radius:12px;margin-bottom:8px;border:1px solid var(--line)!important;overflow:hidden;}
+  .histTable{border:0!important;background:transparent!important;}
+  .histTable td:nth-child(1){grid-column:1/-1!important;}
+  .histTitle{font-size:17px;}
+  .histMeta{margin-top:7px;}
+  .histAmount{font-size:19px!important;}
+}
+
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#061120">
@@ -1639,8 +1671,32 @@ function renderMonthPicker(){
   for(let off=-12;off<=12;off++){let d=new Date(today.getFullYear(),today.getMonth()+off,1),k=monthKey(d);opts.push(`<option value="${k}" ${k===data.selectedMonth?'selected':''}>📅 ${labelMonth(k)}</option>`)}
   sel.innerHTML=opts.join('');
 }
+function historyTrendHTML(records,idx){
+  if(idx>=records.length-1)return '';
+  const cur=parseMoney(records[idx].total), prev=parseMoney(records[idx+1].total);
+  const diff=cur-prev;
+  if(Math.abs(diff)<0.005)return '<span class="histTrend flat">0.0% vs previous</span>';
+  const pct=prev?diff/prev*100:0;
+  const cls=diff>0?'up':'down';
+  return `<span class="histTrend ${cls}">${diff>0?'▲':'▼'} ${Math.abs(pct).toFixed(1)}% vs previous</span>`;
+}
 function renderHistory(){
-  let rows=[...history()].sort((a,b)=>String(b.receiptId||b.savedAt||b.month).localeCompare(String(a.receiptId||a.savedAt||a.month))).map(m=>{let title=data.mode==='eatout'?(m.bills?.eventName||'Receipt')+' — '+(m.savedAt?new Date(m.savedAt).toLocaleString():labelMonth(m.month)):labelMonth(m.month);return `<tr><td>${esc(title)}${data.mode!=='eatout'&&m.month===data.selectedMonth?' (Current)':''}${m.finalized?' ✓':''}</td><td style="color:${m.month===data.selectedMonth?'var(--green)':'white'}">${money(m.total)}</td><td>${data.mode!=='eatout'&&m.month===data.selectedMonth?'<span class="pill">Current</span>':`<button class="btn small" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`}</td></tr>`}).join('');
+  let records=[...history()].sort((a,b)=>String(b.receiptId||b.savedAt||b.month).localeCompare(String(a.receiptId||a.savedAt||a.month)));
+  let rows=records.map((m,idx)=>{
+    let title=data.mode==='eatout'?(m.bills?.eventName||'Receipt')+' — '+(m.savedAt?new Date(m.savedAt).toLocaleString():labelMonth(m.month)):labelMonth(m.month);
+    let isCurrent=data.mode!=='eatout'&&m.month===monthKey(today);
+    let isSelected=data.mode!=='eatout'&&m.month===data.selectedMonth;
+    let finalized=!!m.finalized;
+    let badges=[];
+    if(isCurrent)badges.push('<span class="histBadge current">Current</span>');
+    if(isSelected&&!isCurrent)badges.push('<span class="histBadge viewing">Viewing</span>');
+    if(finalized)badges.push('<span class="histBadge finalized">🔒 Finalized</span>');
+    let trend=data.mode!=='eatout'?historyTrendHTML(records,idx):'';
+    let meta=[...badges,trend].filter(Boolean).join('');
+    let cls=[isCurrent?'hist-current':'',isSelected?'hist-selected':'',finalized?'hist-finalized':''].filter(Boolean).join(' ');
+    let action=(data.mode!=='eatout'&&isSelected)?'<span class="pill">Selected</span>':`<button class="btn small" onclick="viewMonth('${m.month}','${m.receiptId||''}')">View</button>`;
+    return `<tr class="${cls}"><td><div class="histTitle">${esc(title)}${finalized?' ✓':''}</div>${meta?`<div class="histMeta">${meta}</div>`:''}</td><td class="histAmount ${isCurrent?'current':''} ${isSelected?'selected':''}">${money(m.total)}</td><td>${action}</td></tr>`;
+  }).join('');
   $('historyRows').innerHTML=rows||'<tr><td colspan="3" class="note">No saved history for this tab yet.</td></tr>';
 }
 function viewMonth(k,rid=''){
@@ -2146,26 +2202,27 @@ function stepMonth(delta){
 }
 function updateStickySummary(){
   const box=$('stickySummary'); if(!box)return;
-  let people=(getPeople&&getPeople())||[];
+  const ps=people(data.mode==='analytics'?'household':data.mode);
   let total=0, each=0;
   try{
     if(data.view==='analytics'){
       const records=analyticsRecords();
       const latest=records && records.length ? records[records.length-1] : null;
-      total=latest?parseMoney(latest.total):0; each=people.length?total/people.length:0;
+      total=latest?parseMoney(latest.total):0;
     }else if(data.mode==='eatout'){
-      const rec=eatOutCompute?eatOutCompute():null;
+      const rec=record();
       total=rec?parseMoney(rec.total):0;
-      each=people.length?total/people.length:0;
     }else{
-      const cur=record?record():null;
+      const cur=record();
       total=cur?parseMoney(cur.total):0;
-      each=people.length?total/people.length:0;
     }
-  }catch(e){ total=parseMoney(($('curBig')||{}).textContent||0); each=people.length?total/people.length:0; }
+  }catch(e){
+    total=parseMoney(($('curBig')||{}).textContent||0);
+  }
+  each=ps.length?total/ps.length:0;
   $('summaryTotal').textContent=money(total);
-  $('summaryPeople').textContent=String(people.length||0);
-  $('summaryEach').textContent=people.length?money(each):'$0.00';
+  $('summaryPeople').textContent=String(ps.length||0);
+  $('summaryEach').textContent=ps.length?money(each):'$0.00';
   box.style.display='grid';
 }
 const __v66RenderAll=renderAll;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-v66-pwa';
+const CACHE_NAME = 'bill-split-v68-pwa';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,4 +33,4 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// V66: view-only default with PIN edit unlock.
+// V68: equal tabs, sticky summary data, color-coded history.
