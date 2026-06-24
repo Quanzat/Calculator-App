@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-v61-pwa';
+const CACHE_NAME = 'bill-split-v63-pwa';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,4 +33,4 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// V61: startup render fix and fresh-first cache strategy.
+// V63: startup render fix and fresh-first cache strategy.
