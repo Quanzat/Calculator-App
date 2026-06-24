@@ -309,7 +309,7 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom));}
 }
 
 
-/* V69: view allowed while locked, analytics history colors, equal tab width */
+/* V70: view allowed while locked, analytics history colors, equal tab width */
 .modeTabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;gap:10px!important;}
 .modeTab{width:100%!important;height:72px!important;min-height:72px!important;max-width:none!important;box-sizing:border-box!important;flex:1 1 0!important;}
 .modeTab.household,.modeTab.eatout,.modeTab.custom{min-width:0!important;}
@@ -317,6 +317,51 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom));}
 @media(max-width:700px){
   .modeTabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;}
   .modeTab{height:72px!important;min-height:72px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+}
+
+
+
+/* V70: force consistent full-width mobile layout, especially Eat Out */
+@media(max-width:700px){
+  html, body { width:100% !important; max-width:100% !important; overflow-x:hidden !important; }
+  .app, body.eatoutMode .app {
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    padding-left:16px !important;
+    padding-right:16px !important;
+    box-sizing:border-box !important;
+  }
+  .modeTabs, body.eatoutMode .modeTabs {
+    width:100% !important;
+    max-width:100% !important;
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+    gap:10px !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    box-sizing:border-box !important;
+  }
+  .modeTab, body.eatoutMode .modeTab {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    flex:none !important;
+    height:72px !important;
+    min-height:72px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    box-sizing:border-box !important;
+  }
+  .grid, body.eatoutMode .grid, .card, body.eatoutMode .card {
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
 }
 
 </style>

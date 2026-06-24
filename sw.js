@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bill-split-v69-pwa';
+const CACHE_NAME = 'bill-split-v70-pwa';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,4 +33,4 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// V69: view history works in locked mode; analytics history colors; equal tabs.
+// V70: view history works in locked mode; analytics history colors; equal tabs.
