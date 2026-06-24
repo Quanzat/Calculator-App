@@ -1,8 +1,9 @@
-const CACHE_NAME = 'bill-split-v59-pwa';
+const CACHE_NAME = 'bill-split-v61-pwa';
 const APP_SHELL = [
   './',
   './index.html',
   './Bill%20Split.html',
+  './Bill Split.html',
   './manifest.webmanifest',
   './icons/icon-180.png',
   './icons/icon-192.png',
@@ -24,13 +25,12 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)).catch(() => {});
-        return response;
-      }).catch(() => caches.match('./index.html'));
-    })
+    fetch(event.request, { cache: 'no-store' }).then(response => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)).catch(() => {});
+      return response;
+    }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html')))
   );
 });
+
+// V61: startup render fix and fresh-first cache strategy.

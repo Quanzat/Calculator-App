@@ -187,6 +187,9 @@ body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(1
 .qtyBadge:empty{display:none!important}
 .itemKindBadge{display:none!important}
 @media(max-width:820px){body.eatoutMode .receiptItem{grid-template-columns:1fr!important}.itemNameWrap{grid-template-columns:auto 1fr}.qtyBadge:empty{display:none!important}}
+
+/* V60 mobile saved-history/footer fix */
+.historyFooter{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;clear:both}.historyFooter .note{margin:0;flex:1;min-width:0}.historyFooter #clearHistory{flex:0 0 auto;white-space:nowrap}@media(max-width:640px){.historyFooter{display:grid;grid-template-columns:1fr;align-items:stretch}.historyFooter #clearHistory{width:100%;margin-top:2px}.historyLimit{line-height:1.35}.histTable td{padding:10px 10px}.histTable td:nth-child(3){width:auto}.pill{white-space:nowrap}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#061120">
@@ -198,7 +201,7 @@ body.eatoutMode .receiptItem{grid-template-columns:minmax(260px,1.35fr) minmax(1
   <div class="header"><div class="brand"><div class="logo"><svg viewBox="0 0 64 64"><path d="M11 50c2-11 12-16 21-16s19 5 21 16" fill="#0f2845" stroke="white" stroke-width="3"/><circle cx="22" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="42" cy="26" r="8" fill="#c7f9d4" stroke="#071221" stroke-width="3"/><circle cx="32" cy="22" r="9" fill="#fff" stroke="#071221" stroke-width="3"/><path d="M32 13v28" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/><path d="M39 20c-2-5-12-5-14 0-3 8 17 5 14 14-2 6-15 6-17 0" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/></svg></div><div><div class="title">Bill Split</div><div class="sub">Smart splitting for any occasion.</div></div></div><div class="toolbar"><select id="monthPicker" class="monthSelect"></select><button class="iconBtn" id="settingsBtn">⚙</button></div></div>
   <div class="modeTabs"><button class="modeTab household active" data-mode="household">⌂ &nbsp; Household Bills</button><button class="modeTab eatout" data-mode="eatout">♨ &nbsp; Eat Out</button><button class="modeTab custom" data-mode="custom">▦ &nbsp; Custom</button></div>
   <div class="grid"><section class="card"><h2>👥 People</h2><div class="row"><input id="nameInput" class="textin grow" placeholder="Enter name"><button id="addPerson" class="btn green">Add</button><button id="clearPeople" class="btn">Clear All</button></div><div id="chips" class="chips"></div><div class="hint">Add as many names as needed.</div><div class="divider"></div><h2 id="billTitle">▣ Bills</h2><div id="billHelp" class="categoryHelp"></div><div id="fields" class="billsGrid"></div><div class="actions"><button id="calc" class="btn green">▦ Calculate</button><button id="saveMonth" class="btn blue">▣ Save Month</button><button id="resetBills" class="btn">↻ Reset Current Month</button><button id="finalizeMonth" class="btn orange">✓ Finalize Month</button></div><div class="outputWrap"><textarea id="output" class="output" readonly></textarea><div id="copyBadge" class="copyBadge hidden">✓ Copied!</div></div><div class="storage"><span class="note">☁ Data uses iCloud Drive compatible import/export.</span><button id="exportBtn" class="btn small">⇧ Export</button><button id="importBtn" class="btn small">⇩ Import</button><input type="file" id="fileInput" accept="application/json" class="hidden"></div></section>
-  <section class="card"><h2 id="chartTitle">This Month vs Last Month</h2><div id="compareControls" class="compareControls hidden"><label>Compare</label><select id="compareA"></select><label>vs</label><select id="compareB"></select></div><div class="chartTop"><div><div id="curBig" class="bigGreen">$0.00</div><div id="curLabel">This Month</div></div><div class="delta"><div id="deltaText">No saved comparison</div><div id="deltaPct" class="num">—</div><div id="arrow" style="font-size:28px;color:var(--red)">↓</div></div><div><div id="prevBig" class="bigBlue">$0.00</div><div id="prevLabel">Last Month</div></div></div><div class="canvasBox"><canvas id="chart"></canvas></div><div class="details"><div id="currentDetail" class="detail"></div><div id="lastDetail" class="detail blueBorder"></div></div><div class="history"><h3>▣ Saved History</h3><table class="histTable"><tbody id="historyRows"></tbody></table><div class="note" style="margin-top:12px">You can save up to 24 entries per tab.</div><button id="clearHistory" class="btn red small" style="float:right;margin-top:-26px">🗑 Clear History</button></div></section></div></div>
+  <section class="card"><h2 id="chartTitle">This Month vs Last Month</h2><div id="compareControls" class="compareControls hidden"><label>Compare</label><select id="compareA"></select><label>vs</label><select id="compareB"></select></div><div class="chartTop"><div><div id="curBig" class="bigGreen">$0.00</div><div id="curLabel">This Month</div></div><div class="delta"><div id="deltaText">No saved comparison</div><div id="deltaPct" class="num">—</div><div id="arrow" style="font-size:28px;color:var(--red)">↓</div></div><div><div id="prevBig" class="bigBlue">$0.00</div><div id="prevLabel">Last Month</div></div></div><div class="canvasBox"><canvas id="chart"></canvas></div><div class="details"><div id="currentDetail" class="detail"></div><div id="lastDetail" class="detail blueBorder"></div></div><div class="history"><h3>▣ Saved History</h3><table class="histTable"><tbody id="historyRows"></tbody></table><div class="historyFooter"><div class="note historyLimit">Saved history is kept on this device. You can save up to 24 entries per tab.</div><button id="clearHistory" class="btn red small">🗑 Clear History</button></div></div></section></div></div>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -415,14 +418,24 @@ function lightMigrate(){
 }
 function load(){
   try{
-    let s=localStorage.getItem(STORE_KEY);
-    if(!s)for(let k of OLD_KEYS){s=localStorage.getItem(k);if(s)break}
+    let s=localStorage.getItem(STORE_KEY)||localStorage.getItem(STORE_KEY+'_backup');
+    if(!s)for(let k of OLD_KEYS){s=localStorage.getItem(k)||localStorage.getItem(k+'_backup');if(s)break}
     if(s)data=Object.assign(data,JSON.parse(s));
   }catch(e){}
   migrateData();
   persist();
 }
-function persist(){lightMigrate();localStorage.setItem(STORE_KEY,JSON.stringify(data))}
+function persist(){
+  lightMigrate();
+  try{
+    let payload=JSON.stringify(data);
+    localStorage.setItem(STORE_KEY,payload);
+    localStorage.setItem(STORE_KEY+'_backup',payload);
+    localStorage.setItem(STORE_KEY+'_savedAt',new Date().toISOString());
+  }catch(e){
+    console.warn('Bill Split data could not be saved locally.',e);
+  }
+}
 function currentDraft(){
   data.monthDrafts[data.mode]=data.monthDrafts[data.mode]||{};
   if(!data.monthDrafts[data.mode][data.selectedMonth]){
@@ -1982,8 +1995,26 @@ function init(){
   $('settingsBtn').onclick=()=>alert('V24: adds water-bill period labeling, household snapshots on finalize, unlock month for edits, edit notes in copied messages, and rich-copy dollar formatting.');
   $('themeBtn').onclick=()=>alert('Dark theme is enabled.');
   window.onresize=()=>renderAll(true);
-  renderAll();
+  initialRenderAfterStorageLoad();
 }
+
+function initialRenderAfterStorageLoad(){
+  // iOS Safari/GitHub Pages can paint the first screen before saved data has fully hydrated.
+  // Render now, then run a second pass on the next frame so the current tab, people chips,
+  // history, and analytics are populated without forcing the user to switch tabs.
+  renderAll(true);
+  requestAnimationFrame(()=>{
+    try{
+      migrateData();
+      renderMode();
+      renderAll(true);
+      setTimeout(()=>{try{renderMode();renderAll(true)}catch(e){}},75);
+    }catch(e){console.warn('Initial render refresh failed',e)}
+  });
+}
+
+window.addEventListener('pagehide',()=>{try{saveDraft();persist()}catch(e){}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){try{saveDraft();persist()}catch(e){}}});
 init();
 </script>
 
